@@ -15,7 +15,7 @@ public class Parser {
 	}
 
 	public Parser() {
-		String query = "SELECT name, password FROM users u, emails WHERE u.name = 'Simon' AND user.password='bar' AND emails.name = 'foo@me.com'";
+		String query = "SELECT name, password FROM users u, emails LEFT OUTER JOIN plz p ON u.plz = plz.plz WHERE u.name = 'Simon' AND user.password='bar' AND emails.name = 'foo@me.com'";
 
 		SQLParser sqlParser = new SQLParser();
 		try {
