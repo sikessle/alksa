@@ -3,9 +3,8 @@ package de.alksa.parser.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import EDU.purdue.cs.bloat.tree.ArrayLengthExpr;
 import de.alksa.parser.Parser;
-import de.alksa.parser.Token;
+import de.alksa.parser.token.Token;
 
 public class FoundationParser implements Parser {
 	
@@ -23,6 +22,7 @@ public class FoundationParser implements Parser {
 
 	private void process() {
 		// TODO handle sql and fill tokenizedQuery
+		// TODO if tokens remain, throw error (not yet supported exception, etc.)
 		
 	}
 

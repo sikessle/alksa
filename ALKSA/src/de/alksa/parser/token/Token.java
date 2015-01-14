@@ -1,4 +1,4 @@
-package de.alksa.parser;
+package de.alksa.parser.token;
 
 public abstract class Token {
 
