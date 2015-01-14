@@ -10,7 +10,7 @@ import de.alksa.persistence.impl.Db4oStorageDao;
 import de.alksa.querystorage.QueryStorage;
 import de.alksa.querystorage.impl.SimpleQueryStorage;
 
-public class DependencyModule extends AbstractModule {
+public class ProductionModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

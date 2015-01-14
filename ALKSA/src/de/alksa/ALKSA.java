@@ -8,7 +8,7 @@ public class ALKSA {
 	private boolean learn;
 
 	public ALKSA() {
-		Injector injector = Guice.createInjector(new DependencyModule());
+		Injector injector = Guice.createInjector(new ProductionModule());
 		// TODO build together all ALKSA modules
 	}
 
