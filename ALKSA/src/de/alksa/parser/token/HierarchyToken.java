@@ -2,7 +2,7 @@ package de.alksa.parser.token;
 
 import java.util.List;
 
-public interface HierarchyToken {
+public abstract class HierarchyToken extends Token {
 	
-	List<? extends Token> getChildren();
+	public abstract List<? extends Token> getChildren();
 }

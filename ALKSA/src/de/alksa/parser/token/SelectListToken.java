@@ -3,7 +3,7 @@ package de.alksa.parser.token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectListToken extends Token implements HierarchyToken {
+public class SelectListToken extends HierarchyToken {
 
 	private List<Token> tokens;
 
