@@ -13,7 +13,7 @@ import com.foundationdb.sql.parser.StatementNode;
 import com.foundationdb.sql.parser.Visitable;
 import com.foundationdb.sql.parser.Visitor;
 
-public class ParserTest {
+public class FoundationParserAPITest {
 
 	@Test
 	public void parseExample() {
