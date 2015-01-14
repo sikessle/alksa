@@ -1,10 +1,8 @@
 package de.alksa.log.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import de.alksa.log.impl.AttackLogEntry;
 
 public class AttackLogEntryTest {
 
@@ -23,14 +21,9 @@ public class AttackLogEntryTest {
 		assertEquals(violation, attack.getViolation());
 	}
 
-	@Test
+	@Test(expected=NullPointerException.class)
 	public void testGettersNull() {
-		AttackLogEntry attack = new AttackLogEntry("", "", "", ""); 
-
-		assertEquals("", attack.getQuery());
-		assertEquals("", attack.getDatabase());
-		assertEquals("", attack.getDatabaseUser());
-		assertEquals("", attack.getViolation());
+		new AttackLogEntry(null, null, null, null); 
 	}
 
 }
