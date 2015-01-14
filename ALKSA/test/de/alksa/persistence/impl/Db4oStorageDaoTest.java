@@ -26,7 +26,7 @@ public class Db4oStorageDaoTest {
 	@Test
 	public void testProtocolEntries() {
 		List<LogEntry> expectedEntries = new ArrayList<>();
-		expectedEntries.add(new AttackLogEntry(null, null, null, null));
+		expectedEntries.add(new AttackLogEntry("", "", "", ""));
 		
 		storage.saveProtocolEntries(expectedEntries);
 		List<LogEntry> actualEntries = storage.getProtocolEntries();

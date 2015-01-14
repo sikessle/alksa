@@ -25,7 +25,7 @@ public class AttackLogEntryTest {
 
 	@Test
 	public void testGettersNull() {
-		AttackLogEntry attack = new AttackLogEntry(null, null, null, null);
+		AttackLogEntry attack = new AttackLogEntry("", "", "", ""); 
 
 		assertEquals("", attack.getQuery());
 		assertEquals("", attack.getDatabase());

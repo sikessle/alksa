@@ -17,15 +17,15 @@ import de.alksa.persistence.StorageDao;
 public class SimpleProtocolTest {
 
 	private SimpleProtocol protocol;
-	private List<LogEntry> entries;
+	private List<LogEntry> expectedEntries;
 
 	@Before
 	public void setUp() throws Exception {
-		entries = new ArrayList<>();
-		entries.add(new AttackLogEntry(null, null, null, null));
+		expectedEntries = new ArrayList<>();
+		expectedEntries.add(new AttackLogEntry("", "", "", ""));
 
 		StorageDao storageMock = mock(StorageDao.class);
-		when(storageMock.getProtocolEntries()).thenReturn(entries);
+		when(storageMock.getProtocolEntries()).thenReturn(expectedEntries);
 
 		protocol = new SimpleProtocol(storageMock);
 	}
@@ -34,10 +34,10 @@ public class SimpleProtocolTest {
 	public void testRead() {
 		List<LogEntry> readEntries = protocol.read();
 
-		assertEquals(entries.size(), readEntries.size());
+		assertEquals(expectedEntries.size(), readEntries.size());
 
 		for (LogEntry readEntry : readEntries) {
-			assertTrue(entries.contains(readEntry));
+			assertTrue(expectedEntries.contains(readEntry));
 		}
 	}
 
@@ -45,7 +45,7 @@ public class SimpleProtocolTest {
 	public void testWrite() {
 		// to avoid concurrent modification exception
 		List<LogEntry> entriesToAdd = new ArrayList<>();
-		entriesToAdd.addAll(entries);
+		entriesToAdd.addAll(expectedEntries);
 
 		for (LogEntry entry : entriesToAdd) {
 			protocol.write(entry);
