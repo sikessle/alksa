@@ -1,4 +1,4 @@
-package de.alksa.parser.token;
+package de.alksa.token;
 
 import java.util.ArrayList;
 import java.util.List;

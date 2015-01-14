@@ -1,4 +1,4 @@
-package de.alksa.parser.token;
+package de.alksa.token;
 
 public class ColumnToken extends ElementalToken<String> {
 

@@ -2,7 +2,7 @@ package de.alksa.parser;
 
 import java.util.List;
 
-import de.alksa.parser.token.Token;
+import de.alksa.token.Token;
 
 public interface Parser {
 

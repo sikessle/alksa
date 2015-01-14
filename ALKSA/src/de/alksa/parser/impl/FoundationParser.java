@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.alksa.parser.Parser;
-import de.alksa.parser.token.Token;
+import de.alksa.token.Token;
 
 public class FoundationParser implements Parser {
 	
