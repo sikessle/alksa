@@ -51,7 +51,7 @@ public class Db4oStorageDaoTest {
 	@Test
 	public void testQueries() {
 		List<Query> expectedQueries = new ArrayList<>();
-		expectedQueries.add(new QueryImpl("", "", ""));
+		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", ""));
 		
 		storage.saveQueries(expectedQueries); 
 		List<Query> actualQueries = storage.getQueries();

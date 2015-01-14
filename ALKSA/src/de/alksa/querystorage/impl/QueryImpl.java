@@ -1,16 +1,18 @@
 package de.alksa.querystorage.impl;
 
+import java.util.List;
 import java.util.Objects;
 
 import de.alksa.querystorage.Query;
+import de.alksa.token.Token;
 
 public class QueryImpl implements Query {
 
-	Object query;
+	List<Token> query;
 	String database;
 	String databaseUser;
 
-	public QueryImpl(Object sqlQuery, String database, String databaseUser) {
+	public QueryImpl(List<Token> sqlQuery, String database, String databaseUser) {
 		Objects.requireNonNull(sqlQuery);
 		Objects.requireNonNull(database);
 		Objects.requireNonNull(databaseUser);
@@ -20,7 +22,7 @@ public class QueryImpl implements Query {
 	}
 
 	@Override
-	public Object getQuery() {
+	public List<Token> getQuery() {
 		return query;
 	}
 

@@ -2,13 +2,18 @@ package de.alksa.querystorage.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
+
+import de.alksa.token.Token;
 
 public class QueryImplTest {
 
 	@Test
 	public void testGettersNonNull() {
-		String sqlQuery = "SELECT x FROM y;";
+		List<Token> sqlQuery = new ArrayList<>();
 		String database = "testDatabase";
 		String databaseUser = "root";
 		

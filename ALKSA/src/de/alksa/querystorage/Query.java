@@ -1,8 +1,12 @@
 package de.alksa.querystorage;
 
+import java.util.List;
+
+import de.alksa.token.Token;
+
 public interface Query {
 	
-	Object getQuery();
+	List<Token> getQuery();
 	
 	String getDatabase();
 	

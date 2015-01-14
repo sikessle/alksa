@@ -22,7 +22,7 @@ public class SimpleQueryStorageTest {
 	@Before
 	public void setUp() throws Exception {
 		expectedQueries = new ArrayList<>();
-		expectedQueries.add(new QueryImpl("", "", ""));
+		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", ""));
 
 		StorageDao storageMock = mock(StorageDao.class);
 		when(storageMock.getQueries()).thenReturn(expectedQueries);
