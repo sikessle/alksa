@@ -30,6 +30,7 @@ public class Db4oStorageDaoTest {
 	@After
 	public void tearDown() throws Exception {
 		storage.close();
+		new File(testPath).delete();
 	}
 
 	@Test
