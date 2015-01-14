@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.alksa.token.ColumnToken;
@@ -25,15 +24,16 @@ public class VisitorBasedParserTest {
 
 	@Test
 	public void testSelectColumnListWithAlias() {
-		String sql = "SELECT col1 AS c1, col2, ABS(col3) FROM users";
+		// hiddenCol should not come up in the select column list (as well ABS(col3)
+		String sql = "SELECT users.col1 AS c1, col2, ABS(col3) FROM users WHERE hiddenCol = 'a'";
 		List<ColumnToken> expectedColumnTokens = new ArrayList<>();
-		expectedColumnTokens.add(new ColumnToken("col1"));
+		expectedColumnTokens.add(new ColumnToken("users.col1"));
 		expectedColumnTokens.add(new ColumnToken("col2"));
 		List<Token> tokens = parser.parse(sql);
 		
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
-
+		
 		for (Token t : tokens) {
 			if (t instanceof SelectListToken) {
 				checkColumnList((SelectListToken) t, expectedColumnTokens);
@@ -52,22 +52,5 @@ public class VisitorBasedParserTest {
 		}
 	}
 	
-	@Ignore
-	public void testSelectFunctionList() {
-		String sql = "SELECT col1 AS c1, col2 FROM users";
-		List<ColumnToken> expectedColumnTokens = new ArrayList<>();
-		expectedColumnTokens.add(new ColumnToken("col1"));
-		expectedColumnTokens.add(new ColumnToken("col2"));
-		List<Token> tokens = parser.parse(sql);
-		
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
-
-		for (Token t : tokens) {
-			if (t instanceof SelectListToken) {
-				checkColumnList((SelectListToken) t, expectedColumnTokens);
-			}
-		}
-	}
 
 }

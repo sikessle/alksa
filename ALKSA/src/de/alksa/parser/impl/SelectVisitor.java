@@ -28,7 +28,7 @@ public class SelectVisitor extends AbstractVisitor {
 	 * Processes the SELECT [SelectList] Node.
 	 */
 	private void processSelectList(SelectNode select) throws StandardException {
-		SelectListVisitor selectListVisitor = new SelectListVisitor();
+		SelectColumnListVisitor selectListVisitor = new SelectColumnListVisitor();
 		select.accept(selectListVisitor);
 		SelectListToken selectToken = new SelectListToken(selectListVisitor.getTokens());
 		addToken(selectToken);
