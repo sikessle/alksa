@@ -1,6 +1,5 @@
 package de.alksa.log.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -11,13 +10,12 @@ import de.alksa.persistence.StorageDao;
 
 public class SimpleProtocol implements Protocol {
 
-	private List<LogEntry> entries = new ArrayList<>();
+	private List<LogEntry> entries;
 	private StorageDao storage;
 	
 	@Inject
 	public SimpleProtocol(StorageDao storage) {
 		this.storage = storage;
-		
 		entries = storage.getProtocolEntries();
 	}
 

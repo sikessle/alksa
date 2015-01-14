@@ -8,7 +8,7 @@ import de.alksa.log.impl.SimpleProtocol;
 import de.alksa.persistence.StorageDao;
 import de.alksa.persistence.impl.Db4oStorageDao;
 import de.alksa.querystorage.QueryStorage;
-import de.alksa.querystorage.SimpleQueryStorage;
+import de.alksa.querystorage.impl.SimpleQueryStorage;
 
 public class DependencyModule extends AbstractModule {
 
