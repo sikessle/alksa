@@ -9,7 +9,7 @@ public class ALKSA {
 
 	public ALKSA() {
 		Injector injector = Guice.createInjector(new DependencyModule());
-		// TODO build togehter all ALKSA modules
+		// TODO build together all ALKSA modules
 	}
 
 	public void setLearnMode(boolean learn) {
