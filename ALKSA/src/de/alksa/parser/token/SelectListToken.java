@@ -5,14 +5,8 @@ import java.util.List;
 
 public class SelectListToken extends HierarchyToken {
 
-	private List<Token> tokens;
-
 	public SelectListToken(List<Token> tokens) {
 		this.tokens = tokens == null ? new ArrayList<>() : tokens;
-	}
-
-	public List<Token> getChildren() {
-		return tokens;
 	}
 
 }

@@ -4,5 +4,9 @@ import java.util.List;
 
 public abstract class HierarchyToken extends Token {
 	
-	public abstract List<? extends Token> getChildren();
+	protected List<Token> tokens;
+	
+	public List<Token> getChildren() {
+		return tokens;
+	}
 }
