@@ -11,18 +11,18 @@ import de.alksa.token.ColumnToken;
 import de.alksa.token.SelectListToken;
 import de.alksa.token.Token;
 
-public class FoundationParserTest {
+public class VisitorBasedParserTest {
 
-	private FoundationParser parser;
+	private VisitorBasedParser parser;
 
 	@Before
 	public void setUp() throws Exception {
-		parser = new FoundationParser();
+		parser = new VisitorBasedParser();
 	}
 
 	@Test
 	public void testSelectColumnList() {
-		String sql = "SELECT col1, col2 FROM users;";
+		String sql = "SELECT col1, col2 FROM users";
 		List<ColumnToken> expectedColumnTokens = new ArrayList<>();
 		expectedColumnTokens.add(new ColumnToken("col1"));
 		expectedColumnTokens.add(new ColumnToken("col2"));

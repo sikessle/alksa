@@ -6,7 +6,7 @@ import com.google.inject.name.Names;
 import de.alksa.log.Protocol;
 import de.alksa.log.impl.SimpleProtocol;
 import de.alksa.parser.Parser;
-import de.alksa.parser.impl.FoundationParser;
+import de.alksa.parser.impl.VisitorBasedParser;
 import de.alksa.persistence.StorageDao;
 import de.alksa.persistence.impl.Db4oStorageDao;
 import de.alksa.querystorage.QueryStorage;
@@ -20,7 +20,7 @@ public class ProductionModule extends AbstractModule {
 		bind(QueryStorage.class).to(SimpleQueryStorage.class);
 		bind(StorageDao.class).to(Db4oStorageDao.class);
 		bindConstant().annotatedWith(Names.named("db4oPath")).to("/tmp/alksa");
-		bind(Parser.class).to(FoundationParser.class);
+		bind(Parser.class).to(VisitorBasedParser.class);
 	}
 
 }

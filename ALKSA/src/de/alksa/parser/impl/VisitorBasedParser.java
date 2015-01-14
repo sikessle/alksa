@@ -10,14 +10,14 @@ import com.foundationdb.sql.parser.StatementNode;
 import de.alksa.parser.Parser;
 import de.alksa.token.Token;
 
-public class FoundationParser implements Parser {
+public class VisitorBasedParser implements Parser {
 
 	private String sql;
 	private List<Token> tokenizedQuery;
 	private SQLParser sqlParser;
 	private StatementNode stmt;
 
-	public FoundationParser() {
+	public VisitorBasedParser() {
 		tokenizedQuery = new ArrayList<>();
 		sqlParser = new SQLParser();
 	}
@@ -40,13 +40,17 @@ public class FoundationParser implements Parser {
 	private void process() throws StandardException {
 		// TODO if tokens remain, throw error (not yet supported exception,
 		// etc.)
-
+		
 		stmt = sqlParser.parseStatement(sql);
+		
 		processSelectList();
+		// TODO add other nodes
 	}
 
 	private void processSelectList() throws StandardException {
-		stmt.accept(new SelectListVisitor());
+		SelectVisitor selectVisitor = new SelectVisitor();
+		stmt.accept(selectVisitor);
+		tokenizedQuery.addAll(selectVisitor.getTokens());
 	}
 
 }
