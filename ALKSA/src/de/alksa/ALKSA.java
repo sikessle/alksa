@@ -13,23 +13,17 @@ public class ALKSA {
 	}
 
 	public void setLearnMode(boolean learn) {
-		this.learn = learn;
+		// delegate to classifier module
 	}
 
 	public void processQuery(String query, String database, String databaseUser) {
-		if (learn) {
-			learnQuery(query, database, databaseUser);
-		} else {
-			checkQuery(query, database, databaseUser);
-		}
+		// delegate to classifier module
 	}
-
-	private void learnQuery(String query, String database, String databaseUser) {
-
-	}
-
-	private void checkQuery(String query, String database, String databaseUser) {
-
+	
+	public void clear() {
+		// clear storages
+		// clearn learn mode etc.
+		// delegate to classifier module
 	}
 
 }
