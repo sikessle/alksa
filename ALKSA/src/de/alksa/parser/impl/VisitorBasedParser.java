@@ -43,11 +43,10 @@ public class VisitorBasedParser implements Parser {
 		
 		stmt = sqlParser.parseStatement(sql);
 		
-		processSelectList();
-		// TODO add other nodes
+		processSelectQuery();
 	}
 
-	private void processSelectList() throws StandardException {
+	private void processSelectQuery() throws StandardException {
 		SelectVisitor selectVisitor = new SelectVisitor();
 		stmt.accept(selectVisitor);
 		tokenizedQuery.addAll(selectVisitor.getTokens());

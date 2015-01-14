@@ -14,7 +14,8 @@ public class SelectListVisitor extends AbstractVisitor {
 			ColumnReference col = (ColumnReference) node;
 			addToken(new ColumnToken(col.getColumnName()));
 		} 
-		// TODO add other types
+		
+		// TODO add other types like Function, CAlculations, ..
 		
 		return node;
 	}

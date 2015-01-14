@@ -16,7 +16,18 @@ public class SelectVisitor extends AbstractVisitor {
 		return node;
 	}
 
+	/**
+	 * Processes the whole node "SELECT .. FROM .. WHERE .." 
+	 */
 	private void processSelectNode(SelectNode select) throws StandardException {
+		processSelectList(select);
+		// TODO process FROM, JOIN, WHERE statements
+	}
+
+	/**
+	 * Processes the SELECT [SelectList] Node.
+	 */
+	private void processSelectList(SelectNode select) throws StandardException {
 		SelectListVisitor selectListVisitor = new SelectListVisitor();
 		select.accept(selectListVisitor);
 		SelectListToken selectToken = new SelectListToken(selectListVisitor.getTokens());
