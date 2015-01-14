@@ -1,4 +1,6 @@
-package de.alksa.log;
+package de.alksa.log.impl;
+
+import de.alksa.log.LogEntry;
 
 public class AttackLogEntry implements LogEntry {
 

@@ -2,12 +2,12 @@ package de.alksa.log;
 
 public interface LogEntry {
 
-	public abstract String getQuery();
+	String getQuery();
 
-	public abstract String getDatabase();
+	String getDatabase();
 
-	public abstract String getDatabaseUser();
+	String getDatabaseUser();
 
-	public abstract String getViolation();
+	String getViolation();
 
 }

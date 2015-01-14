@@ -1,8 +1,10 @@
-package de.alksa.log;
+package de.alksa.log.impl;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import de.alksa.log.impl.AttackLogEntry;
 
 public class AttackLogEntryTest {
 
