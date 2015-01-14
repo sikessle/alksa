@@ -3,27 +3,50 @@ package de.alksa.parser.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.parser.SQLParser;
+import com.foundationdb.sql.parser.StatementNode;
+
 import de.alksa.parser.Parser;
 import de.alksa.token.Token;
 
 public class FoundationParser implements Parser {
-	
+
 	private String sql;
 	private List<Token> tokenizedQuery;
+	private SQLParser sqlParser;
+	private StatementNode stmt;
+
+	public FoundationParser() {
+		tokenizedQuery = new ArrayList<>();
+		sqlParser = new SQLParser();
+	}
 
 	@Override
 	public List<Token> parse(String sql) {
 		this.sql = sql;
-		tokenizedQuery = new ArrayList<>();
-		process();
-		
+		tokenizedQuery.clear();
+
+		try {
+			process();
+		} catch (StandardException e) {
+			System.err.println("Failed parsing");
+			e.printStackTrace();
+		}
+
 		return tokenizedQuery;
 	}
 
-	private void process() {
-		// TODO handle sql and fill tokenizedQuery
-		// TODO if tokens remain, throw error (not yet supported exception, etc.)
-		
+	private void process() throws StandardException {
+		// TODO if tokens remain, throw error (not yet supported exception,
+		// etc.)
+
+		stmt = sqlParser.parseStatement(sql);
+		processSelectList();
+	}
+
+	private void processSelectList() throws StandardException {
+		stmt.accept(new SelectListVisitor());
 	}
 
 }

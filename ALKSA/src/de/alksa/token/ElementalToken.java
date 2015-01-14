@@ -2,10 +2,14 @@ package de.alksa.token;
 
 public abstract class ElementalToken<T> extends Token {
 
-	protected T value;
+	private T value;
 
 	public T getValue() {
 		return value;
+	}
+	
+	protected void setValue(T value) {
+		this.value = value;
 	}
 
 	@Override
@@ -26,9 +30,9 @@ public abstract class ElementalToken<T> extends Token {
 			return false;
 		ColumnToken other = (ColumnToken) obj;
 		if (value == null) {
-			if (other.value != null)
+			if (other.getValue() != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!value.equals(other.getValue()))
 			return false;
 		return true;
 	}
