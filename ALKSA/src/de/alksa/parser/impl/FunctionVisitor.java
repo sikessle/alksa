@@ -14,7 +14,7 @@ import com.foundationdb.sql.parser.Visitable;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.Token;
 
-public class FunctionFirstLevelVisitor extends AbstractVisitor {
+public class FunctionVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
@@ -25,9 +25,9 @@ public class FunctionFirstLevelVisitor extends AbstractVisitor {
 			
 			UnaryOperatorNode op = (UnaryOperatorNode) node;
 			ValueNode operand = op.getOperand();
-			RootFirstLevelVisitor columnListVisitor = new RootFirstLevelVisitor();
-			operand.accept(columnListVisitor);
-			parameters.addAll(columnListVisitor.getTokens());
+			RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
+			operand.accept(recursiveVisitor);
+			parameters.addAll(recursiveVisitor.getTokens());
 			functionToken = new FunctionToken(op.getOperator(), parameters);
 			
 		} else if (node instanceof BinaryOperatorNode) {
@@ -36,9 +36,9 @@ public class FunctionFirstLevelVisitor extends AbstractVisitor {
 			ValueNode operandLeft = op.getLeftOperand();
 			ValueNode operandRight = op.getRightOperand();
 			
-			RootFirstLevelVisitor leftColumnListVisitor = new RootFirstLevelVisitor();
+			RecursiveVisitor leftColumnListVisitor = new RecursiveVisitor();
 			operandLeft.accept(leftColumnListVisitor );
-			RootFirstLevelVisitor rightColumnListVisitor = new RootFirstLevelVisitor();
+			RecursiveVisitor rightColumnListVisitor = new RecursiveVisitor();
 			operandRight.accept(rightColumnListVisitor );
 			
 			parameters.addAll(leftColumnListVisitor.getTokens());

@@ -40,5 +40,20 @@ public abstract class HierarchyToken extends Token {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(super.toString());
+		sb.append(": (");
+		for (Token t : tokens) {
+			sb.append(t.toString());
+			sb.append(", ");
+		}
+		sb.append(")");
+		
+		return sb.toString();
+	}
+	
 	
 }

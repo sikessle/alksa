@@ -2,12 +2,12 @@ package de.alksa.parser.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.alksa.token.ColumnToken;
@@ -30,37 +30,41 @@ public class VisitorBasedParserTest {
 	}
 
 	@Test
-	public void testSelectColumnListWithAlias() {
-		// hiddenCol should not come up in the select column list
-		String sql = "SELECT users.col1 AS c1, col2 FROM users WHERE hiddenCol = 'a'";
-		List<ColumnToken> expectedColumnTokens = new ArrayList<>();
-		expectedColumnTokens.add(new ColumnToken("users.col1"));
-		expectedColumnTokens.add(new ColumnToken("col2"));
+	public void testSelectColumnNameWithAlias() {
+		// hiddenCol and col3 should not come up in the select column list
+		String sql = "SELECT users.col1 AS c1, col2, ABS(col3) FROM users WHERE hiddenCol = 'a'";
+		List<ColumnToken> expected = new ArrayList<>();
+		List<? extends Token> actual;
+		boolean columnListTokenExists = false;
+
+		expected.add(new ColumnToken("users.col1"));
+		expected.add(new ColumnToken("col2"));
+
 		List<Token> tokens = parser.parse(sql);
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
-		for (Token t : tokens) {
-			if (t instanceof SelectColumnListToken) {
-				checkColumnList((SelectColumnListToken) t, expectedColumnTokens);
+		for (Token token : tokens) {
+			if (token instanceof SelectColumnListToken) {
+				actual = ((SelectColumnListToken) token).getChildren();
+
+				// minus 1 because of the ABS(col3) column
+				assertEquals(expected.size(), actual.size() - 1);
+				assertTrue(actual.containsAll(expected));
+
+				columnListTokenExists = true;
 			}
+		}
+
+		if (!columnListTokenExists) {
+			fail("No SelectColumnListToken found");
 		}
 	}
 
-	private void checkColumnList(SelectColumnListToken list,
-			List<ColumnToken> expected) {
-		List<? extends Token> children = list.getChildren();
-		assertEquals(expected.size(), children.size());
-
-		assertTrue(children.containsAll(expected));
-		assertTrue(expected.containsAll(children));
-	}
-
-	// TODO REMOVE !!!!!!!!!!!!!!!!
-	@Ignore
+	@Test
 	public void testSelectColumnListWithFunctions() {
-		String sql = "SELECT ABS(col1), CONCAT(col3, col4) FROM users";
+		String sql = "SELECT ABS(col1), CONCAT(col3, col4)  FROM users";
 		List<Token> functionParametersABS = new ArrayList<>();
 		List<Token> functionParametersCONCAT = new ArrayList<>();
 		List<Token> expected = new ArrayList<>();
@@ -87,17 +91,15 @@ public class VisitorBasedParserTest {
 
 	}
 
-	private void checkForFunctions(SelectColumnListToken columnList,
-			List<Token> expected) {
-		List<? extends Token> columns = columnList.getChildren();
-		assertEquals(expected.size(), columns.size());
+	private void checkForFunctions(SelectColumnListToken selectColumnList,
+			List<Token> expectedColumns) {
+		List<? extends Token> actualColumns = selectColumnList.getChildren();
+		assertEquals(expectedColumns.size(), actualColumns.size());
 
-		for (Token column : columns) {
-			assertTrue(column instanceof FunctionToken);
-
-			FunctionToken actual = (FunctionToken) column;
-
-			assertEquals(expected, actual);
+		for (Token actualColumn : actualColumns) {
+			assertTrue(actualColumn instanceof FunctionToken);
+			FunctionToken actual = (FunctionToken) actualColumn;
+			assertTrue(expectedColumns.contains(actual));
 		}
 
 	}

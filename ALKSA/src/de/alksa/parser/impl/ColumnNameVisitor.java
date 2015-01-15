@@ -13,11 +13,10 @@ import de.alksa.token.ColumnToken;
  * not nested columns (like in ABS(col))
  *
  */
-public class ColumnNameFirstLevelVisitor extends AbstractVisitor {
+public class ColumnNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
-		// FIXME also add ability to visit column names in WHERE / ORDER BY Statement
 		if (node instanceof ColumnReference) {
 			ColumnReference ref = (ColumnReference) node;
 			addToken(new ColumnToken(ref.getSQLColumnName()));
@@ -27,6 +26,8 @@ public class ColumnNameFirstLevelVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean skipChildren(Visitable node) throws StandardException {
+		// FIXME also add ability to visit column names in WHERE / ORDER BY
+		// Statement
 		if (node instanceof ResultColumn) {
 			return false;
 		}

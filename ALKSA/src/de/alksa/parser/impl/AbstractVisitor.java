@@ -13,17 +13,23 @@ public abstract class AbstractVisitor implements Visitor {
 	
 	private List<Token> tokens = new ArrayList<>();
 	
-	public List<? extends Token> getTokens() {
+	public List<Token> getTokens() {
 		return tokens;
 	}
 	
 	protected void addToken(Token token) {
-		tokens.add(token);
+		this.tokens.add(token);
+	}
+	
+	protected void addAllTokens(List<Token> tokenList) {
+		for (Token t : tokenList) {
+			this.tokens.add(t);
+		}
 	}
 	
 	@Override
 	public boolean skipChildren(Visitable node) throws StandardException {
-		return false;
+		return true;
 	}
 	
 	@Override
