@@ -33,10 +33,13 @@ public class RecursiveVisitor extends AbstractVisitor {
 
 		columnTokens.addAll(visitColumnNames(node));
 		columnTokens.addAll(visitFunctions(node));
+		columnTokens.addAll(visitCalculations(node));
 		// TODO add other types like calculations, nested expression, ..
 
 		addAllTokens(columnTokens);
 	}
+
+	
 
 	private List<? extends Token> visitColumnNames(Visitable node)
 			throws StandardException {
@@ -53,6 +56,13 @@ public class RecursiveVisitor extends AbstractVisitor {
 		node.accept(functionColumnVisitor);
 
 		return functionColumnVisitor.getTokens();
+	}
+	
+	private List<? extends Token> visitCalculations(Visitable node) throws StandardException {
+		AbstractVisitor calculationVisitor = new CalculationVisitor();
+		node.accept(calculationVisitor);
+
+		return calculationVisitor.getTokens();
 	}
 
 }

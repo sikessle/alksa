@@ -12,6 +12,7 @@ public abstract class ElementalToken<T> extends Token {
 		this.value = value;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -28,15 +29,15 @@ public abstract class ElementalToken<T> extends Token {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ColumnToken other = (ColumnToken) obj;
+		ElementalToken<?> other = (ElementalToken<?>) obj;
 		if (value == null) {
-			if (other.getValue() != null)
+			if (other.value != null)
 				return false;
-		} else if (!value.equals(other.getValue()))
+		} else if (!value.equals(other.value))
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + ": " + value.toString();

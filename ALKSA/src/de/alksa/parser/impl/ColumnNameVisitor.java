@@ -6,7 +6,7 @@ import com.foundationdb.sql.parser.ColumnReference;
 import com.foundationdb.sql.parser.ResultColumn;
 import com.foundationdb.sql.parser.Visitable;
 
-import de.alksa.token.ColumnToken;
+import de.alksa.token.ColumnNameToken;
 
 /**
  * Extracts only plain column names: SELECT col1, col2 as c2 FROM .. WHERE col4
@@ -20,9 +20,9 @@ public class ColumnNameVisitor extends AbstractVisitor {
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof ColumnReference) {
 			ColumnReference ref = (ColumnReference) node;
-			addToken(new ColumnToken(ref.getSQLColumnName()));
+			addToken(new ColumnNameToken(ref.getSQLColumnName()));
 		} else if (node instanceof AllResultColumn) {
-			addToken(new ColumnToken("*"));
+			addToken(new ColumnNameToken("*"));
 		}
 		return node;
 	}
