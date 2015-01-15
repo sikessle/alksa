@@ -17,7 +17,7 @@ public class FoundationParserAPITest {
 
 	@Test
 	public void parseExample() {
-		String query = "SELECT name, password FROM users u, emails LEFT OUTER JOIN plz p ON u.plz = p.plz WHERE u.name = 'Simon' AND u.password = 'bar' AND emails.name = 'foo@me.com' OR u.age > 20";
+		String query = "SELECT SUBSTR(name, 1, 5) AS berechnung, password FROM users u, emails LEFT OUTER JOIN plz p ON u.plz = p.plz WHERE u.name = 'Simon' AND u.password = 'bar' AND emails.name = 'foo@me.com' OR u.age > 20";
 
 		SQLParser sqlParser = new SQLParser();
 		try {
@@ -34,7 +34,7 @@ public class FoundationParserAPITest {
 		StatementNode statement = sqlParser.parseStatement(query);
 		System.out.println(query);
 		System.out.println();
-		// statement.treePrint();
+		statement.treePrint();
 		statement.accept(new FromStatementVisitor());
 		System.out.println("Where Conditions:");
 		System.out.println("+++");

@@ -17,6 +17,7 @@ public class ColumnNameFirstLevelVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
+		// FIXME also add ability to visit column names in WHERE / ORDER BY Statement
 		if (node instanceof ColumnReference) {
 			ColumnReference ref = (ColumnReference) node;
 			addToken(new ColumnToken(ref.getSQLColumnName()));

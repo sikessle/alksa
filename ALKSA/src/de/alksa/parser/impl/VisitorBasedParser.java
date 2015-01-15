@@ -30,8 +30,7 @@ public class VisitorBasedParser implements Parser {
 		try {
 			process();
 		} catch (StandardException e) {
-			System.err.println("Failed parsing");
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 
 		return tokenizedQuery;
@@ -44,6 +43,7 @@ public class VisitorBasedParser implements Parser {
 		stmt = sqlParser.parseStatement(sql);
 		
 		processSelectQuery();
+		// TODO process UNION, etc.
 	}
 
 	private void processSelectQuery() throws StandardException {

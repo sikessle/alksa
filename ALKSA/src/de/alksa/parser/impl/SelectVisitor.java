@@ -11,7 +11,7 @@ public class SelectVisitor extends AbstractVisitor {
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof SelectNode) {
-			processSelectNode((SelectNode) node);
+			visitSelectNode((SelectNode) node);
 		}
 		return node;
 	}
@@ -19,18 +19,10 @@ public class SelectVisitor extends AbstractVisitor {
 	/**
 	 * Processes the whole node "SELECT .. FROM .. WHERE .." 
 	 */
-	private void processSelectNode(SelectNode select) throws StandardException {
-		processSelectList(select);
-		// TODO process FROM, JOIN, WHERE statements
-	}
-
-	/**
-	 * Processes the SELECT [SelectList] Node.
-	 */
-	private void processSelectList(SelectNode select) throws StandardException {
-		SelectColumnListVisitor selectListVisitor = new SelectColumnListVisitor();
-		select.accept(selectListVisitor);
-		SelectColumnListToken selectToken = new SelectColumnListToken(selectListVisitor.getTokens());
+	private void visitSelectNode(SelectNode select) throws StandardException {
+		RootFirstLevelVisitor rootVisitor = new RootFirstLevelVisitor();
+		select.accept(rootVisitor);
+		SelectColumnListToken selectToken = new SelectColumnListToken(rootVisitor.getTokens());
 		addToken(selectToken);
 	}
 

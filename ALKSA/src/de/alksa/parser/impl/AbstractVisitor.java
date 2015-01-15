@@ -13,7 +13,7 @@ public abstract class AbstractVisitor implements Visitor {
 	
 	private List<Token> tokens = new ArrayList<>();
 	
-	public List<Token> getTokens() {
+	public List<? extends Token> getTokens() {
 		return tokens;
 	}
 	
