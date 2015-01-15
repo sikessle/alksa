@@ -1,11 +1,14 @@
 package de.alksa.parser.impl;
 
 import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.parser.FromList;
+import com.foundationdb.sql.parser.FromTable;
 import com.foundationdb.sql.parser.ResultColumn;
 import com.foundationdb.sql.parser.ResultColumnList;
 import com.foundationdb.sql.parser.SelectNode;
 import com.foundationdb.sql.parser.Visitable;
 
+import de.alksa.token.FromListToken;
 import de.alksa.token.SelectColumnListToken;
 
 public class SelectVisitor extends AbstractVisitor {
@@ -24,9 +27,14 @@ public class SelectVisitor extends AbstractVisitor {
 	private void visitSelectNode(SelectNode select) throws StandardException {
 		ResultColumnList resultColumnList = select.getResultColumns();
 		addToken(visitSelectColumnList(resultColumnList));
+		
+		FromList fromList = select.getFromList();
+		addToken(visitSelectFromList(fromList));
 
-		// add select.getFromList, select.getWhereClause ..
+		// TODO add select.getWhereClause ..
 	}
+
+	
 
 	private SelectColumnListToken visitSelectColumnList(
 			ResultColumnList columnList) throws StandardException {
@@ -38,6 +46,16 @@ public class SelectVisitor extends AbstractVisitor {
 		}
 
 		return new SelectColumnListToken(recursiveVisitor.getTokens());
+	}
+	
+	private FromListToken visitSelectFromList(FromList fromList) throws StandardException {
+		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
+
+		for (FromTable fromTable : fromList) {
+			fromTable.accept(recursiveVisitor);
+		}
+
+		return new FromListToken(recursiveVisitor.getTokens());
 	}
 
 	@Override

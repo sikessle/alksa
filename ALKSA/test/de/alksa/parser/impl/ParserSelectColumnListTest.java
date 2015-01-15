@@ -16,7 +16,7 @@ import de.alksa.token.FunctionToken;
 import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.Token;
 
-public class VisitorBasedParserTest {
+public class ParserSelectColumnListTest {
 
 	private VisitorBasedParser parser;
 
@@ -31,7 +31,7 @@ public class VisitorBasedParserTest {
 	}
 
 	@Test
-	public void testSelectColumnNameWithAlias() {
+	public void testColumnNameWithAlias() {
 		// hiddenCol and col3 should not come up in the select column list
 		String sql = "SELECT users.col1 AS c1, col2, ABS(col3) FROM users WHERE hiddenCol = 'a'";
 		List<ColumnNameToken> expected = new ArrayList<>();
@@ -64,7 +64,7 @@ public class VisitorBasedParserTest {
 	}
 
 	@Test
-	public void testSelectColumnNameWithAsterisk() {
+	public void testColumnNameWithAsterisk() {
 		String sql = "SELECT * FROM users";
 		List<ColumnNameToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
@@ -94,7 +94,7 @@ public class VisitorBasedParserTest {
 	}
 
 	@Test
-	public void testSelectColumnListWithFunctions() {
+	public void testColumnListWithFunctions() {
 		String sql = "SELECT ABS(col1), AVG(col2) FROM users";
 		List<Token> functionParametersABS = new ArrayList<>();
 		List<Token> functionParametersAVG = new ArrayList<>();
@@ -136,7 +136,7 @@ public class VisitorBasedParserTest {
 	}
 
 	@Test
-	public void testSelectColumnCalculations() {
+	public void testColumnCalculations() {
 		String sql = "SELECT col1 * 12 AS calc, 25+3 FROM users";
 		List<CalculationToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
@@ -153,10 +153,6 @@ public class VisitorBasedParserTest {
 			if (token instanceof SelectColumnListToken) {
 				actual = ((SelectColumnListToken) token).getChildren();
 				
-				for (Token a : actual) {
-					System.out.println(a);
-				}
-
 				assertEquals(expected.size(), actual.size());
 				assertTrue(actual.containsAll(expected));
 			}

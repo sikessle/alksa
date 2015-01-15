@@ -40,7 +40,7 @@ public abstract class ElementalToken<T> extends Token {
 
 	@Override
 	public String toString() {
-		return super.toString() + ": " + value.toString();
+		return super.toString() + ": " + value;
 	}
 
 }

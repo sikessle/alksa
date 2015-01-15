@@ -28,7 +28,7 @@ public class VisitorBasedParser implements Parser {
 		tokenizedQuery.clear();
 
 		try {
-			process();
+			startParsing();
 		} catch (StandardException e) {
 			throw new RuntimeException(e);
 		}
@@ -36,12 +36,9 @@ public class VisitorBasedParser implements Parser {
 		return tokenizedQuery;
 	}
 
-	private void process() throws StandardException {
-		// TODO if tokens remain, throw error (not yet supported exception,
-		// etc.)
-		
+	private void startParsing() throws StandardException {
 		stmt = sqlParser.parseStatement(sql);
-		
+
 		processSelectQuery();
 		// TODO process UNION, etc.
 	}

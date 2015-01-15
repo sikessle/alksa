@@ -1,6 +1,7 @@
 package de.alksa.parser.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.foundationdb.sql.StandardException;
@@ -19,10 +20,13 @@ public class RecursiveVisitor extends AbstractVisitor {
 	public Visitable visit(Visitable node) throws StandardException {
 
 		collectColumnList(node);
-		// TODO collect FROM, JOIN, WHERE fragments (clauses)
+		collectFromList(node);
+		// TODO collect JOIN, WHERE fragments (clauses)
 
 		return node;
 	}
+
+	
 
 	/**
 	 * Collects the column lists, i.e. SELECT col1, col2, ABS(col3) FROM .. WHERE
@@ -34,7 +38,7 @@ public class RecursiveVisitor extends AbstractVisitor {
 		columnTokens.addAll(visitColumnNames(node));
 		columnTokens.addAll(visitFunctions(node));
 		columnTokens.addAll(visitCalculations(node));
-		// TODO add other types like calculations, nested expression, ..
+		// TODO add other types like nested expression, ..
 
 		addAllTokens(columnTokens);
 	}
@@ -63,6 +67,26 @@ public class RecursiveVisitor extends AbstractVisitor {
 		node.accept(calculationVisitor);
 
 		return calculationVisitor.getTokens();
+	}
+	
+	/**
+	 * Collects the FROM list: FROM table1, table2, etc. 
+	 */
+	private void collectFromList(Visitable node) throws StandardException {
+		List<Token> fromTableTokens = new ArrayList<>();
+		
+		fromTableTokens.addAll(visitFromBaseTables(node));
+		
+		addAllTokens(fromTableTokens);
+	}
+
+
+
+	private Collection<? extends Token> visitFromBaseTables(Visitable node) throws StandardException {
+		AbstractVisitor fromTableVisitor = new FromTableVisitor();
+		node.accept(fromTableVisitor);
+
+		return fromTableVisitor.getTokens();
 	}
 
 }
