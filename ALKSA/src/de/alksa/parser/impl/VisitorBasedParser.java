@@ -48,6 +48,7 @@ public class VisitorBasedParser implements Parser {
 
 	private void processSelectQuery() throws StandardException {
 		SelectVisitor selectVisitor = new SelectVisitor();
+//		stmt.treePrint();
 		stmt.accept(selectVisitor);
 		tokenizedQuery.addAll(selectVisitor.getTokens());
 	}

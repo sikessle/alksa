@@ -33,7 +33,7 @@ public class RecursiveVisitor extends AbstractVisitor {
 
 		columnTokens.addAll(visitColumnNames(node));
 		columnTokens.addAll(visitFunctions(node));
-		// TODO add other types like CAlculations, Mixed (nested), ..
+		// TODO add other types like calculations, nested expression, ..
 
 		addAllTokens(columnTokens);
 	}

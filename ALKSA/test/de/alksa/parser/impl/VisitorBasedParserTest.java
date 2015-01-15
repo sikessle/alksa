@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.alksa.token.ColumnToken;
@@ -61,22 +62,51 @@ public class VisitorBasedParserTest {
 			fail("No SelectColumnListToken found");
 		}
 	}
+	
+	@Test
+	public void testSelectColumnNameWithAsterisk() {
+		String sql = "SELECT * FROM users";
+		List<ColumnToken> expected = new ArrayList<>();
+		List<? extends Token> actual;
+		boolean columnListTokenExists = false;
+
+		expected.add(new ColumnToken("*"));
+
+		List<Token> tokens = parser.parse(sql);
+
+		// otherwise loop could be skipped
+		assertTrue(tokens.size() > 0);
+
+		for (Token token : tokens) {
+			if (token instanceof SelectColumnListToken) {
+				actual = ((SelectColumnListToken) token).getChildren();
+
+				assertEquals(expected.size(), actual.size());
+				assertTrue(actual.containsAll(expected));
+
+				columnListTokenExists = true;
+			}
+		}
+
+		if (!columnListTokenExists) {
+			fail("No SelectColumnListToken found");
+		}
+	}
 
 	@Test
 	public void testSelectColumnListWithFunctions() {
-		String sql = "SELECT ABS(col1), CONCAT(col3, col4)  FROM users";
+		String sql = "SELECT ABS(col1), AVG(col2) FROM users";
 		List<Token> functionParametersABS = new ArrayList<>();
-		List<Token> functionParametersCONCAT = new ArrayList<>();
+		List<Token> functionParametersAVG = new ArrayList<>();
 		List<Token> expected = new ArrayList<>();
 
 		// ABS(col1)
 		functionParametersABS.add(new ColumnToken("col1"));
-		// CONCAT(col3, col3)
-		functionParametersCONCAT.add(new ColumnToken("col3"));
-		functionParametersCONCAT.add(new ColumnToken("col4"));
+		// AVG(col2)
+		functionParametersAVG.add(new ColumnToken("col2"));
 
 		expected.add(new FunctionToken("ABS", functionParametersABS));
-		expected.add(new FunctionToken("CONCAT", functionParametersCONCAT));
+		expected.add(new FunctionToken("AVG", functionParametersAVG));
 
 		List<Token> tokens = parser.parse(sql);
 
@@ -94,6 +124,7 @@ public class VisitorBasedParserTest {
 	private void checkForFunctions(SelectColumnListToken selectColumnList,
 			List<Token> expectedColumns) {
 		List<? extends Token> actualColumns = selectColumnList.getChildren();
+		
 		assertEquals(expectedColumns.size(), actualColumns.size());
 
 		for (Token actualColumn : actualColumns) {
@@ -102,6 +133,39 @@ public class VisitorBasedParserTest {
 			assertTrue(expectedColumns.contains(actual));
 		}
 
+	}
+	
+	// TODO  !!!!!!!!!!
+	@Ignore
+	public void testSelectColumnCalculations() {
+		// hiddenCol and col3 should not come up in the select column list
+		String sql = "SELECT col1 * 12 AS calc FROM users";
+		List<ColumnToken> expected = new ArrayList<>();
+		List<? extends Token> actual;
+		boolean columnListTokenExists = false;
+
+		expected.add(new ColumnToken("calc"));
+
+		List<Token> tokens = parser.parse(sql);
+
+		// otherwise loop could be skipped
+		assertTrue(tokens.size() > 0);
+
+		for (Token token : tokens) {
+			if (token instanceof SelectColumnListToken) {
+				actual = ((SelectColumnListToken) token).getChildren();
+
+				// minus 1 because of the ABS(col3) column
+				assertEquals(expected.size(), actual.size() - 1);
+				assertTrue(actual.containsAll(expected));
+
+				columnListTokenExists = true;
+			}
+		}
+
+		if (!columnListTokenExists) {
+			fail("No SelectColumnListToken found");
+		}
 	}
 
 }

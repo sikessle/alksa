@@ -1,6 +1,7 @@
 package de.alksa.parser.impl;
 
 import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.parser.AllResultColumn;
 import com.foundationdb.sql.parser.ColumnReference;
 import com.foundationdb.sql.parser.ResultColumn;
 import com.foundationdb.sql.parser.Visitable;
@@ -20,6 +21,8 @@ public class ColumnNameVisitor extends AbstractVisitor {
 		if (node instanceof ColumnReference) {
 			ColumnReference ref = (ColumnReference) node;
 			addToken(new ColumnToken(ref.getSQLColumnName()));
+		} else if (node instanceof AllResultColumn) {
+			addToken(new ColumnToken("*"));
 		}
 		return node;
 	}
