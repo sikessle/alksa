@@ -4,7 +4,7 @@ import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.SelectNode;
 import com.foundationdb.sql.parser.Visitable;
 
-import de.alksa.token.SelectListToken;
+import de.alksa.token.SelectColumnListToken;
 
 public class SelectVisitor extends AbstractVisitor {
 	
@@ -30,7 +30,7 @@ public class SelectVisitor extends AbstractVisitor {
 	private void processSelectList(SelectNode select) throws StandardException {
 		SelectColumnListVisitor selectListVisitor = new SelectColumnListVisitor();
 		select.accept(selectListVisitor);
-		SelectListToken selectToken = new SelectListToken(selectListVisitor.getTokens());
+		SelectColumnListToken selectToken = new SelectColumnListToken(selectListVisitor.getTokens());
 		addToken(selectToken);
 	}
 

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import de.alksa.token.ColumnToken;
 import de.alksa.token.FunctionToken;
-import de.alksa.token.SelectListToken;
+import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.Token;
 
 public class VisitorBasedParserTest {
@@ -37,15 +37,15 @@ public class VisitorBasedParserTest {
 		assertTrue(tokens.size() > 0);
 
 		for (Token t : tokens) {
-			if (t instanceof SelectListToken) {
-				checkColumnList((SelectListToken) t, expectedColumnTokens);
+			if (t instanceof SelectColumnListToken) {
+				checkColumnList((SelectColumnListToken) t, expectedColumnTokens);
 			}
 		}
 	}
 
-	private void checkColumnList(SelectListToken list,
+	private void checkColumnList(SelectColumnListToken list,
 			List<ColumnToken> expected) {
-		List<Token> children = list.getChildren();
+		List<? extends Token> children = list.getChildren();
 		assertEquals(expected.size(), children.size());
 
 		for (Token expectedToken : expected) {
@@ -58,8 +58,10 @@ public class VisitorBasedParserTest {
 	@Test
 	public void testSelectColumnListWithFunctions() {
 		String sql = "SELECT ABS(col1) FROM users";
-		List<FunctionToken> expectedColumnTokens = new ArrayList<>();
-		expectedColumnTokens.add(new FunctionToken());
+		List<FunctionToken> expectedTokens = new ArrayList<>();
+		List<FunctionToken> functionParameters = new ArrayList<>();
+		new FunctionToken(functionParameters);
+		expectedTokens.add(new FunctionToken(functionParameters));
 		List<Token> tokens = parser.parse(sql);
 
 		// otherwise loop could be skipped

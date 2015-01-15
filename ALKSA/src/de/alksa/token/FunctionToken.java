@@ -4,8 +4,8 @@ import java.util.List;
 
 public class FunctionToken extends HierarchyToken {
 
-	public FunctionToken(List<Token> tokens) {
-		setTokens(tokens);
+	public FunctionToken(List<? extends Token> parameters) {
+		setTokens(parameters);
 	}
 
 }
