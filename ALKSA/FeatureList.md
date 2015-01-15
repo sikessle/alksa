@@ -10,4 +10,4 @@
 ## FROM_LIST
 
 * Table names
-* 
+* Joins: Inner, Full Outer, Left Outer, Right Outer, Natural

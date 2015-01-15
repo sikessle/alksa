@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.alksa.token.FromListToken;
+import de.alksa.token.JoinToken;
 import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
 
@@ -41,7 +42,7 @@ public class ParserFromListTest {
 		for (Token token : tokens) {
 			if (token instanceof FromListToken) {
 				actual = ((FromListToken) token).getChildren();
-				
+
 				assertEquals(expected.size(), actual.size());
 				assertTrue(actual.containsAll(expected));
 
@@ -53,28 +54,62 @@ public class ParserFromListTest {
 			fail("No FromListToken found");
 		}
 	}
-	
+
 	@Test
 	public void testTableNameAlias() {
-		String sql = "SELECT c1 FROM users u";
+		String sql = "SELECT c1 FROM users u, ignore1 CROSS JOIN ignore2";
 		List<TableNameToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
 
 		expected.add(new TableNameToken("users"));
 
 		List<Token> tokens = parser.parse(sql);
-		
+
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
 		for (Token token : tokens) {
 			if (token instanceof FromListToken) {
 				actual = ((FromListToken) token).getChildren();
-				
+
+				// minus 1 because of the ignored join
+				assertEquals(expected.size(), actual.size() - 1);
+				assertTrue(actual.containsAll(expected));
+			}
+		}
+	}
+
+	@Test
+	public void testJoin() {
+		testJoinType("INNER", "on c1 = c2");
+		testJoinType("NATURAL", "");
+		testJoinType("LEFT OUTER", "on c1 = c2");
+		testJoinType("RIGHT OUTER", "on c1 = c2");
+		testJoinType("FULL OUTER", "on c1 = c2");
+	}
+
+	private void testJoinType(String joinType, String onClause) {
+		String sql = "SELECT c1 FROM users " + joinType + " JOIN departments "
+				+ onClause;
+		List<JoinToken> expected = new ArrayList<>();
+		List<? extends Token> actual;
+
+		expected.add(new JoinToken(joinType, new TableNameToken("users"),
+				new TableNameToken("departments")));
+
+		List<Token> tokens = parser.parse(sql);
+
+		// otherwise loop could be skipped
+		assertTrue(tokens.size() > 0);
+
+		for (Token token : tokens) {
+			if (token instanceof FromListToken) {
+				actual = ((FromListToken) token).getChildren();
+
 				for (Token t : actual) {
 					System.out.println(t);
 				}
-				
+
 				assertEquals(expected.size(), actual.size());
 				assertTrue(actual.containsAll(expected));
 			}
