@@ -141,5 +141,34 @@ public class ParserFromListTest {
 			}
 		}
 	}
+	
+	@Test
+	public void testJoinWithOnClause() {
+		String sql = "SELECT c1 FROM left LEFT OUTER JOIN right ON left.columnLeft = right.columnRight";
+		List<JoinToken> expected = new ArrayList<>();
+		List<? extends Token> actual;
+
+		JoinToken leftJoin = new JoinToken("LEFT OUTER",
+				new TableNameToken("ll"), new TableNameToken("lr"));
+
+		// top level join
+		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin, new TableNameToken("rr"));
+
+		expected.add(rightJoin);
+
+		List<Token> tokens = parser.parse(sql);
+
+		// otherwise loop could be skipped
+		assertTrue(tokens.size() > 0);
+
+		for (Token token : tokens) {
+			if (token instanceof FromListToken) {
+				actual = ((FromListToken) token).getChildren();
+
+				assertEquals(expected.size(), actual.size());
+				assertTrue(actual.containsAll(expected));
+			}
+		}
+	}
 
 }

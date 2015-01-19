@@ -17,7 +17,7 @@ public class FoundationParserAPITest {
 
 	@Test
 	public void parseExample() {
-		String query = "SELECT SUBSTR(name, 1, 5) AS berechnung, password FROM users u, emails LEFT OUTER JOIN plz p ON u.plz = p.plz RIGHT OUTER JOIN abt ON c1 = c2 WHERE u.name = 'Simon' AND u.password = 'bar' AND emails.name = 'foo@me.com' OR u.age > 20";
+		String query = "SELECT SUBSTR(name, 1, 5) AS BERECHNUNG, password FROM users u, emails LEFT OUTER JOIN plz p ON u.plz = p.plz RIGHT OUTER JOIN abt ON c1 = c2 WHERE u.name = 'Simon' AND u.password = 'bar' AND emails.name = 'foo@me.com' OR u.age > 20";
 
 		SQLParser sqlParser = new SQLParser();
 		try {

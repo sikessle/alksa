@@ -10,7 +10,7 @@ public class JoinToken extends HierarchyToken {
 	private FilterToken onClause;
 
 	public JoinToken(String joinType, Token leftPart, Token rightPart) {
-		this.joinType = joinType;
+		this.joinType = joinType.toLowerCase();
 		this.leftPart = leftPart;
 		this.rightPart = rightPart;
 	}
