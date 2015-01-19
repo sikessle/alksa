@@ -21,7 +21,7 @@ public class FromJoinVisitor extends AbstractVisitor {
 			Token left = getTokenFromJoinPart(join.getLeftResultSet());
 			Token right = getTokenFromJoinPart(join.getRightResultSet());
 
-			addToken(new JoinToken(type, left, right));
+			addToken(new JoinToken(left, type, right));
 		}
 		return node;
 	}

@@ -18,7 +18,7 @@ public class JoinToken extends Token {
 	private Token rightPart;
 	private FilterToken onClause;
 
-	public JoinToken(Type joinType, Token leftPart, Token rightPart) {
+	public JoinToken(Token leftPart, Type joinType, Token rightPart) {
 		this.joinType = joinType;
 		this.leftPart = leftPart;
 		this.rightPart = rightPart;

@@ -94,7 +94,7 @@ public class ParserFromListTest {
 		List<JoinToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
 
-		expected.add(new JoinToken(joinType, new TableNameToken("users"),
+		expected.add(new JoinToken(new TableNameToken("users"), joinType,
 				new TableNameToken("departments")));
 
 		List<Token> tokens = parser.parse(sql);
@@ -119,12 +119,12 @@ public class ParserFromListTest {
 		List<JoinToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
 
-		JoinToken leftJoin = new JoinToken(JoinToken.Type.LEFT_OUTER,
-				new TableNameToken("ll"), new TableNameToken("lr"));
+		JoinToken leftJoin = new JoinToken(new TableNameToken("ll"),
+				JoinToken.Type.LEFT_OUTER, new TableNameToken("lr"));
 
 		// top level join
-		JoinToken rightJoin = new JoinToken(JoinToken.Type.RIGHT_OUTER,
-				leftJoin, new TableNameToken("rr"));
+		JoinToken rightJoin = new JoinToken(leftJoin,
+				JoinToken.Type.RIGHT_OUTER, new TableNameToken("rr"));
 
 		expected.add(rightJoin);
 
@@ -149,10 +149,10 @@ public class ParserFromListTest {
 		List<? extends Token> children;
 		Token actual = null;
 
-		JoinToken expected = new JoinToken(JoinToken.Type.LEFT_OUTER,
-				new TableNameToken("leftTable"), new TableNameToken(
+		JoinToken expected = new JoinToken(new TableNameToken("leftTable"),
+				JoinToken.Type.LEFT_OUTER, new TableNameToken(
 						"rightTable"));
-		// expected.setOnClause(new ComparisonFilterToken("="));
+//		 expected.setOnClause(new ComparisonFilterToken("="));
 
 		List<Token> tokens = parser.parse(sql);
 
