@@ -7,11 +7,24 @@ public class JoinToken extends HierarchyToken {
 	private String joinType;
 	private Token leftPart;
 	private Token rightPart;
+	private FilterToken onClause;
 
 	public JoinToken(String joinType, Token leftPart, Token rightPart) {
 		this.joinType = joinType;
 		this.leftPart = leftPart;
 		this.rightPart = rightPart;
+	}
+
+	public FilterToken getOnClause() {
+		return onClause;
+	}
+
+	public void setOnClause(FilterToken onClause) {
+		this.onClause = onClause;
+	}
+	
+	public boolean hasOnClause() {
+		return onClause != null;
 	}
 
 	public String getJoinType() {
@@ -25,7 +38,7 @@ public class JoinToken extends HierarchyToken {
 	public Token getRightPart() {
 		return rightPart;
 	}
-	
+
 	@Override
 	/**
 	 * Returns an empty list.

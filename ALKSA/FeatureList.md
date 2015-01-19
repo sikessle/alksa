@@ -10,11 +10,11 @@
 ## FROM TABLE_LIST
 
 * Table names
-* Joins: Inner, Full Outer, Left Outer, Right Outer, Natural
+* Multiple Joins: Inner, Full Outer, Left Outer, Right Outer, Natural
 
 ## WHERE CONDITIONS
 
-* On clause ?
+* ON clause from Join-Statement 
 * Logic AND/OR/NOT ?
 * Comparison < > = ?
 
