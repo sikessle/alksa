@@ -119,11 +119,12 @@ public class ParserFromListTest {
 		List<JoinToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
 
-		JoinToken leftJoin = new JoinToken("LEFT OUTER",
-				new TableNameToken("ll"), new TableNameToken("lr"));
+		JoinToken leftJoin = new JoinToken("LEFT OUTER", new TableNameToken(
+				"ll"), new TableNameToken("lr"));
 
 		// top level join
-		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin, new TableNameToken("rr"));
+		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin,
+				new TableNameToken("rr"));
 
 		expected.add(rightJoin);
 
@@ -141,18 +142,19 @@ public class ParserFromListTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void testJoinWithOnClause() {
 		String sql = "SELECT c1 FROM left LEFT OUTER JOIN right ON left.columnLeft = right.columnRight";
 		List<JoinToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
 
-		JoinToken leftJoin = new JoinToken("LEFT OUTER",
-				new TableNameToken("ll"), new TableNameToken("lr"));
+		JoinToken leftJoin = new JoinToken("LEFT OUTER", new TableNameToken(
+				"ll"), new TableNameToken("lr"));
 
 		// top level join
-		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin, new TableNameToken("rr"));
+		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin,
+				new TableNameToken("rr"));
 
 		expected.add(rightJoin);
 

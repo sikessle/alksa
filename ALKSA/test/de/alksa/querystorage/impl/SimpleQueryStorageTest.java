@@ -2,8 +2,7 @@ package de.alksa.querystorage.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +17,14 @@ public class SimpleQueryStorageTest {
 
 	private SimpleQueryStorage queryStorage;
 	private List<Query> expectedQueries;
+	private StorageDao storageMock;
 
 	@Before
 	public void setUp() throws Exception {
 		expectedQueries = new ArrayList<>();
 		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", ""));
 
-		StorageDao storageMock = mock(StorageDao.class);
+		storageMock = mock(StorageDao.class);
 		when(storageMock.getQueries()).thenReturn(expectedQueries);
 
 		queryStorage = new SimpleQueryStorage(storageMock);
@@ -49,10 +49,15 @@ public class SimpleQueryStorageTest {
 
 		for (Query query : queriesToAdd) {
 			queryStorage.write(query);
+			verify(storageMock, atLeastOnce()).saveQueries(any());
 		}
+		
+		assert(queryStorage.read().containsAll(expectedQueries));
 
 		// should not be added
 		queryStorage.write(null);
+		
+		assertEquals(expectedQueries.size(), queryStorage.read().size());
 	}
 
 }

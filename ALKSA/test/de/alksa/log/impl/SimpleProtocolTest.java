@@ -2,7 +2,10 @@ package de.alksa.log.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -18,13 +21,14 @@ public class SimpleProtocolTest {
 
 	private SimpleProtocol protocol;
 	private List<LogEntry> expectedEntries;
+	private StorageDao storageMock;
 
 	@Before
 	public void setUp() throws Exception {
 		expectedEntries = new ArrayList<>();
 		expectedEntries.add(new AttackLogEntry("", "", "", ""));
 
-		StorageDao storageMock = mock(StorageDao.class);
+		storageMock = mock(StorageDao.class);
 		when(storageMock.getProtocolEntries()).thenReturn(expectedEntries);
 
 		protocol = new SimpleProtocol(storageMock);
@@ -49,10 +53,13 @@ public class SimpleProtocolTest {
 
 		for (LogEntry entry : entriesToAdd) {
 			protocol.write(entry);
+			verify(storageMock, atLeastOnce()).saveProtocolEntries(any());
 		}
 
 		// should not be added
 		protocol.write(null);
+		
+		assertEquals(expectedEntries.size(), protocol.read().size());
 	}
 
 }
