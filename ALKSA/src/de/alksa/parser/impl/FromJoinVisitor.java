@@ -6,8 +6,10 @@ import com.foundationdb.sql.parser.FullOuterJoinNode;
 import com.foundationdb.sql.parser.HalfOuterJoinNode;
 import com.foundationdb.sql.parser.JoinNode;
 import com.foundationdb.sql.parser.ResultSetNode;
+import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
 
+import de.alksa.token.FilterToken;
 import de.alksa.token.JoinToken;
 import de.alksa.token.Token;
 
@@ -20,8 +22,11 @@ public class FromJoinVisitor extends AbstractVisitor {
 			JoinToken.Type type = getJoinType(join);
 			Token left = getTokenFromJoinPart(join.getLeftResultSet());
 			Token right = getTokenFromJoinPart(join.getRightResultSet());
+			FilterToken onClause = getOnClause(join);
 
-			addToken(new JoinToken(left, type, right));
+			JoinToken joinToken = new JoinToken(left, type, right);
+			joinToken.setOnClause(onClause);
+			addToken(joinToken);
 		}
 		return node;
 	}
@@ -67,6 +72,26 @@ public class FromJoinVisitor extends AbstractVisitor {
 		node.accept(visitor);
 
 		return visitor.getTokens().get(0);
+	}
+
+	private FilterToken getOnClause(JoinNode join) throws StandardException {
+		ValueNode joinClause = join.getJoinClause();
+		
+		if (joinClause == null) {
+			return null;
+		}
+
+		AbstractVisitor visitor = new FilterVisitor();
+
+		joinClause.accept(visitor);
+
+		for (Token token : visitor.getTokens()) {
+			if (token instanceof FilterToken) {
+				return (FilterToken) token;
+			}
+		}
+
+		return null;
 	}
 
 }

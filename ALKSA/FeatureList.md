@@ -16,7 +16,7 @@
 
 * ON clause from Join-Statement 
 * Logic AND/OR/NOT ?
-* Comparison < > = ?
+* Comparison < > =, <=, >=
 
 ## ORDER BY
 

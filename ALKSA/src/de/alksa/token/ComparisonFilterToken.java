@@ -1,7 +1,4 @@
-package de.alksa.parser.impl;
-
-import de.alksa.token.FilterToken;
-import de.alksa.token.Token;
+package de.alksa.token;
 
 public class ComparisonFilterToken extends FilterToken {
 
@@ -68,6 +65,11 @@ public class ComparisonFilterToken extends FilterToken {
 		} else if (!rightPart.equals(other.rightPart))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "(" + leftPart + " " + comparisonType + " " + rightPart + ")";
 	}
 
 }
