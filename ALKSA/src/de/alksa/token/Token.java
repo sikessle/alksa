@@ -7,4 +7,10 @@ public abstract class Token {
 		return this.getClass().getSimpleName();
 	}
 	
+	@Override
+	public abstract int hashCode();
+	
+	@Override
+	public abstract boolean equals(Object other);
+	
 }
