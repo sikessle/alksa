@@ -80,7 +80,7 @@ public class ParserFromListTest {
 	}
 
 	@Test
-	public void testJoin() {
+	public void testSimpleJoinWithoutOnClause() {
 		testJoinType("INNER", "on c1 = c2");
 		testJoinType("NATURAL", "");
 		testJoinType("LEFT OUTER", "on c1 = c2");
@@ -106,9 +106,35 @@ public class ParserFromListTest {
 			if (token instanceof FromListToken) {
 				actual = ((FromListToken) token).getChildren();
 
-				for (Token t : actual) {
-					System.out.println(t);
-				}
+				assertEquals(expected.size(), actual.size());
+				assertTrue(actual.containsAll(expected));
+			}
+		}
+	}
+
+	@Test
+	public void testMultiJoinWithoutOnClause() {
+		// (ll LEFT lr) RIGHT rr
+		String sql = "SELECT c1 FROM ll LEFT OUTER JOIN lr on c1 = c2 RIGHT OUTER JOIN rr on c3 = c4";
+		List<JoinToken> expected = new ArrayList<>();
+		List<? extends Token> actual;
+
+		JoinToken leftJoin = new JoinToken("LEFT OUTER",
+				new TableNameToken("ll"), new TableNameToken("lr"));
+
+		// top level join
+		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin, new TableNameToken("rr"));
+
+		expected.add(rightJoin);
+
+		List<Token> tokens = parser.parse(sql);
+
+		// otherwise loop could be skipped
+		assertTrue(tokens.size() > 0);
+
+		for (Token token : tokens) {
+			if (token instanceof FromListToken) {
+				actual = ((FromListToken) token).getChildren();
 
 				assertEquals(expected.size(), actual.size());
 				assertTrue(actual.containsAll(expected));

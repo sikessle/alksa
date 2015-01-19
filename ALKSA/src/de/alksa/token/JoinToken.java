@@ -8,7 +8,7 @@ public class JoinToken extends HierarchyToken {
 	private Token leftPart;
 	private Token rightPart;
 
-	public JoinToken(String joinType, TableNameToken leftPart, TableNameToken rightPart) {
+	public JoinToken(String joinType, Token leftPart, Token rightPart) {
 		this.joinType = joinType;
 		this.leftPart = leftPart;
 		this.rightPart = rightPart;

@@ -14,10 +14,14 @@
 
 ## WHERE CONDITIONS
 
-* On clause?
-* Logic AND/OR/NOT?
+* On clause ?
+* Logic AND/OR/NOT ?
 * Comparison < > = ?
 
 ## ORDER BY
 
 * Column names ? (direction not required)
+
+## Set Operations
+
+* UNION, MINUS, INTERSECT ?
