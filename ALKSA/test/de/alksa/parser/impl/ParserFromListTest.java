@@ -7,9 +7,12 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.RowFilter.ComparisonType;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import de.alksa.token.ColumnNameToken;
 import de.alksa.token.FromListToken;
 import de.alksa.token.JoinToken;
 import de.alksa.token.TableNameToken;
@@ -150,9 +153,11 @@ public class ParserFromListTest {
 		Token actual = null;
 
 		JoinToken expected = new JoinToken(new TableNameToken("leftTable"),
-				JoinToken.Type.LEFT_OUTER, new TableNameToken(
-						"rightTable"));
-//		 expected.setOnClause(new ComparisonFilterToken("="));
+				JoinToken.Type.LEFT_OUTER, new TableNameToken("rightTable"));
+		
+		expected.setOnClause(new ComparisonFilterToken(new ColumnNameToken(
+				"leftTable.columnLeft"), ComparisonFilterToken.Type.EQUAL,
+				new ColumnNameToken("rightTable.columnRight")));
 
 		List<Token> tokens = parser.parse(sql);
 
@@ -174,7 +179,7 @@ public class ParserFromListTest {
 
 		JoinToken actualJoinToken = (JoinToken) actual;
 
-		// assertTrue(actualJoinToken.hasOnClause());
+		assertTrue(actualJoinToken.hasOnClause());
 
 		assertEquals(expected, actualJoinToken);
 
