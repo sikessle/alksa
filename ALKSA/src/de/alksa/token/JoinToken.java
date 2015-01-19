@@ -1,16 +1,25 @@
 package de.alksa.token;
 
-import java.util.List;
+public class JoinToken extends Token {
 
-public class JoinToken extends HierarchyToken {
+	public enum Type {
+		NATURAL, FULL_OUTER, LEFT_OUTER, RIGHT_OUTER, INNER;
 
-	private String joinType;
+		@Override
+		public String toString() {
+			// "FULL_OUTER" should be output as "FULL OUTER", to allow easy
+			// usage in query strings.
+			return name().replace('_', ' ');
+		}
+	}
+
+	private Type joinType;
 	private Token leftPart;
 	private Token rightPart;
 	private FilterToken onClause;
 
-	public JoinToken(String joinType, Token leftPart, Token rightPart) {
-		this.joinType = joinType.toLowerCase();
+	public JoinToken(Type joinType, Token leftPart, Token rightPart) {
+		this.joinType = joinType;
 		this.leftPart = leftPart;
 		this.rightPart = rightPart;
 	}
@@ -22,12 +31,12 @@ public class JoinToken extends HierarchyToken {
 	public void setOnClause(FilterToken onClause) {
 		this.onClause = onClause;
 	}
-	
+
 	public boolean hasOnClause() {
 		return onClause != null;
 	}
 
-	public String getJoinType() {
+	public Type getJoinType() {
 		return joinType;
 	}
 
@@ -40,21 +49,15 @@ public class JoinToken extends HierarchyToken {
 	}
 
 	@Override
-	/**
-	 * Returns an empty list.
-	 */
-	public List<? extends Token> getChildren() {
-		return super.getChildren();
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result
 				+ ((joinType == null) ? 0 : joinType.hashCode());
 		result = prime * result
 				+ ((leftPart == null) ? 0 : leftPart.hashCode());
+		result = prime * result
+				+ ((onClause == null) ? 0 : onClause.hashCode());
 		result = prime * result
 				+ ((rightPart == null) ? 0 : rightPart.hashCode());
 		return result;
@@ -64,20 +67,22 @@ public class JoinToken extends HierarchyToken {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		JoinToken other = (JoinToken) obj;
-		if (joinType == null) {
-			if (other.joinType != null)
-				return false;
-		} else if (!joinType.equals(other.joinType))
+		if (joinType != other.joinType)
 			return false;
 		if (leftPart == null) {
 			if (other.leftPart != null)
 				return false;
 		} else if (!leftPart.equals(other.leftPart))
+			return false;
+		if (onClause == null) {
+			if (other.onClause != null)
+				return false;
+		} else if (!onClause.equals(other.onClause))
 			return false;
 		if (rightPart == null) {
 			if (other.rightPart != null)

@@ -81,14 +81,14 @@ public class ParserFromListTest {
 
 	@Test
 	public void testSimpleJoinWithoutOnClause() {
-		testJoinType("INNER", "on c1 = c2");
-		testJoinType("NATURAL", "");
-		testJoinType("LEFT OUTER", "on c1 = c2");
-		testJoinType("RIGHT OUTER", "on c1 = c2");
-		testJoinType("FULL OUTER", "on c1 = c2");
+		testJoinType(JoinToken.Type.INNER, "on c1 = c2");
+		testJoinType(JoinToken.Type.NATURAL, "");
+		testJoinType(JoinToken.Type.LEFT_OUTER, "on c1 = c2");
+		testJoinType(JoinToken.Type.RIGHT_OUTER, "on c1 = c2");
+		testJoinType(JoinToken.Type.FULL_OUTER, "on c1 = c2");
 	}
 
-	private void testJoinType(String joinType, String onClause) {
+	private void testJoinType(JoinToken.Type joinType, String onClause) {
 		String sql = "SELECT c1 FROM users " + joinType + " JOIN departments "
 				+ onClause;
 		List<JoinToken> expected = new ArrayList<>();
@@ -119,12 +119,12 @@ public class ParserFromListTest {
 		List<JoinToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
 
-		JoinToken leftJoin = new JoinToken("LEFT OUTER", new TableNameToken(
-				"ll"), new TableNameToken("lr"));
+		JoinToken leftJoin = new JoinToken(JoinToken.Type.LEFT_OUTER,
+				new TableNameToken("ll"), new TableNameToken("lr"));
 
 		// top level join
-		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin,
-				new TableNameToken("rr"));
+		JoinToken rightJoin = new JoinToken(JoinToken.Type.RIGHT_OUTER,
+				leftJoin, new TableNameToken("rr"));
 
 		expected.add(rightJoin);
 
@@ -145,18 +145,14 @@ public class ParserFromListTest {
 
 	@Test
 	public void testJoinWithOnClause() {
-		String sql = "SELECT c1 FROM left LEFT OUTER JOIN right ON left.columnLeft = right.columnRight";
-		List<JoinToken> expected = new ArrayList<>();
-		List<? extends Token> actual;
+		String sql = "SELECT c1 FROM leftTable LEFT OUTER JOIN rightTable ON leftTable.columnLeft = rightTable.columnRight";
+		List<? extends Token> children;
+		Token actual = null;
 
-		JoinToken leftJoin = new JoinToken("LEFT OUTER", new TableNameToken(
-				"ll"), new TableNameToken("lr"));
-
-		// top level join
-		JoinToken rightJoin = new JoinToken("RIGHT OUTER", leftJoin,
-				new TableNameToken("rr"));
-
-		expected.add(rightJoin);
+		JoinToken expected = new JoinToken(JoinToken.Type.LEFT_OUTER,
+				new TableNameToken("leftTable"), new TableNameToken(
+						"rightTable"));
+		// expected.setOnClause(new ComparisonFilterToken("="));
 
 		List<Token> tokens = parser.parse(sql);
 
@@ -165,12 +161,22 @@ public class ParserFromListTest {
 
 		for (Token token : tokens) {
 			if (token instanceof FromListToken) {
-				actual = ((FromListToken) token).getChildren();
+				children = ((FromListToken) token).getChildren();
 
-				assertEquals(expected.size(), actual.size());
-				assertTrue(actual.containsAll(expected));
+				assertEquals(1, children.size());
+				actual = children.get(0);
 			}
 		}
-	}
 
+		if (actual == null || !(actual instanceof JoinToken)) {
+			fail("Join Token not found");
+		}
+
+		JoinToken actualJoinToken = (JoinToken) actual;
+
+		// assertTrue(actualJoinToken.hasOnClause());
+
+		assertEquals(expected, actualJoinToken);
+
+	}
 }

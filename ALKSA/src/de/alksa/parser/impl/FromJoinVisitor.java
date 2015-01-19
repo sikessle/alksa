@@ -17,27 +17,27 @@ public class FromJoinVisitor extends AbstractVisitor {
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof JoinNode) {
 			JoinNode join = (JoinNode) node;
-			String type = getJoinType(join);
+			JoinToken.Type type = getJoinType(join);
 			Token left = getTokenFromJoinPart(join.getLeftResultSet());
 			Token right = getTokenFromJoinPart(join.getRightResultSet());
-			
+
 			addToken(new JoinToken(type, left, right));
 		}
 		return node;
 	}
 
-	private String getJoinType(JoinNode join) {
+	private JoinToken.Type getJoinType(JoinNode join) {
 		if (join.isNaturalJoin()) {
-			return "NATURAL";
+			return JoinToken.Type.NATURAL;
 		} else if (join instanceof FullOuterJoinNode) {
-			return "FULL OUTER";
+			return JoinToken.Type.FULL_OUTER;
 		} else if (join instanceof HalfOuterJoinNode) {
 			if (((HalfOuterJoinNode) join).isRightOuterJoin()) {
-				return "RIGHT OUTER";
+				return JoinToken.Type.RIGHT_OUTER;
 			}
-			return "LEFT OUTER";
+			return JoinToken.Type.LEFT_OUTER;
 		}
-		return "INNER";
+		return JoinToken.Type.INNER;
 	}
 
 	private Token getTokenFromJoinPart(ResultSetNode resultSet)
@@ -65,12 +65,6 @@ public class FromJoinVisitor extends AbstractVisitor {
 		AbstractVisitor visitor = new FromJoinVisitor();
 
 		node.accept(visitor);
-
-		System.out.println("-- BEGIN getJoinToken --");
-		for (Token token : visitor.getTokens()) {
-			System.out.println(token);
-		}
-		System.out.println("-- END getJoinToken --");
 
 		return visitor.getTokens().get(0);
 	}
