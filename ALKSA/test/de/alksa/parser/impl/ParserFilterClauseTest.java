@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import de.alksa.token.BinaryLogicalFilterToken;
 import de.alksa.token.ColumnNameToken;
-import de.alksa.token.FromListToken;
 import de.alksa.token.Token;
 import de.alksa.token.UnaryLogicalFilterToken;
 import de.alksa.token.WhereClauseToken;

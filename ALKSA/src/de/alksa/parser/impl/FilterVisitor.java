@@ -1,7 +1,5 @@
 package de.alksa.parser.impl;
 
-import java.util.List;
-
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.AndNode;
 import com.foundationdb.sql.parser.BinaryLogicalOperatorNode;
@@ -11,6 +9,7 @@ import com.foundationdb.sql.parser.OrNode;
 import com.foundationdb.sql.parser.UnaryLogicalOperatorNode;
 import com.foundationdb.sql.parser.Visitable;
 
+import de.alksa.token.BinaryLogicalFilterToken;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.ComparisonFilterToken.Type;
 import de.alksa.token.Token;
@@ -69,18 +68,42 @@ public class FilterVisitor extends AbstractVisitor {
 
 		if (logicalNode instanceof AndNode) {
 
+			BinaryLogicalFilterToken.Type type = BinaryLogicalFilterToken.Type.AND;
+
+			return getBinaryLogicalFilterToken(
+					(BinaryLogicalOperatorNode) logicalNode, type);
+
 		} else if (logicalNode instanceof OrNode) {
 
+			BinaryLogicalFilterToken.Type type = BinaryLogicalFilterToken.Type.OR;
+
+			return getBinaryLogicalFilterToken(
+					(BinaryLogicalOperatorNode) logicalNode, type);
+
 		} else if (logicalNode instanceof NotNode) {
+
 			NotNode not = (NotNode) logicalNode;
 			Visitable operand = not.getOperand();
 			Token operandToken = getRecursiveAllTokensOfNode(operand).get(0);
 
 			return new UnaryLogicalFilterToken(
 					UnaryLogicalFilterToken.Type.NOT, operandToken);
+
 		}
 
 		throw new IllegalStateException("Unknown logical token");
+	}
+
+	private Token getBinaryLogicalFilterToken(
+			BinaryLogicalOperatorNode logicalNode,
+			BinaryLogicalFilterToken.Type type) throws StandardException {
+
+		Visitable leftOperand = logicalNode.getLeftOperand();
+		Visitable rightOperand = logicalNode.getRightOperand();
+		Token leftToken = getRecursiveAllTokensOfNode(leftOperand).get(0);
+		Token rightToken = getRecursiveAllTokensOfNode(rightOperand).get(0);
+
+		return new BinaryLogicalFilterToken(type, leftToken, rightToken);
 	}
 
 }
