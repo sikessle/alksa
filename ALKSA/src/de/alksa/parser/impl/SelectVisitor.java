@@ -6,10 +6,12 @@ import com.foundationdb.sql.parser.FromTable;
 import com.foundationdb.sql.parser.ResultColumn;
 import com.foundationdb.sql.parser.ResultColumnList;
 import com.foundationdb.sql.parser.SelectNode;
+import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.FromListToken;
 import de.alksa.token.SelectColumnListToken;
+import de.alksa.token.WhereClauseToken;
 
 public class SelectVisitor extends AbstractVisitor {
 
@@ -27,14 +29,15 @@ public class SelectVisitor extends AbstractVisitor {
 	private void visitSelectNode(SelectNode select) throws StandardException {
 		ResultColumnList resultColumnList = select.getResultColumns();
 		addToken(visitSelectColumnList(resultColumnList));
-		
+
 		FromList fromList = select.getFromList();
 		addToken(visitSelectFromList(fromList));
 
-		// TODO add select.getWhereClause ..
-	}
+		ValueNode whereClause = select.getWhereClause();
+		addToken(visitWhereClause(whereClause));
 
-	
+		// TODO add ORDER BY / HAVING / GROUP BY etc.
+	}
 
 	private SelectColumnListToken visitSelectColumnList(
 			ResultColumnList columnList) throws StandardException {
@@ -47,8 +50,9 @@ public class SelectVisitor extends AbstractVisitor {
 
 		return new SelectColumnListToken(recursiveVisitor.getTokens());
 	}
-	
-	private FromListToken visitSelectFromList(FromList fromList) throws StandardException {
+
+	private FromListToken visitSelectFromList(FromList fromList)
+			throws StandardException {
 		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
 
 		for (FromTable fromTable : fromList) {
@@ -56,6 +60,13 @@ public class SelectVisitor extends AbstractVisitor {
 		}
 
 		return new FromListToken(recursiveVisitor.getTokens());
+	}
+
+	private WhereClauseToken visitWhereClause(ValueNode whereClause) {
+
+		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
+
+		return new WhereClauseToken(recursiveVisitor.getTokens());
 	}
 
 	@Override
