@@ -10,7 +10,9 @@ import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.FromListToken;
+import de.alksa.token.HavingClauseToken;
 import de.alksa.token.SelectColumnListToken;
+import de.alksa.token.Token;
 import de.alksa.token.WhereClauseToken;
 
 public class SelectVisitor extends AbstractVisitor {
@@ -20,6 +22,9 @@ public class SelectVisitor extends AbstractVisitor {
 		if (node instanceof SelectNode) {
 			visitSelectNode((SelectNode) node);
 		}
+
+		// ((CursorNode) node).getOrderByList();
+
 		return node;
 	}
 
@@ -35,6 +40,9 @@ public class SelectVisitor extends AbstractVisitor {
 
 		ValueNode whereClause = select.getWhereClause();
 		addToken(visitWhereClause(whereClause));
+
+		ValueNode havingClause = select.getHavingClause();
+		addToken(visitHavingClause(havingClause));
 
 		// TODO add ORDER BY / HAVING / GROUP BY etc.
 	}
@@ -62,15 +70,27 @@ public class SelectVisitor extends AbstractVisitor {
 		return new FromListToken(recursiveVisitor.getTokens());
 	}
 
-	private WhereClauseToken visitWhereClause(ValueNode whereClause) throws StandardException {
+	private WhereClauseToken visitWhereClause(ValueNode whereClause)
+			throws StandardException {
 		if (whereClause == null) {
 			return null;
 		}
-		
+
 		AbstractVisitor visitor = new FilterVisitor();
 		whereClause.accept(visitor);
-		
+
 		return new WhereClauseToken(visitor.getTokens());
+	}
+
+	private Token visitHavingClause(ValueNode havingClause) throws StandardException {
+		if (havingClause == null) {
+			return null;
+		}
+
+		AbstractVisitor visitor = new FilterVisitor();
+		havingClause.accept(visitor);
+
+		return new HavingClauseToken(visitor.getTokens());
 	}
 
 	@Override

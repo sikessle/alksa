@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -15,6 +16,7 @@ import de.alksa.token.ColumnNameToken;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.ConstantValueToken;
 import de.alksa.token.FunctionToken;
+import de.alksa.token.HavingClauseToken;
 import de.alksa.token.Token;
 import de.alksa.token.UnaryLogicalFilterToken;
 import de.alksa.token.WhereClauseToken;
@@ -118,7 +120,7 @@ public class ParserFilterClauseTest {
 
 		Token andToken = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.AND, bLess3, cEqualAbs2);
-		
+
 		Token expected = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.OR, aGreaterEqual2, andToken);
 
@@ -136,4 +138,33 @@ public class ParserFilterClauseTest {
 		}
 	}
 
+	@Test
+	public void testHavingClause() {
+		// AVG(col1) > 10
+		String sql = "SELECT AVG(col1) FROM y GROUP BY col1 HAVING AVG(col1) > 10";
+		boolean havingClauseTokenExists = false;
+
+		Token expected = new ComparisonFilterToken(new FunctionToken("AVG",
+				Arrays.asList(new ColumnNameToken("col1"))),
+				ComparisonFilterToken.Type.GREATER, new ConstantValueToken(10));
+
+		List<Token> tokens = parser.parse(sql);
+
+		// otherwise loop could be skipped
+		assertTrue(tokens.size() > 0);
+
+		for (Token token : tokens) {
+			if (token instanceof HavingClauseToken) {
+				Token actual = ((HavingClauseToken) token).getChildren().get(0);
+
+				assertEquals(expected, actual);
+
+				havingClauseTokenExists = true;
+			}
+		}
+
+		if (!havingClauseTokenExists) {
+			fail("No HavingClauseToken found");
+		}
+	}
 }

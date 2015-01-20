@@ -12,11 +12,15 @@
 * Table names
 * Multiple Joins: Inner, Full Outer, Left Outer, Right Outer, Natural
 
-## WHERE CONDITIONS
+## WHERE Clause
 
 * ON clause from Join-Statement 
 * Logic AND/OR/NOT
 * Comparison < > = <= >=
+
+## HAVING Clause
+
+* Same as WHERE Clause
 
 ## ORDER BY
 
