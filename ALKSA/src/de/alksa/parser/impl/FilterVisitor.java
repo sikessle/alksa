@@ -13,6 +13,7 @@ import com.foundationdb.sql.parser.Visitable;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.ComparisonFilterToken.Type;
 import de.alksa.token.Token;
+import de.alksa.token.UnaryLogicalFilterToken;
 
 /**
  * Collects the filters in ON and WHERE Statements.
@@ -24,7 +25,8 @@ public class FilterVisitor extends AbstractVisitor {
 		if (node instanceof BinaryRelationalOperatorNode) {
 			BinaryRelationalOperatorNode relationalNode = (BinaryRelationalOperatorNode) node;
 			addToken(getComparisonToken(relationalNode));
-		} else if (node instanceof BinaryLogicalOperatorNode || node instanceof UnaryLogicalOperatorNode) {
+		} else if (node instanceof BinaryLogicalOperatorNode
+				|| node instanceof UnaryLogicalOperatorNode) {
 			addToken(getLogicalToken(node));
 		}
 		return node;
@@ -69,15 +71,23 @@ public class FilterVisitor extends AbstractVisitor {
 		return visitor.getTokens().get(0);
 	}
 
-	private Token getLogicalToken(Visitable logicalNode) {
+	private Token getLogicalToken(Visitable logicalNode)
+			throws StandardException {
+		AbstractVisitor visitor = new RecursiveVisitor();
+
 		if (logicalNode instanceof AndNode) {
-			
+
 		} else if (logicalNode instanceof OrNode) {
-			
+
 		} else if (logicalNode instanceof NotNode) {
-			
+			NotNode not = (NotNode) logicalNode;
+			not.getOperand().accept(visitor);
+			return new UnaryLogicalFilterToken(
+					UnaryLogicalFilterToken.Type.NOT, visitor.getTokens()
+							.get(0));
 		}
-		return null;
+
+		throw new IllegalStateException("Unknown logical token");
 	}
 
 }

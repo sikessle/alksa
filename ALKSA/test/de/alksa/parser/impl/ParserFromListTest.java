@@ -157,13 +157,6 @@ public class ParserFromListTest {
 			if (token instanceof FromListToken) {
 				actual = ((FromListToken) token).getChildren();
 
-				for (Token t : actual) {
-					System.out.println(t);
-				}
-
-				System.out.println("expected: ");
-				System.out.println(expected);
-
 				assertEquals(1, actual.size());
 				assertTrue(actual.contains(expected));
 			}
