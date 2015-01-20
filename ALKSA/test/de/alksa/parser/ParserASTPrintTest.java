@@ -27,8 +27,7 @@ public class ParserASTPrintTest {
 		return Arrays
 				.asList(new Object[][] {
 						{ "SELECT ABS(x), AVG(y) FROM y WHERE a AND b OR NOT c OR col = 'b'" },
-						{ "SELECT x FROM b ORDER BY x ASC" },
-						{ "SELECT x FROM b GROUP BY x" } });
+						{ "SELECT x FROM b ORDER BY x ASC" } });
 	}
 
 	@Test
