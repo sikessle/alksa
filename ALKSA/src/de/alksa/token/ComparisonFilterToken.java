@@ -3,7 +3,25 @@ package de.alksa.token;
 public class ComparisonFilterToken extends FilterToken {
 
 	public enum Type {
-		EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL
+		EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL;
+		
+		@Override
+		public String toString() {
+			switch (this) {
+			case EQUAL:
+				return "=";
+			case GREATER:
+				return ">";
+			case GREATER_EQUAL:
+				return ">=";
+			case LESS:
+				return "<";
+			case LESS_EQUAL:
+				return "<=";
+			default:
+				return "<to make compiler happy>";
+			}
+		};
 	}
 
 	private Token leftPart;
