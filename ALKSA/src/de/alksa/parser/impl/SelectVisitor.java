@@ -67,12 +67,8 @@ public class SelectVisitor extends AbstractVisitor {
 		if (whereClause == null) {
 			return null;
 		}
-
-		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
-
-		whereClause.accept(recursiveVisitor);
-
-		return new WhereClauseToken(recursiveVisitor.getTokens());
+		
+		return new WhereClauseToken(getRecursiveAllTokensOfNode(whereClause));
 	}
 
 	@Override

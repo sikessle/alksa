@@ -2,6 +2,7 @@ package de.alksa.parser.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.Visitable;
@@ -27,6 +28,17 @@ public abstract class AbstractVisitor implements Visitor {
 		for (Token t : tokenList) {
 			this.tokens.add(t);
 		}
+	}
+
+	protected List<Token> getRecursiveAllTokensOfNode(Visitable node)
+			throws StandardException {
+
+		Objects.requireNonNull(node);
+
+		AbstractVisitor visitor = new RecursiveVisitor();
+		node.accept(visitor);
+
+		return visitor.getTokens();
 	}
 
 	@Override

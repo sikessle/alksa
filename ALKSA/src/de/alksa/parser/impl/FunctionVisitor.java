@@ -24,9 +24,7 @@ public class FunctionVisitor extends AbstractVisitor {
 			String operator = null;
 			UnaryOperatorNode op = (UnaryOperatorNode) node;
 			ValueNode operand = op.getOperand();
-			RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
-			operand.accept(recursiveVisitor);
-			parameters.addAll(recursiveVisitor.getTokens());
+			parameters.addAll(getRecursiveAllTokensOfNode(operand));
 
 			if (op.getOperator() == null && op instanceof AggregateNode) {
 				AggregateNode ag = (AggregateNode) op;

@@ -1,5 +1,7 @@
 package de.alksa.parser.impl;
 
+import java.util.List;
+
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.AndNode;
 import com.foundationdb.sql.parser.BinaryLogicalOperatorNode;
@@ -7,7 +9,6 @@ import com.foundationdb.sql.parser.BinaryRelationalOperatorNode;
 import com.foundationdb.sql.parser.NotNode;
 import com.foundationdb.sql.parser.OrNode;
 import com.foundationdb.sql.parser.UnaryLogicalOperatorNode;
-import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.ComparisonFilterToken;
@@ -37,10 +38,10 @@ public class FilterVisitor extends AbstractVisitor {
 			throws StandardException {
 		ComparisonFilterToken.Type operator = getFilterType(relationalNode);
 
-		Token leftPart = getComparisonOperandToken(relationalNode
-				.getLeftOperand());
-		Token rightPart = getComparisonOperandToken(relationalNode
-				.getRightOperand());
+		Token leftPart = getRecursiveAllTokensOfNode(
+				relationalNode.getLeftOperand()).get(0);
+		Token rightPart = getRecursiveAllTokensOfNode(
+				relationalNode.getRightOperand()).get(0);
 
 		return new ComparisonFilterToken(leftPart, operator, rightPart);
 	}
@@ -63,17 +64,8 @@ public class FilterVisitor extends AbstractVisitor {
 		throw new IllegalStateException("Unknown operator type");
 	}
 
-	private Token getComparisonOperandToken(ValueNode operand)
-			throws StandardException {
-		AbstractVisitor visitor = new RecursiveVisitor();
-		operand.accept(visitor);
-
-		return visitor.getTokens().get(0);
-	}
-
 	private Token getLogicalToken(Visitable logicalNode)
 			throws StandardException {
-		AbstractVisitor visitor = new RecursiveVisitor();
 
 		if (logicalNode instanceof AndNode) {
 
@@ -81,10 +73,11 @@ public class FilterVisitor extends AbstractVisitor {
 
 		} else if (logicalNode instanceof NotNode) {
 			NotNode not = (NotNode) logicalNode;
-			not.getOperand().accept(visitor);
+			Visitable operand = not.getOperand();
+			Token operandToken = getRecursiveAllTokensOfNode(operand).get(0);
+
 			return new UnaryLogicalFilterToken(
-					UnaryLogicalFilterToken.Type.NOT, visitor.getTokens()
-							.get(0));
+					UnaryLogicalFilterToken.Type.NOT, operandToken);
 		}
 
 		throw new IllegalStateException("Unknown logical token");
