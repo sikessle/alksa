@@ -71,7 +71,7 @@ class SelectVisitor extends AbstractVisitor {
 			return null;
 		}
 
-		AbstractVisitor visitor = new FilterVisitor();
+		AbstractVisitor visitor = new MasterVisitor();
 		whereClause.accept(visitor);
 
 		return new WhereClauseToken(visitor.getTokens());
@@ -83,7 +83,7 @@ class SelectVisitor extends AbstractVisitor {
 			return null;
 		}
 
-		AbstractVisitor visitor = new FilterVisitor();
+		AbstractVisitor visitor = new MasterVisitor();
 		havingClause.accept(visitor);
 
 		return new HavingClauseToken(visitor.getTokens());

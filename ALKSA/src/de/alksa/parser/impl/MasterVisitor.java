@@ -23,6 +23,7 @@ class MasterVisitor extends AbstractVisitor {
 		addTokensFromVisitor(node, new FromJoinVisitor());
 		addTokensFromVisitor(node, new FilterVisitor());
 		addTokensFromVisitor(node, new OrderByListVisitor());
+		addTokensFromVisitor(node, new SubqueryVisitor());
 
 		// TODO add other types like nested expression, ..
 

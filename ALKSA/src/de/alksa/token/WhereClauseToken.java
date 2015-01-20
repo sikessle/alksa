@@ -8,4 +8,9 @@ public class WhereClauseToken extends HierarchyToken {
 		setTokens(filterTokens);
 	}
 
+	@Override
+	public String toString() {
+		return " WHERE " + super.toString();
+	}
+
 }

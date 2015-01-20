@@ -8,4 +8,9 @@ public class SelectStatementToken extends HierarchyToken {
 		setTokens(tokens);
 	}
 
+	@Override
+	public String toString() {
+		return "SELECT [" + super.toString() + "]";
+	}
+
 }

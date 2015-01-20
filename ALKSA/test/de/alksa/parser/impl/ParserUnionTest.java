@@ -48,10 +48,6 @@ public class ParserUnionTest {
 
 		List<Token> actual = parser.parse(sql);
 
-		expected.stream().forEach(t -> System.out.println(t));
-		System.out.println();
-		actual.stream().forEach(t -> System.out.println(t));
-
 		assertEquals(2, actual.size());
 		assertTrue(actual.containsAll(expected));
 	}

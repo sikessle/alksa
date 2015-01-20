@@ -8,4 +8,9 @@ public class HavingClauseToken extends HierarchyToken {
 		setTokens(filterTokens);
 	}
 
+	@Override
+	public String toString() {
+		return " HAVING " + super.toString();
+	}
+
 }
