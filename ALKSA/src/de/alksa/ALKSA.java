@@ -1,14 +1,12 @@
 package de.alksa;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 public class ALKSA {
 
-	private boolean learn;
+//	private boolean learn;
 
 	public ALKSA() {
-		Injector injector = Guice.createInjector(new ProductionModule());
+//		Injector injector = Guice.createInjector(new ProductionModule());
 		// TODO build together all ALKSA modules
 	}
 
