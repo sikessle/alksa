@@ -10,7 +10,7 @@ import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.CalculationToken;
 
-public class CalculationVisitor extends AbstractVisitor {
+class CalculationVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
@@ -18,10 +18,10 @@ public class CalculationVisitor extends AbstractVisitor {
 		if (node instanceof BinaryArithmeticOperatorNode) {
 
 			BinaryArithmeticOperatorNode calc = (BinaryArithmeticOperatorNode) node;
-			
+
 			String left = getOperand(calc.getLeftOperand());
 			String right = getOperand(calc.getRightOperand());
-			
+
 			addToken(new CalculationToken(left + calc.getOperator() + right));
 
 		}
@@ -36,11 +36,10 @@ public class CalculationVisitor extends AbstractVisitor {
 		} else if (node instanceof ColumnReference) {
 			ColumnReference ref = (ColumnReference) node;
 			return ref.getSQLColumnName();
-		} 
-		
+		}
+
 		return "<unkown>";
 	}
-
 
 	@Override
 	public boolean skipChildren(Visitable node) throws StandardException {

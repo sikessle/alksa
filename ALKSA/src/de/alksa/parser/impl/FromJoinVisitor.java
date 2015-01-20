@@ -13,7 +13,7 @@ import de.alksa.token.FilterToken;
 import de.alksa.token.JoinToken;
 import de.alksa.token.Token;
 
-public class FromJoinVisitor extends AbstractVisitor {
+class FromJoinVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
@@ -76,7 +76,7 @@ public class FromJoinVisitor extends AbstractVisitor {
 
 	private FilterToken getOnClause(JoinNode join) throws StandardException {
 		ValueNode joinClause = join.getJoinClause();
-		
+
 		if (joinClause == null) {
 			return null;
 		}

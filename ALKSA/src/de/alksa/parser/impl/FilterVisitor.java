@@ -18,7 +18,7 @@ import de.alksa.token.UnaryLogicalFilterToken;
 /**
  * Collects the filters in ON and WHERE Statements.
  */
-public class FilterVisitor extends AbstractVisitor {
+class FilterVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
@@ -34,7 +34,7 @@ public class FilterVisitor extends AbstractVisitor {
 
 	private ComparisonFilterToken getComparisonToken(
 			BinaryRelationalOperatorNode relationalNode)
-			throws StandardException {
+					throws StandardException {
 		ComparisonFilterToken.Type operator = getFilterType(relationalNode);
 
 		Token leftPart = getRecursiveAllTokensOfNode(

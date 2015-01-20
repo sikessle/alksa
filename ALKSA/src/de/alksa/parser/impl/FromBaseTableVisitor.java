@@ -7,7 +7,7 @@ import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.TableNameToken;
 
-public class FromBaseTableVisitor extends AbstractVisitor {
+class FromBaseTableVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {

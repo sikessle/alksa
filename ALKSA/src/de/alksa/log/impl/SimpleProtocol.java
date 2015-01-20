@@ -8,11 +8,11 @@ import de.alksa.log.LogEntry;
 import de.alksa.log.Protocol;
 import de.alksa.persistence.StorageDao;
 
-public class SimpleProtocol implements Protocol {
+class SimpleProtocol implements Protocol {
 
 	private List<LogEntry> entries;
 	private StorageDao storage;
-	
+
 	@Inject
 	public SimpleProtocol(StorageDao storage) {
 		this.storage = storage;
@@ -23,7 +23,7 @@ public class SimpleProtocol implements Protocol {
 	public void write(LogEntry entry) {
 		if (entry == null) {
 			return;
-		}		
+		}
 		entries.add(entry);
 		persist();
 	}

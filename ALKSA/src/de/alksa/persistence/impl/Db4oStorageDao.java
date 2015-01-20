@@ -13,7 +13,7 @@ import de.alksa.log.LogEntry;
 import de.alksa.persistence.StorageDao;
 import de.alksa.querystorage.Query;
 
-public class Db4oStorageDao implements StorageDao {
+class Db4oStorageDao implements StorageDao {
 
 	private EmbeddedObjectContainer db;
 	private final String dbPath;
@@ -40,7 +40,7 @@ public class Db4oStorageDao implements StorageDao {
 			db.store(entry);
 		}
 	}
-	
+
 	@Override
 	public List<Query> getQueries() {
 		List<Query> queries = new ArrayList<>();
@@ -51,7 +51,6 @@ public class Db4oStorageDao implements StorageDao {
 		return queries;
 	}
 
-	
 	@Override
 	public void saveQueries(List<Query> queries) {
 		for (Query query : queries) {
@@ -59,10 +58,11 @@ public class Db4oStorageDao implements StorageDao {
 		}
 	}
 
+	@Override
 	public void close() {
 		db.close();
 	}
-	
+
 	@Override
 	public void open() {
 		db = Db4oEmbedded.openFile(dbPath);

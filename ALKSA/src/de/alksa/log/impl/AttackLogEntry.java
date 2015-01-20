@@ -13,16 +13,16 @@ public class AttackLogEntry implements LogEntry {
 
 	public AttackLogEntry(String query, String database, String databaseUser,
 			String violation) {
-		
+
 		Objects.requireNonNull(query);
 		Objects.requireNonNull(database);
 		Objects.requireNonNull(databaseUser);
 		Objects.requireNonNull(violation);
-		
-		this.query = query ;
+
+		this.query = query;
 		this.database = database;
 		this.databaseUser = databaseUser;
-		this.violation = violation; 
+		this.violation = violation;
 	}
 
 	@Override

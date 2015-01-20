@@ -18,7 +18,7 @@ import de.alksa.token.OrderByListToken;
 import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.WhereClauseToken;
 
-public class SelectVisitor extends AbstractVisitor {
+class SelectVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {

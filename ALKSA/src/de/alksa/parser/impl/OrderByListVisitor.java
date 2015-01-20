@@ -6,7 +6,7 @@ import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.Token;
 
-public class OrderByListVisitor extends AbstractVisitor {
+class OrderByListVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {

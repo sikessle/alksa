@@ -14,7 +14,7 @@ import com.foundationdb.sql.parser.Visitable;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.Token;
 
-public class FunctionVisitor extends AbstractVisitor {
+class FunctionVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {

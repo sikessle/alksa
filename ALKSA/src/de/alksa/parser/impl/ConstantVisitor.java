@@ -6,7 +6,7 @@ import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.ConstantValueToken;
 
-public class ConstantVisitor extends AbstractVisitor {
+class ConstantVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {

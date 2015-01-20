@@ -14,7 +14,7 @@ import de.alksa.token.ColumnNameToken;
  * not nested columns (like in ABS(col))
  *
  */
-public class ColumnNameVisitor extends AbstractVisitor {
+class ColumnNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {

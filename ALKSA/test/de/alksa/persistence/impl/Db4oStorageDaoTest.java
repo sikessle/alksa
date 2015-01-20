@@ -26,7 +26,7 @@ public class Db4oStorageDaoTest {
 		new File(testPath).delete();
 		storage = new Db4oStorageDao(testPath);
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		storage.close();
@@ -37,27 +37,27 @@ public class Db4oStorageDaoTest {
 	public void testProtocolEntries() {
 		List<LogEntry> expectedEntries = new ArrayList<>();
 		expectedEntries.add(new AttackLogEntry("", "", "", ""));
-		
+
 		storage.saveProtocolEntries(expectedEntries);
 		List<LogEntry> actualEntries = storage.getProtocolEntries();
-		
+
 		assertEquals(expectedEntries.size(), actualEntries.size());
-		
+
 		for (LogEntry expectedEntry : expectedEntries) {
 			assertTrue(actualEntries.contains(expectedEntry));
 		}
 	}
-	
+
 	@Test
 	public void testQueries() {
 		List<Query> expectedQueries = new ArrayList<>();
 		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", ""));
-		
-		storage.saveQueries(expectedQueries); 
+
+		storage.saveQueries(expectedQueries);
 		List<Query> actualQueries = storage.getQueries();
-		
+
 		assertEquals(expectedQueries.size(), actualQueries.size());
-		
+
 		for (Query expectedEntry : expectedQueries) {
 			assertTrue(actualQueries.contains(expectedEntry));
 		}

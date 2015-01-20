@@ -10,7 +10,7 @@ import com.foundationdb.sql.parser.StatementNode;
 import de.alksa.parser.Parser;
 import de.alksa.token.Token;
 
-public class VisitorBasedParser implements Parser {
+class VisitorBasedParser implements Parser {
 
 	private String sql;
 	private List<Token> tokenizedQuery;
@@ -45,7 +45,7 @@ public class VisitorBasedParser implements Parser {
 
 	private void processSelectQuery() throws StandardException {
 		SelectVisitor selectVisitor = new SelectVisitor();
-//		stmt.treePrint();
+		// stmt.treePrint();
 		stmt.accept(selectVisitor);
 		tokenizedQuery.addAll(selectVisitor.getTokens());
 	}

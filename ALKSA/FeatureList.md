@@ -28,4 +28,4 @@
 
 ## Set Operations
 
-* UNION, MINUS, INTERSECT ?
+* UNION, MINUS, INTERSECT, each SELECT statement is separately parsed

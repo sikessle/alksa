@@ -10,7 +10,7 @@ import com.foundationdb.sql.parser.Visitable;
  */
 
 // TODO move to Guice via list for OPEN/CLOSED Principle
-public class MasterVisitor extends AbstractVisitor {
+class MasterVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
