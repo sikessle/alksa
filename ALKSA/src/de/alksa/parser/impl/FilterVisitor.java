@@ -86,6 +86,8 @@ public class FilterVisitor extends AbstractVisitor {
 			Visitable operand = not.getOperand();
 			Token operandToken = getRecursiveAllTokensOfNode(operand).get(0);
 
+			System.out.println("NOT processed");
+			
 			return new UnaryLogicalFilterToken(
 					UnaryLogicalFilterToken.Type.NOT, operandToken);
 

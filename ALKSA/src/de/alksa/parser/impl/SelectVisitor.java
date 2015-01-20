@@ -42,7 +42,7 @@ public class SelectVisitor extends AbstractVisitor {
 	private SelectColumnListToken visitSelectColumnList(
 			ResultColumnList columnList) throws StandardException {
 
-		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
+		MasterVisitor recursiveVisitor = new MasterVisitor();
 
 		for (ResultColumn resultColumn : columnList) {
 			resultColumn.accept(recursiveVisitor);
@@ -53,7 +53,7 @@ public class SelectVisitor extends AbstractVisitor {
 
 	private FromListToken visitSelectFromList(FromList fromList)
 			throws StandardException {
-		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
+		MasterVisitor recursiveVisitor = new MasterVisitor();
 
 		for (FromTable fromTable : fromList) {
 			fromTable.accept(recursiveVisitor);

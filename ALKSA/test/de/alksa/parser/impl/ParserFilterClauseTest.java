@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Test;
 
 import de.alksa.token.BinaryLogicalFilterToken;
 import de.alksa.token.ColumnNameToken;
@@ -27,8 +27,7 @@ public class ParserFilterClauseTest {
 		parser = new VisitorBasedParser();
 	}
 
-	// TODO remove
-	@Ignore
+	@Test
 	public void testLogicalOperators() {
 		// (a AND b) OR NOT(c)
 		String sql = "SELECT x FROM y WHERE a AND b OR NOT c";
@@ -54,6 +53,11 @@ public class ParserFilterClauseTest {
 				actual = ((WhereClauseToken) token).getChildren();
 
 				assertEquals(1, actual.size());
+				
+				Token a = actual.get(0);
+				System.out.println("actual: " + a);
+				System.out.println("expected: " + expected);
+				
 				assertTrue(actual.contains(expected));
 
 				whereClauseTokenExists = true;

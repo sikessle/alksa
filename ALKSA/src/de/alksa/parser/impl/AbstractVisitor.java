@@ -35,7 +35,7 @@ public abstract class AbstractVisitor implements Visitor {
 
 		Objects.requireNonNull(node);
 
-		AbstractVisitor visitor = new RecursiveVisitor();
+		AbstractVisitor visitor = new MasterVisitor();
 		node.accept(visitor);
 
 		return visitor.getTokens();
