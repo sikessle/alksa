@@ -4,7 +4,6 @@ import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.AndNode;
 import com.foundationdb.sql.parser.BinaryLogicalOperatorNode;
 import com.foundationdb.sql.parser.BinaryRelationalOperatorNode;
-import com.foundationdb.sql.parser.ConstantNode;
 import com.foundationdb.sql.parser.NotNode;
 import com.foundationdb.sql.parser.OrNode;
 import com.foundationdb.sql.parser.UnaryLogicalOperatorNode;
@@ -12,7 +11,6 @@ import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.BinaryLogicalFilterToken;
 import de.alksa.token.ComparisonFilterToken;
-import de.alksa.token.ConstantValueToken;
 import de.alksa.token.ComparisonFilterToken.Type;
 import de.alksa.token.Token;
 import de.alksa.token.UnaryLogicalFilterToken;
@@ -30,13 +28,9 @@ public class FilterVisitor extends AbstractVisitor {
 		} else if (node instanceof BinaryLogicalOperatorNode
 				|| node instanceof UnaryLogicalOperatorNode) {
 			addToken(getLogicalToken(node));
-		} else if (node instanceof ConstantNode) {
-			addToken(getConstantToken((ConstantNode)node));
 		}
 		return node;
 	}
-
-	
 
 	private ComparisonFilterToken getComparisonToken(
 			BinaryRelationalOperatorNode relationalNode)
@@ -110,10 +104,6 @@ public class FilterVisitor extends AbstractVisitor {
 		Token rightToken = getRecursiveAllTokensOfNode(rightOperand).get(0);
 
 		return new BinaryLogicalFilterToken(type, leftToken, rightToken);
-	}
-	
-	private Token getConstantToken(ConstantNode node) {
-		return new ConstantValueToken(node.getValue());
 	}
 
 }
