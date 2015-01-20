@@ -1,13 +1,18 @@
 package de.alksa.parser.impl;
 
 import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.parser.AndNode;
+import com.foundationdb.sql.parser.BinaryLogicalOperatorNode;
 import com.foundationdb.sql.parser.BinaryRelationalOperatorNode;
+import com.foundationdb.sql.parser.NotNode;
+import com.foundationdb.sql.parser.OrNode;
+import com.foundationdb.sql.parser.UnaryLogicalOperatorNode;
 import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.ComparisonFilterToken;
-import de.alksa.token.Token;
 import de.alksa.token.ComparisonFilterToken.Type;
+import de.alksa.token.Token;
 
 /**
  * Collects the filters in ON and WHERE Statements.
@@ -17,25 +22,29 @@ public class FilterVisitor extends AbstractVisitor {
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof BinaryRelationalOperatorNode) {
-			BinaryRelationalOperatorNode opNode = (BinaryRelationalOperatorNode) node;
-			addToken(getComparisonToken(opNode));
+			BinaryRelationalOperatorNode relationalNode = (BinaryRelationalOperatorNode) node;
+			addToken(getComparisonToken(relationalNode));
+		} else if (node instanceof BinaryLogicalOperatorNode || node instanceof UnaryLogicalOperatorNode) {
+			addToken(getLogicalToken(node));
 		}
-		// TODO add more types like boolean etc.
 		return node;
 	}
 
 	private ComparisonFilterToken getComparisonToken(
-			BinaryRelationalOperatorNode opNode) throws StandardException {
-		ComparisonFilterToken.Type operator = getFilterType(opNode);
+			BinaryRelationalOperatorNode relationalNode)
+			throws StandardException {
+		ComparisonFilterToken.Type operator = getFilterType(relationalNode);
 
-		Token leftPart = getComparisonOperandToken(opNode.getLeftOperand());
-		Token rightPart = getComparisonOperandToken(opNode.getRightOperand());
+		Token leftPart = getComparisonOperandToken(relationalNode
+				.getLeftOperand());
+		Token rightPart = getComparisonOperandToken(relationalNode
+				.getRightOperand());
 
 		return new ComparisonFilterToken(leftPart, operator, rightPart);
 	}
 
-	private Type getFilterType(BinaryRelationalOperatorNode opNode) {
-		String operatorString = opNode.getOperator();
+	private Type getFilterType(BinaryRelationalOperatorNode relationalpNode) {
+		String operatorString = relationalpNode.getOperator();
 
 		if (operatorString.equals("=")) {
 			return ComparisonFilterToken.Type.EQUAL;
@@ -58,6 +67,17 @@ public class FilterVisitor extends AbstractVisitor {
 		operand.accept(visitor);
 
 		return visitor.getTokens().get(0);
+	}
+
+	private Token getLogicalToken(Visitable logicalNode) {
+		if (logicalNode instanceof AndNode) {
+			
+		} else if (logicalNode instanceof OrNode) {
+			
+		} else if (logicalNode instanceof NotNode) {
+			
+		}
+		return null;
 	}
 
 }

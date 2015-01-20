@@ -43,17 +43,7 @@ public class FunctionToken extends HierarchyToken {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(operator);
-		sb.append("(");
-		for (Token t : getChildren()) {
-			sb.append(t);
-			sb.append(", ");
-		}
-		sb.append(")");
-
-		return sb.toString();
+		return operator + super.toString();
 	}
 
 }

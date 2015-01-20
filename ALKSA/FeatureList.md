@@ -15,7 +15,7 @@
 ## WHERE CONDITIONS
 
 * ON clause from Join-Statement 
-* Logic AND/OR/NOT ?
+* Logic AND/OR/NOT
 * Comparison < > =, <=, >=
 
 ## ORDER BY

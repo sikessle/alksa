@@ -94,8 +94,8 @@ public class JoinToken extends Token {
 
 	@Override
 	public String toString() {
-		return "(" + leftPart.toString() + " " + joinType + " "
-				+ rightPart.toString() + " [ON : " + onClause + "])";
+		return "(" + leftPart + " " + joinType + " " + rightPart + " [ON : "
+				+ onClause + "])";
 	}
 
 }
