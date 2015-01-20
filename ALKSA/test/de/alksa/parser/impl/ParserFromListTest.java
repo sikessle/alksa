@@ -103,8 +103,6 @@ public class ParserFromListTest {
 			sql += " " + onClauseString;
 		}
 
-		List<? extends Token> actual;
-
 		JoinToken expected = new JoinToken(new TableNameToken("users"),
 				joinType, new TableNameToken("departments"));
 
@@ -117,10 +115,9 @@ public class ParserFromListTest {
 
 		for (Token token : tokens) {
 			if (token instanceof FromListToken) {
-				actual = ((FromListToken) token).getChildren();
+				Token actual = ((FromListToken) token).getChildren().get(0);
 
-				assertEquals(1, actual.size());
-				assertTrue(actual.contains(expected));
+				assertEquals(expected, actual);
 			}
 		}
 	}
@@ -129,7 +126,6 @@ public class ParserFromListTest {
 	public void testMultiJoin() {
 		// (ll LEFT lr) RIGHT rr
 		String sql = "SELECT c1 FROM ll LEFT OUTER JOIN lr on c1 = c2 RIGHT OUTER JOIN rr on c3 = c4";
-		List<? extends Token> actual;
 
 		JoinToken leftJoin = new JoinToken(new TableNameToken("ll"),
 				JoinToken.Type.LEFT_OUTER, new TableNameToken("lr"));
@@ -155,10 +151,9 @@ public class ParserFromListTest {
 
 		for (Token token : tokens) {
 			if (token instanceof FromListToken) {
-				actual = ((FromListToken) token).getChildren();
+				Token actual = ((FromListToken) token).getChildren().get(0);
 
-				assertEquals(1, actual.size());
-				assertTrue(actual.contains(expected));
+				assertEquals(expected, actual);
 			}
 		}
 	}

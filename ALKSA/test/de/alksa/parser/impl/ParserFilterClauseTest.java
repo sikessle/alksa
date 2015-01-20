@@ -31,7 +31,6 @@ public class ParserFilterClauseTest {
 	public void testLogicalOperators() {
 		// (a AND b) OR NOT(c)
 		String sql = "SELECT x FROM y WHERE a AND b OR NOT c";
-		List<? extends Token> actual;
 		boolean whereClauseTokenExists = false;
 
 		Token andToken = new BinaryLogicalFilterToken(
@@ -50,15 +49,45 @@ public class ParserFilterClauseTest {
 
 		for (Token token : tokens) {
 			if (token instanceof WhereClauseToken) {
-				actual = ((WhereClauseToken) token).getChildren();
+				Token actual = ((WhereClauseToken) token).getChildren().get(0);
 
-				assertEquals(1, actual.size());
-				
-				Token a = actual.get(0);
-				System.out.println("actual: " + a);
-				System.out.println("expected: " + expected);
-				
-				assertTrue(actual.contains(expected));
+				assertEquals(expected, actual);
+
+				whereClauseTokenExists = true;
+			}
+		}
+
+		if (!whereClauseTokenExists) {
+			fail("No WhereClauseToken found");
+		}
+	}
+	
+	@Test
+	public void testComparison() {
+		fail("TODO");
+		// (a AND b) OR NOT(c)
+		String sql = "SELECT x FROM y WHERE a AND b OR NOT c";
+		boolean whereClauseTokenExists = false;
+
+		Token andToken = new BinaryLogicalFilterToken(
+				BinaryLogicalFilterToken.Type.AND, new ColumnNameToken("a"),
+				new ColumnNameToken("b"));
+		Token notToken = new UnaryLogicalFilterToken(
+				UnaryLogicalFilterToken.Type.NOT, new ColumnNameToken("c"));
+
+		Token expected = new BinaryLogicalFilterToken(
+				BinaryLogicalFilterToken.Type.OR, andToken, notToken);
+
+		List<Token> tokens = parser.parse(sql);
+
+		// otherwise loop could be skipped
+		assertTrue(tokens.size() > 0);
+
+		for (Token token : tokens) {
+			if (token instanceof WhereClauseToken) {
+				Token actual = ((WhereClauseToken) token).getChildren().get(0);
+
+				assertEquals(expected, actual);
 
 				whereClauseTokenExists = true;
 			}
