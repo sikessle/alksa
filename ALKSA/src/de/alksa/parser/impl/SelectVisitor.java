@@ -1,11 +1,8 @@
 package de.alksa.parser.impl;
 
 import com.foundationdb.sql.StandardException;
-import com.foundationdb.sql.parser.CursorNode;
 import com.foundationdb.sql.parser.FromList;
 import com.foundationdb.sql.parser.FromTable;
-import com.foundationdb.sql.parser.OrderByColumn;
-import com.foundationdb.sql.parser.OrderByList;
 import com.foundationdb.sql.parser.ResultColumn;
 import com.foundationdb.sql.parser.ResultColumnList;
 import com.foundationdb.sql.parser.SelectNode;
@@ -14,7 +11,6 @@ import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.FromListToken;
 import de.alksa.token.HavingClauseToken;
-import de.alksa.token.OrderByListToken;
 import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.WhereClauseToken;
 
@@ -24,8 +20,6 @@ class SelectVisitor extends AbstractVisitor {
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof SelectNode) {
 			visitSelectNode((SelectNode) node);
-		} else if (node instanceof CursorNode) {
-			visitSelectNode((CursorNode) node);
 		}
 
 		return node;
@@ -46,26 +40,6 @@ class SelectVisitor extends AbstractVisitor {
 
 		ValueNode havingClause = select.getHavingClause();
 		addToken(visitHavingClause(havingClause));
-	}
-
-	/**
-	 * Processes the ORDER BY list
-	 */
-	private void visitSelectNode(CursorNode node) throws StandardException {
-
-		OrderByList orderByList = node.getOrderByList();
-
-		if (orderByList == null) {
-			return;
-		}
-
-		MasterVisitor masterVisitor = new MasterVisitor();
-
-		for (OrderByColumn orderByColumn : orderByList) {
-			orderByColumn.accept(masterVisitor);
-		}
-
-		addToken(new OrderByListToken(masterVisitor.getTokens()));
 	}
 
 	private SelectColumnListToken visitSelectColumnList(

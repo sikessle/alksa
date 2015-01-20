@@ -1,7 +1,6 @@
 package de.alksa.parser.impl;
 
 import com.foundationdb.sql.StandardException;
-import com.foundationdb.sql.parser.CursorNode;
 import com.foundationdb.sql.parser.SelectNode;
 import com.foundationdb.sql.parser.UnionNode;
 import com.foundationdb.sql.parser.Visitable;
@@ -14,7 +13,7 @@ public class RootVisitor extends AbstractVisitor {
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof UnionNode) {
 			visitUnionNode((UnionNode) node);
-		} else if (node instanceof SelectNode || node instanceof CursorNode) {
+		} else if (node instanceof SelectNode) {
 			visitSelectStatement(node);
 		}
 		return node;

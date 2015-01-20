@@ -22,10 +22,6 @@
 
 * Same as WHERE Clause
 
-## ORDER BY
-
-* Column names
-
 ## Set Operations
 
 * UNION: Each SELECT statement is separately parsed
