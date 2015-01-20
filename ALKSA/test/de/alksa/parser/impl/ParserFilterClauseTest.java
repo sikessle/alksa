@@ -132,10 +132,6 @@ public class ParserFilterClauseTest {
 				Token actual = ((WhereClauseToken) token).getChildren().get(0);
 
 				assertEquals(expected, actual);
-				
-				System.out.println("actual: " + actual);
-				System.out.println("expected: " + expected);
-
 			}
 		}
 	}
