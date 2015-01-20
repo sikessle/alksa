@@ -6,6 +6,7 @@ import java.util.List;
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.AggregateNode;
 import com.foundationdb.sql.parser.ResultColumn;
+import com.foundationdb.sql.parser.UnaryArithmeticOperatorNode;
 import com.foundationdb.sql.parser.UnaryOperatorNode;
 import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
@@ -19,7 +20,8 @@ public class FunctionVisitor extends AbstractVisitor {
 	public Visitable visit(Visitable node) throws StandardException {
 		List<Token> parameters = new ArrayList<>();
 
-		if (node instanceof UnaryOperatorNode) {
+		if (node instanceof UnaryArithmeticOperatorNode
+				|| node instanceof AggregateNode) {
 
 			String operator = null;
 			UnaryOperatorNode op = (UnaryOperatorNode) node;
