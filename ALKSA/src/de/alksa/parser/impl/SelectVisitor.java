@@ -63,6 +63,10 @@ public class SelectVisitor extends AbstractVisitor {
 	}
 
 	private WhereClauseToken visitWhereClause(ValueNode whereClause) throws StandardException {
+		
+		if (whereClause == null) {
+			return null;
+		}
 
 		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
 
