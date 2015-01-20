@@ -24,7 +24,7 @@
 
 ## ORDER BY
 
-* Column names ? (direction not required)
+* Column names
 
 ## Set Operations
 

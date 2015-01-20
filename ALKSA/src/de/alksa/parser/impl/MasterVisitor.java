@@ -22,14 +22,15 @@ public class MasterVisitor extends AbstractVisitor {
 		addTokensFromVisitor(node, new FromBaseTableVisitor());
 		addTokensFromVisitor(node, new FromJoinVisitor());
 		addTokensFromVisitor(node, new FilterVisitor());
-		
+		addTokensFromVisitor(node, new OrderByListVisitor());
+
 		// TODO add other types like nested expression, ..
 
 		return node;
 	}
 
-	private void addTokensFromVisitor(Visitable node,
-			AbstractVisitor visitor) throws StandardException {
+	private void addTokensFromVisitor(Visitable node, AbstractVisitor visitor)
+			throws StandardException {
 		node.accept(visitor);
 		addAllTokens(visitor.getTokens());
 	}

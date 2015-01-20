@@ -1,8 +1,11 @@
 package de.alksa.parser.impl;
 
 import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.parser.CursorNode;
 import com.foundationdb.sql.parser.FromList;
 import com.foundationdb.sql.parser.FromTable;
+import com.foundationdb.sql.parser.OrderByColumn;
+import com.foundationdb.sql.parser.OrderByList;
 import com.foundationdb.sql.parser.ResultColumn;
 import com.foundationdb.sql.parser.ResultColumnList;
 import com.foundationdb.sql.parser.SelectNode;
@@ -11,8 +14,8 @@ import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.FromListToken;
 import de.alksa.token.HavingClauseToken;
+import de.alksa.token.OrderByListToken;
 import de.alksa.token.SelectColumnListToken;
-import de.alksa.token.Token;
 import de.alksa.token.WhereClauseToken;
 
 public class SelectVisitor extends AbstractVisitor {
@@ -21,9 +24,9 @@ public class SelectVisitor extends AbstractVisitor {
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof SelectNode) {
 			visitSelectNode((SelectNode) node);
+		} else if (node instanceof CursorNode) {
+			visitSelectNode((CursorNode) node);
 		}
-
-		// ((CursorNode) node).getOrderByList();
 
 		return node;
 	}
@@ -43,31 +46,49 @@ public class SelectVisitor extends AbstractVisitor {
 
 		ValueNode havingClause = select.getHavingClause();
 		addToken(visitHavingClause(havingClause));
+	}
 
-		// TODO add ORDER BY / HAVING / GROUP BY etc.
+	/**
+	 * Processes the ORDER BY list
+	 */
+	private void visitSelectNode(CursorNode node) throws StandardException {
+
+		OrderByList orderByList = node.getOrderByList();
+
+		if (orderByList == null) {
+			return;
+		}
+
+		MasterVisitor masterVisitor = new MasterVisitor();
+
+		for (OrderByColumn orderByColumn : orderByList) {
+			orderByColumn.accept(masterVisitor);
+		}
+
+		addToken(new OrderByListToken(masterVisitor.getTokens()));
 	}
 
 	private SelectColumnListToken visitSelectColumnList(
 			ResultColumnList columnList) throws StandardException {
 
-		MasterVisitor recursiveVisitor = new MasterVisitor();
+		MasterVisitor masterVisitor = new MasterVisitor();
 
 		for (ResultColumn resultColumn : columnList) {
-			resultColumn.accept(recursiveVisitor);
+			resultColumn.accept(masterVisitor);
 		}
 
-		return new SelectColumnListToken(recursiveVisitor.getTokens());
+		return new SelectColumnListToken(masterVisitor.getTokens());
 	}
 
 	private FromListToken visitSelectFromList(FromList fromList)
 			throws StandardException {
-		MasterVisitor recursiveVisitor = new MasterVisitor();
+		MasterVisitor masterVisitor = new MasterVisitor();
 
 		for (FromTable fromTable : fromList) {
-			fromTable.accept(recursiveVisitor);
+			fromTable.accept(masterVisitor);
 		}
 
-		return new FromListToken(recursiveVisitor.getTokens());
+		return new FromListToken(masterVisitor.getTokens());
 	}
 
 	private WhereClauseToken visitWhereClause(ValueNode whereClause)
@@ -82,7 +103,8 @@ public class SelectVisitor extends AbstractVisitor {
 		return new WhereClauseToken(visitor.getTokens());
 	}
 
-	private Token visitHavingClause(ValueNode havingClause) throws StandardException {
+	private HavingClauseToken visitHavingClause(ValueNode havingClause)
+			throws StandardException {
 		if (havingClause == null) {
 			return null;
 		}
@@ -95,9 +117,6 @@ public class SelectVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean skipChildren(Visitable node) throws StandardException {
-		if (node instanceof SelectNode) {
-			return true;
-		}
 		return false;
 	}
 
