@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.OrderByListToken;
+import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 
 /**
@@ -33,7 +34,10 @@ public class OrderByListTest {
 
 		Token expected = new ColumnNameToken("col1");
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);

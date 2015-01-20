@@ -39,15 +39,9 @@ class VisitorBasedParser implements Parser {
 	private void startParsing() throws StandardException {
 		stmt = sqlParser.parseStatement(sql);
 
-		processSelectQuery();
-		// TODO process UNION, etc.
-	}
-
-	private void processSelectQuery() throws StandardException {
-		SelectVisitor selectVisitor = new SelectVisitor();
-		// stmt.treePrint();
-		stmt.accept(selectVisitor);
-		tokenizedQuery.addAll(selectVisitor.getTokens());
+		AbstractVisitor visitor = new RootVisitor();
+		stmt.accept(visitor);
+		tokenizedQuery.addAll(visitor.getTokens());
 	}
 
 }

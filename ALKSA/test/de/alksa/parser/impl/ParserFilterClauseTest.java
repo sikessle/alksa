@@ -17,6 +17,7 @@ import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.ConstantValueToken;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.HavingClauseToken;
+import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 import de.alksa.token.UnaryLogicalFilterToken;
 import de.alksa.token.WhereClauseToken;
@@ -37,7 +38,7 @@ public class ParserFilterClauseTest {
 	public void testLogicalOperators() {
 		// (a AND b) OR NOT(c)
 		String sql = "SELECT x FROM y WHERE a AND b OR NOT c";
-		boolean whereClauseTokenExists = false;
+		boolean tokenExists = false;
 
 		Token andToken = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.AND, new ColumnNameToken("a"),
@@ -48,7 +49,10 @@ public class ParserFilterClauseTest {
 		Token expected = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.OR, andToken, notToken);
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -59,11 +63,11 @@ public class ParserFilterClauseTest {
 
 				assertEquals(expected, actual);
 
-				whereClauseTokenExists = true;
+				tokenExists = true;
 			}
 		}
 
-		if (!whereClauseTokenExists) {
+		if (!tokenExists) {
 			fail("No WhereClauseToken found");
 		}
 	}
@@ -72,6 +76,7 @@ public class ParserFilterClauseTest {
 	public void testSimpleComparison() {
 		// (a=2 AND b) OR NOT(c=a)
 		String sql = "SELECT x FROM y WHERE a = 2 AND b OR NOT c = a";
+		boolean tokenExists = false;
 
 		Token aEquals2 = new ComparisonFilterToken(new ColumnNameToken("a"),
 				ComparisonFilterToken.Type.EQUAL, new ConstantValueToken(2));
@@ -87,7 +92,10 @@ public class ParserFilterClauseTest {
 		Token expected = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.OR, andToken, notToken);
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -98,7 +106,12 @@ public class ParserFilterClauseTest {
 
 				assertEquals(expected, actual);
 
+				tokenExists = true;
 			}
+		}
+
+		if (!tokenExists) {
+			fail("No WhereClauseToken found");
 		}
 	}
 
@@ -106,6 +119,7 @@ public class ParserFilterClauseTest {
 	public void testComplicatedComparison() {
 		// (a >= 2) OR (b < 3 AND c = ABS(2))
 		String sql = "SELECT x FROM y WHERE a >= 2 OR b < 3 AND c = ABS(2)";
+		boolean tokenExists = false;
 
 		Token aGreaterEqual2 = new ComparisonFilterToken(new ColumnNameToken(
 				"a"), ComparisonFilterToken.Type.GREATER_EQUAL,
@@ -124,7 +138,10 @@ public class ParserFilterClauseTest {
 		Token expected = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.OR, aGreaterEqual2, andToken);
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -134,7 +151,12 @@ public class ParserFilterClauseTest {
 				Token actual = ((WhereClauseToken) token).getChildren().get(0);
 
 				assertEquals(expected, actual);
+				tokenExists = true;
 			}
+		}
+
+		if (!tokenExists) {
+			fail("No WhereClauseToken found");
 		}
 	}
 
@@ -142,13 +164,16 @@ public class ParserFilterClauseTest {
 	public void testHavingClause() {
 		// AVG(col1) > 10
 		String sql = "SELECT AVG(col1) FROM y GROUP BY col1 HAVING AVG(col1) > 10";
-		boolean havingClauseTokenExists = false;
+		boolean tokenExists = false;
 
 		Token expected = new ComparisonFilterToken(new FunctionToken("AVG",
 				Arrays.asList(new ColumnNameToken("col1"))),
 				ComparisonFilterToken.Type.GREATER, new ConstantValueToken(10));
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -159,11 +184,11 @@ public class ParserFilterClauseTest {
 
 				assertEquals(expected, actual);
 
-				havingClauseTokenExists = true;
+				tokenExists = true;
 			}
 		}
 
-		if (!havingClauseTokenExists) {
+		if (!tokenExists) {
 			fail("No HavingClauseToken found");
 		}
 	}

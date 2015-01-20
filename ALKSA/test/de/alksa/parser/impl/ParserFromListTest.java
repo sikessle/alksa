@@ -15,6 +15,7 @@ import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.FilterToken;
 import de.alksa.token.FromListToken;
 import de.alksa.token.JoinToken;
+import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
 
@@ -32,12 +33,15 @@ public class ParserFromListTest {
 		String sql = "SELECT c1 FROM users, depart";
 		List<TableNameToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
-		boolean fromListTokenExists = false;
+		boolean tokenExists = false;
 
 		expected.add(new TableNameToken("users"));
 		expected.add(new TableNameToken("depart"));
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -49,11 +53,11 @@ public class ParserFromListTest {
 				assertEquals(expected.size(), actual.size());
 				assertTrue(actual.containsAll(expected));
 
-				fromListTokenExists = true;
+				tokenExists = true;
 			}
 		}
 
-		if (!fromListTokenExists) {
+		if (!tokenExists) {
 			fail("No FromListToken found");
 		}
 	}
@@ -63,10 +67,14 @@ public class ParserFromListTest {
 		String sql = "SELECT c1 FROM users u, ignore1 CROSS JOIN ignore2";
 		List<TableNameToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
+		boolean tokenExists = false;
 
 		expected.add(new TableNameToken("users"));
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -78,7 +86,13 @@ public class ParserFromListTest {
 				// minus 1 because of the ignored join
 				assertEquals(expected.size(), actual.size() - 1);
 				assertTrue(actual.containsAll(expected));
+
+				tokenExists = true;
 			}
+		}
+
+		if (!tokenExists) {
+			fail("No FromListToken found");
 		}
 	}
 
@@ -86,7 +100,7 @@ public class ParserFromListTest {
 	public void testSimpleJoin() {
 		FilterToken onClause = new ComparisonFilterToken(new ColumnNameToken(
 				"col1"), ComparisonFilterToken.Type.EQUAL, new ColumnNameToken(
-				"col2"));
+						"col2"));
 		String onString = "on col1 = col2";
 		testJoinType(JoinToken.Type.INNER, onClause, onString);
 		testJoinType(JoinToken.Type.NATURAL, null, "");
@@ -98,6 +112,7 @@ public class ParserFromListTest {
 	private void testJoinType(JoinToken.Type joinType, FilterToken onClause,
 			String onClauseString) {
 		String sql = "SELECT c1 FROM users " + joinType + " JOIN departments";
+		boolean tokenExists = false;
 
 		if (onClause != null) {
 			sql += " " + onClauseString;
@@ -108,7 +123,10 @@ public class ParserFromListTest {
 
 		expected.setOnClause(onClause);
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -118,7 +136,13 @@ public class ParserFromListTest {
 				Token actual = ((FromListToken) token).getChildren().get(0);
 
 				assertEquals(expected, actual);
+
+				tokenExists = true;
 			}
+		}
+
+		if (!tokenExists) {
+			fail("No FromListToken found");
 		}
 	}
 
@@ -126,6 +150,7 @@ public class ParserFromListTest {
 	public void testMultiJoin() {
 		// (ll LEFT lr) RIGHT rr
 		String sql = "SELECT c1 FROM ll LEFT OUTER JOIN lr on c1 = c2 RIGHT OUTER JOIN rr on c3 = c4";
+		boolean tokenExists = false;
 
 		JoinToken leftJoin = new JoinToken(new TableNameToken("ll"),
 				JoinToken.Type.LEFT_OUTER, new TableNameToken("lr"));
@@ -144,7 +169,10 @@ public class ParserFromListTest {
 
 		JoinToken expected = rightJoin;
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -154,7 +182,13 @@ public class ParserFromListTest {
 				Token actual = ((FromListToken) token).getChildren().get(0);
 
 				assertEquals(expected, actual);
+
+				tokenExists = true;
 			}
+		}
+
+		if (!tokenExists) {
+			fail("No FromListToken found");
 		}
 	}
 }

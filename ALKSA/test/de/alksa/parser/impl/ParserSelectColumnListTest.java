@@ -14,6 +14,7 @@ import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.SelectColumnListToken;
+import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 
 public class ParserSelectColumnListTest {
@@ -36,12 +37,15 @@ public class ParserSelectColumnListTest {
 		String sql = "SELECT users.col1 AS c1, col2, ABS(col3) FROM users WHERE hiddenCol = 'a'";
 		List<ColumnNameToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
-		boolean columnListTokenExists = false;
+		boolean tokenExists = false;
 
 		expected.add(new ColumnNameToken("users.col1"));
 		expected.add(new ColumnNameToken("col2"));
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -54,11 +58,11 @@ public class ParserSelectColumnListTest {
 				assertEquals(expected.size(), actual.size() - 1);
 				assertTrue(actual.containsAll(expected));
 
-				columnListTokenExists = true;
+				tokenExists = true;
 			}
 		}
 
-		if (!columnListTokenExists) {
+		if (!tokenExists) {
 			fail("No SelectColumnListToken found");
 		}
 	}
@@ -68,11 +72,14 @@ public class ParserSelectColumnListTest {
 		String sql = "SELECT * FROM users";
 		List<ColumnNameToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
-		boolean columnListTokenExists = false;
+		boolean tokenExists = false;
 
 		expected.add(new ColumnNameToken("*"));
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -84,11 +91,11 @@ public class ParserSelectColumnListTest {
 				assertEquals(expected.size(), actual.size());
 				assertTrue(actual.containsAll(expected));
 
-				columnListTokenExists = true;
+				tokenExists = true;
 			}
 		}
 
-		if (!columnListTokenExists) {
+		if (!tokenExists) {
 			fail("No SelectColumnListToken found");
 		}
 	}
@@ -99,6 +106,7 @@ public class ParserSelectColumnListTest {
 		List<Token> functionParametersABS = new ArrayList<>();
 		List<Token> functionParametersAVG = new ArrayList<>();
 		List<Token> expected = new ArrayList<>();
+		boolean tokenExists = false;
 
 		// ABS(col1)
 		functionParametersABS.add(new ColumnNameToken("col1"));
@@ -108,7 +116,10 @@ public class ParserSelectColumnListTest {
 		expected.add(new FunctionToken("ABS", functionParametersABS));
 		expected.add(new FunctionToken("AVG", functionParametersAVG));
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -116,7 +127,12 @@ public class ParserSelectColumnListTest {
 		for (Token t : tokens) {
 			if (t instanceof SelectColumnListToken) {
 				checkForFunctions((SelectColumnListToken) t, expected);
+				tokenExists = true;
 			}
+		}
+
+		if (!tokenExists) {
+			fail("No SelectColumnListToken found");
 		}
 
 	}
@@ -140,11 +156,15 @@ public class ParserSelectColumnListTest {
 		String sql = "SELECT col1 * 12 AS calc, 25+3 FROM users";
 		List<CalculationToken> expected = new ArrayList<>();
 		List<? extends Token> actual;
+		boolean tokenExists = false;
 
 		expected.add(new CalculationToken("col1*12"));
 		expected.add(new CalculationToken("25+3"));
 
-		List<Token> tokens = parser.parse(sql);
+		List<Token> parsedTokens = parser.parse(sql);
+
+		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.get(0)).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -152,10 +172,16 @@ public class ParserSelectColumnListTest {
 		for (Token token : tokens) {
 			if (token instanceof SelectColumnListToken) {
 				actual = ((SelectColumnListToken) token).getChildren();
-				
+
 				assertEquals(expected.size(), actual.size());
 				assertTrue(actual.containsAll(expected));
+
+				tokenExists = true;
 			}
+		}
+
+		if (!tokenExists) {
+			fail("No SelectColumnListToken found");
 		}
 	}
 
