@@ -40,6 +40,9 @@ public class ConstantValueToken extends Token {
 		return true;
 	}
 
-	
+	@Override
+	public String toString() {
+		return value.toString();
+	}
 
 }

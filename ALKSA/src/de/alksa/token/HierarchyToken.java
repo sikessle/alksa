@@ -2,6 +2,7 @@ package de.alksa.token;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class HierarchyToken extends Token {
 
@@ -42,16 +43,9 @@ public abstract class HierarchyToken extends Token {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("(");
-		for (Token t : tokens) {
-			sb.append(t.toString());
-			sb.append(", ");
-		}
-		sb.append(")");
-
-		return sb.toString();
+		return "("
+				+ tokens.stream().map(Object::toString)
+						.collect(Collectors.joining(",")) + ")";
 	}
 
 }
