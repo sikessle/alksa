@@ -62,9 +62,11 @@ public class SelectVisitor extends AbstractVisitor {
 		return new FromListToken(recursiveVisitor.getTokens());
 	}
 
-	private WhereClauseToken visitWhereClause(ValueNode whereClause) {
+	private WhereClauseToken visitWhereClause(ValueNode whereClause) throws StandardException {
 
 		RecursiveVisitor recursiveVisitor = new RecursiveVisitor();
+
+		whereClause.accept(recursiveVisitor);
 
 		return new WhereClauseToken(recursiveVisitor.getTokens());
 	}
