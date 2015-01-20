@@ -10,7 +10,7 @@ public class FoundationDBParserAPIExplorationTest {
 
 	@Test
 	public void parseExample() {
-		String query = "SELECT c1 FROM x WHERE a AND b AND NOT c";
+		String query = "SELECT x FROM y WHERE a AND b OR NOT c OR col = 'b'";
 
 		SQLParser sqlParser = new SQLParser();
 		try {

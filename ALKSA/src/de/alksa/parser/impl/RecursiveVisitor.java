@@ -21,7 +21,7 @@ public class RecursiveVisitor extends AbstractVisitor {
 		collectColumnList(node);
 		collectFromList(node);
 		collectJoinList(node);
-		// TODO collect WHERE fragments (clauses)
+		collectFilterList(node);
 
 		return node;
 	}
@@ -70,38 +70,30 @@ public class RecursiveVisitor extends AbstractVisitor {
 	 * Collects the FROM list: FROM table1, table2, etc.
 	 */
 	private void collectFromList(Visitable node) throws StandardException {
-		List<Token> fromTableTokens = new ArrayList<>();
-
-		fromTableTokens.addAll(visitFromBaseTables(node));
-
-		addAllTokens(fromTableTokens);
-	}
-
-	private List<? extends Token> visitFromBaseTables(Visitable node)
-			throws StandardException {
 		AbstractVisitor fromTableVisitor = new FromBaseTableVisitor();
 		node.accept(fromTableVisitor);
 
-		return fromTableVisitor.getTokens();
+		addAllTokens(fromTableVisitor.getTokens());
 	}
 
 	/**
 	 * Collects the JOIN list: table1 JOIN table2
 	 */
 	private void collectJoinList(Visitable node) throws StandardException {
-		List<Token> joinTokens = new ArrayList<>();
-
-		joinTokens.addAll(visitJoinClauses(node));
-
-		addAllTokens(joinTokens);
-	}
-
-	private List<? extends Token> visitJoinClauses(Visitable node)
-			throws StandardException {
 		AbstractVisitor joinVisitor = new FromJoinVisitor();
 		node.accept(joinVisitor);
 
-		return joinVisitor.getTokens();
+		addAllTokens(joinVisitor.getTokens());
+	}
+
+	/**
+	 * Collects the Filter list: WHERE
+	 */
+	private void collectFilterList(Visitable node) throws StandardException {
+		AbstractVisitor filterVisitor = new FilterVisitor();
+		node.accept(filterVisitor);
+
+		addAllTokens(filterVisitor.getTokens());
 	}
 
 }

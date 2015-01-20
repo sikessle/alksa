@@ -63,12 +63,14 @@ public class SelectVisitor extends AbstractVisitor {
 	}
 
 	private WhereClauseToken visitWhereClause(ValueNode whereClause) throws StandardException {
-		
 		if (whereClause == null) {
 			return null;
 		}
 		
-		return new WhereClauseToken(getRecursiveAllTokensOfNode(whereClause));
+		AbstractVisitor visitor = new FilterVisitor();
+		whereClause.accept(visitor);
+		
+		return new WhereClauseToken(visitor.getTokens());
 	}
 
 	@Override
