@@ -29,3 +29,7 @@
 ## Set Operations
 
 * UNION, MINUS, INTERSECT, each SELECT statement is separately parsed
+
+## Subqueries
+
+* Each SELECT is parsed separately
