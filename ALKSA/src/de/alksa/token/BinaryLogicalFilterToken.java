@@ -1,31 +1,37 @@
 package de.alksa.token;
 
+import java.util.Objects;
+
 public class BinaryLogicalFilterToken extends FilterToken {
 
 	public enum Type {
 		AND, OR
 	}
 
-	private Token leftPart;
 	private Type type;
-	private Token rightPart;
+	private Token firstOperand;
+	private Token secondOperand;
 
-	public BinaryLogicalFilterToken(Token leftPart, Type type, Token rightPart) {
-		this.leftPart = leftPart;
+	public BinaryLogicalFilterToken(Type type, Token firstOperand,
+			Token secondOperand) {
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(firstOperand);
+		Objects.requireNonNull(secondOperand);
 		this.type = type;
-		this.rightPart = rightPart;
+		this.firstOperand = firstOperand;
+		this.secondOperand = secondOperand;
 	}
 
-	public Token getLeftPart() {
-		return leftPart;
+	public Token getfirstOperand() {
+		return firstOperand;
 	}
 
 	public Type getType() {
 		return type;
 	}
 
-	public Token getRightPart() {
-		return rightPart;
+	public Token getSecondOperand() {
+		return secondOperand;
 	}
 
 	@Override
@@ -33,13 +39,16 @@ public class BinaryLogicalFilterToken extends FilterToken {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((leftPart == null) ? 0 : leftPart.hashCode());
+				+ ((firstOperand == null) ? 0 : firstOperand.hashCode());
 		result = prime * result
-				+ ((rightPart == null) ? 0 : rightPart.hashCode());
+				+ ((secondOperand == null) ? 0 : secondOperand.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
+	/**
+	 * The order of first and second operand does not matter.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -49,24 +58,18 @@ public class BinaryLogicalFilterToken extends FilterToken {
 		if (getClass() != obj.getClass())
 			return false;
 		BinaryLogicalFilterToken other = (BinaryLogicalFilterToken) obj;
-		if (leftPart == null) {
-			if (other.leftPart != null)
-				return false;
-		} else if (!leftPart.equals(other.leftPart))
-			return false;
-		if (rightPart == null) {
-			if (other.rightPart != null)
-				return false;
-		} else if (!rightPart.equals(other.rightPart))
-			return false;
 		if (type != other.type)
 			return false;
-		return true;
+
+		return (firstOperand.equals(other.firstOperand) && secondOperand
+				.equals(other.secondOperand))
+				|| (firstOperand.equals(other.secondOperand) && secondOperand
+						.equals(other.firstOperand));
 	}
 
 	@Override
 	public String toString() {
-		return leftPart + " " + type + " " + rightPart;
+		return firstOperand + " " + type + " " + secondOperand;
 	}
 
 }
