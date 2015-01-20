@@ -47,15 +47,15 @@ public class FilterVisitor extends AbstractVisitor {
 		String operatorString = relationalpNode.getOperator();
 
 		if (operatorString.equals("=")) {
-			return ComparisonFilterToken.Type.EQUAL;
+			return Type.EQUAL;
 		} else if (operatorString.equals(">")) {
-			return ComparisonFilterToken.Type.GREATER;
+			return Type.GREATER;
 		} else if (operatorString.equals(">=")) {
-			return ComparisonFilterToken.Type.GREATER_EQUAL;
+			return Type.GREATER_EQUAL;
 		} else if (operatorString.equals("<")) {
-			return ComparisonFilterToken.Type.LESS;
+			return Type.LESS;
 		} else if (operatorString.equals("<=")) {
-			return ComparisonFilterToken.Type.LESS_EQUAL;
+			return Type.LESS_EQUAL;
 		}
 
 		throw new IllegalStateException("Unknown operator type");
