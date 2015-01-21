@@ -1,14 +1,19 @@
 package de.alksa.classifier.impl;
 
+import java.time.Instant;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
+import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.parser.Parser;
 import de.alksa.querystorage.QueryStorage;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -62,6 +67,17 @@ public class CheckerBasedClassifierTest {
 
 		when(parserMock.parse(any())).thenThrow(new RuntimeException());
 		assertFalse(classifier.accept(query, database, databaseUser));
+	}
+
+	@Test
+	public void testGetLogEntries() {
+		Set<LogEntry> logEntries = new HashSet<>();
+		logEntries.add(new AttackLogEntry(query, database, databaseUser,
+				"whatever", Instant.now()));
+
+		when(loggerMock.read()).thenReturn(logEntries);
+
+		assertEquals(classifier.getLogEntries(), logEntries);
 	}
 
 }
