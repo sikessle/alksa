@@ -1,9 +1,15 @@
 package de.alksa.classifier.impl;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
+import de.alksa.querystorage.impl.QueryImpl;
+import de.alksa.token.SelectStatementToken;
+import de.alksa.token.Token;
 
 class LearningClassifier implements ClassifierState {
 
@@ -16,12 +22,22 @@ class LearningClassifier implements ClassifierState {
 	}
 
 	@Override
-	public boolean accept(Query query) {
-		Objects.requireNonNull(query);
+	public boolean accept(Query multiQuery) {
+		Objects.requireNonNull(multiQuery);
+		Set<Query> queries = new HashSet<>();
 
-		queryStorage.write(query);
+		for (Token token : multiQuery.getQuery()) {
+			if (token instanceof SelectStatementToken) {
+				queries.add(new QueryImpl(Arrays.asList(token), multiQuery
+						.getQueryString(), multiQuery.getDatabase(), multiQuery
+						.getDatabaseUser()));
+			}
+		}
+
+		for (Query query : queries) {
+			queryStorage.write(query);
+		}
 
 		return true;
 	}
-
 }

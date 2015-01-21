@@ -15,22 +15,20 @@ import de.alksa.token.Token;
 class VisitorBasedParser implements Parser {
 
 	private String sql;
-	private List<Token> tokenizedQuery;
 	private SQLParser sqlParser;
 	private StatementNode stmt;
 
 	public VisitorBasedParser() {
-		tokenizedQuery = new ArrayList<>();
 		sqlParser = new SQLParser();
 	}
 
 	@Override
 	public List<Token> parse(String sql) throws RuntimeException {
 		this.sql = sql;
-		tokenizedQuery.clear();
+		List<Token> tokenizedQuery = new ArrayList<>();
 
 		try {
-			startParsing();
+			startParsing(tokenizedQuery);
 		} catch (StandardException e) {
 			throw new RuntimeException(e);
 		}
@@ -38,12 +36,12 @@ class VisitorBasedParser implements Parser {
 		return tokenizedQuery;
 	}
 
-	private void startParsing() throws StandardException {
+	private void startParsing(List<Token> target) throws StandardException {
 		stmt = sqlParser.parseStatement(sql);
 
 		AbstractVisitor visitor = new RootVisitor();
 		stmt.accept(visitor);
-		tokenizedQuery.addAll(visitor.getTokens());
+		target.addAll(visitor.getTokens());
 	}
 
 }
