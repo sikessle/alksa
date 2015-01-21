@@ -5,6 +5,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Ignore;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -30,6 +31,8 @@ public class ALKSATest {
 
 		alksa.setLearning(false);
 		assertFalse(alksa.accept("sfddsfds", "local", "test"));
+		assertEquals(1, alksa.getLogEntries().size());
+
 		assertTrue(alksa.accept(learnedQuery, "local", "test"));
 	}
 

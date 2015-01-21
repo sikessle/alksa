@@ -64,6 +64,8 @@ class ProductiveClassifier implements ClassifierState {
 		}
 
 		for (Query learned : learnedQueries) {
+			// TODO better performance: Use Map structure for storing the
+			// queries
 			if (isNotSameDatabaseAndUser(subject, learned)) {
 				continue;
 			}

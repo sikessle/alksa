@@ -10,7 +10,7 @@ public class SelectColumnsChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(List<Token> subject, List<Token> learned) {
-		return null; // createLogEntry("not yet implemented");
+		return createLogEntry("not yet implemented");
 	}
 
 }
