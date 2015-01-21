@@ -14,17 +14,17 @@ class RootVisitor extends AbstractVisitor {
 		if (node instanceof UnionNode) {
 			visitUnionNode((UnionNode) node);
 		} else if (node instanceof SelectNode) {
-			visitSelectStatement(node);
+			visitSelectNode(node);
 		}
 		return node;
 	}
 
 	private void visitUnionNode(UnionNode node) throws StandardException {
-		visitSelectStatement(node.getLeftResultSet());
-		visitSelectStatement(node.getRightResultSet());
+		visitSelectNode(node.getLeftResultSet());
+		visitSelectNode(node.getRightResultSet());
 	}
 
-	private void visitSelectStatement(Visitable node) throws StandardException {
+	private void visitSelectNode(Visitable node) throws StandardException {
 		AbstractVisitor visitor = new SelectVisitor();
 		node.accept(visitor);
 		addToken(new SelectStatementToken(visitor.getTokens()));
