@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import de.alksa.classifier.Classifier;
 import de.alksa.log.Logger;
@@ -13,6 +14,7 @@ import de.alksa.querystorage.QueryStorage;
 import de.alksa.querystorage.impl.QueryImpl;
 import de.alksa.token.Token;
 
+@Singleton
 class SimpleClassifier implements Classifier {
 
 	private ClassifierState state;

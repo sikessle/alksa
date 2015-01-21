@@ -3,11 +3,13 @@ package de.alksa.querystorage.impl;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import de.alksa.persistence.StorageDao;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 
+@Singleton
 class SimpleQueryStorage implements QueryStorage {
 
 	private StorageDao storage;

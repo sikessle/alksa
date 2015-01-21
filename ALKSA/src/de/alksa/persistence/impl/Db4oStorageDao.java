@@ -7,12 +7,14 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 import de.alksa.log.LogEntry;
 import de.alksa.persistence.StorageDao;
 import de.alksa.querystorage.Query;
 
+@Singleton
 class Db4oStorageDao implements StorageDao {
 
 	private EmbeddedObjectContainer db;

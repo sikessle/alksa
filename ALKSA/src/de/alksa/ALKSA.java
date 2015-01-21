@@ -1,5 +1,7 @@
 package de.alksa;
 
+import java.util.Objects;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -14,10 +16,12 @@ public class ALKSA {
 
 	private Classifier classifier;
 
-	public ALKSA() {
+	public ALKSA(String storagePath) {
+		Objects.requireNonNull(storagePath);
+
 		Injector injector = Guice.createInjector(new ClassifierModule(),
-				new ParserModule(), new LogModule(), new PersistenceModule(),
-				new QueryStorageModule());
+				new ParserModule(), new LogModule(), new PersistenceModule(
+						storagePath), new QueryStorageModule());
 		classifier = injector.getInstance(Classifier.class);
 	}
 

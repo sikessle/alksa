@@ -3,11 +3,13 @@ package de.alksa.log.impl;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
 import de.alksa.persistence.StorageDao;
 
+@Singleton
 class SimpleLogger implements Logger {
 
 	private List<LogEntry> entries;
