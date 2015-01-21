@@ -26,11 +26,14 @@ class LearningClassifier implements ClassifierState {
 		Objects.requireNonNull(multiQuery);
 		Set<Query> queries = new HashSet<>();
 
+		// TODO currently we save the original queryString with UNION etc. It
+		// would be better to save just the appropriate part.
 		for (Token token : multiQuery.getQuery()) {
 			if (token instanceof SelectStatementToken) {
-				queries.add(new QueryImpl(Arrays.asList(token), multiQuery
-						.getQueryString(), multiQuery.getDatabase(), multiQuery
-						.getDatabaseUser()));
+				Query query = new QueryImpl(Arrays.asList(token),
+						multiQuery.getQueryString(), multiQuery.getDatabase(),
+						multiQuery.getDatabaseUser());
+				queries.add(query);
 			}
 		}
 

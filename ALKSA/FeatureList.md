@@ -34,7 +34,7 @@
 
 ## Set operations
 
-* UNION: Checks each SELECT statement
+* UNION: Checks each SELECT statement. Caveat: The query string with UNION is saved for each separate SELECT statement. The query string of each separate SELECT should be saved for each SELECT.
 
 ## Subqueries
 
