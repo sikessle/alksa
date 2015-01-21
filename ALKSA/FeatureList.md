@@ -29,3 +29,7 @@
 ## Subqueries
 
 * In column list, table list and where clause: each SELECT is parsed separately
+
+# Classifier - Implemented Features
+
+## ....

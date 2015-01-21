@@ -5,7 +5,7 @@ public class ALKSA {
 	// private boolean learn;
 
 	public ALKSA() {
-		// Injector injector = Guice.createInjector(new
+		// Injector injector = Guice.createInjector(new ClassifierModule(), new
 		// ParserModule(), new LogModule(), new PersistenceModule(), new
 		// QueryStorageModule());
 		// TODO build together all ALKSA modules
