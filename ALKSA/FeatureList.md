@@ -1,31 +1,31 @@
-# Parser
+# Parser - Implemented Features
 
-## SELECT COLUMN_LIST
+## SELECT column list
 
 * Column names
 * Unary functions (AVG, ABS, etc.)
 * Asterisk *
 * Simple Calculations as Strings: "column \* 12", "ABS(col1) \* 8"
 
-## FROM TABLE_LIST
+## FROM table list
 
 * Table names
 * Multiple Joins: Inner, Full Outer, Left Outer, Right Outer, Natural
 
-## WHERE Clause
+## WHERE clause
 
 * ON clause from Join-Statement 
 * Logic AND/OR/NOT
 * Comparison < > = <= >=
 
-## HAVING Clause
+## HAVING clause
 
 * Same as WHERE Clause
 
-## Set Operations
+## Set operations
 
 * UNION: Each SELECT statement is separately parsed
 
 ## Subqueries
 
-* Each SELECT is parsed separately
+* In column list, table list and where clause: each SELECT is parsed separately
