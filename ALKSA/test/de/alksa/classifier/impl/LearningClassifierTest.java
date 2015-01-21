@@ -8,7 +8,7 @@ import de.alksa.querystorage.QueryStorage;
 
 import static org.junit.Assert.assertTrue;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class LearningClassifierTest extends StateClassifierTest {
 
@@ -28,6 +28,6 @@ public class LearningClassifierTest extends StateClassifierTest {
 	@Test
 	public void testAccept() {
 		assertTrue(classifier.accept(query));
+		verify(queryStorageMock).write(query);
 	}
-
 }

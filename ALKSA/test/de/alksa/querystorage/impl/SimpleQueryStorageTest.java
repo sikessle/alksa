@@ -1,15 +1,9 @@
 package de.alksa.querystorage.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,15 +11,24 @@ import org.junit.Test;
 import de.alksa.persistence.StorageDao;
 import de.alksa.querystorage.Query;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 public class SimpleQueryStorageTest {
 
 	private SimpleQueryStorage queryStorage;
-	private List<Query> expectedQueries;
+	private Set<Query> expectedQueries;
 	private StorageDao storageMock;
 
 	@Before
 	public void setUp() throws Exception {
-		expectedQueries = new ArrayList<>();
+		expectedQueries = new HashSet<>();
 		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", ""));
 
 		storageMock = mock(StorageDao.class);
@@ -36,7 +39,7 @@ public class SimpleQueryStorageTest {
 
 	@Test
 	public void testRead() {
-		List<Query> readQueries = queryStorage.read();
+		Set<Query> readQueries = queryStorage.read();
 
 		assertEquals(expectedQueries.size(), readQueries.size());
 
@@ -55,12 +58,12 @@ public class SimpleQueryStorageTest {
 			queryStorage.write(query);
 			verify(storageMock, atLeastOnce()).saveQueries(any());
 		}
-		
-		assert(queryStorage.read().containsAll(expectedQueries));
+
+		assert (queryStorage.read().containsAll(expectedQueries));
 
 		// should not be added
 		queryStorage.write(null);
-		
+
 		assertEquals(expectedQueries.size(), queryStorage.read().size());
 	}
 

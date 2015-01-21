@@ -1,11 +1,11 @@
 package de.alksa.log;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Logger {
 
 	void write(LogEntry entry);
 
-	List<LogEntry> read();
+	Set<LogEntry> read();
 
 }

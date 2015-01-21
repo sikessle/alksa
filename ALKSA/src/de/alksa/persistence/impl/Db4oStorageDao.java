@@ -1,7 +1,7 @@
 package de.alksa.persistence.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.EmbeddedObjectContainer;
@@ -27,8 +27,8 @@ class Db4oStorageDao implements StorageDao {
 	}
 
 	@Override
-	public List<LogEntry> getLogEntries() {
-		List<LogEntry> entries = new ArrayList<>();
+	public Set<LogEntry> getLogEntries() {
+		Set<LogEntry> entries = new HashSet<>();
 		ObjectSet<LogEntry> resultSet = db.query(LogEntry.class);
 
 		entries.addAll(resultSet);
@@ -37,15 +37,15 @@ class Db4oStorageDao implements StorageDao {
 	}
 
 	@Override
-	public void saveLogEntries(List<LogEntry> entries) {
+	public void saveLogEntries(Set<LogEntry> entries) {
 		for (LogEntry entry : entries) {
 			db.store(entry);
 		}
 	}
 
 	@Override
-	public List<Query> getQueries() {
-		List<Query> queries = new ArrayList<>();
+	public Set<Query> getQueries() {
+		Set<Query> queries = new HashSet<>();
 		ObjectSet<Query> resultSet = db.query(Query.class);
 
 		queries.addAll(resultSet);
@@ -54,7 +54,7 @@ class Db4oStorageDao implements StorageDao {
 	}
 
 	@Override
-	public void saveQueries(List<Query> queries) {
+	public void saveQueries(Set<Query> queries) {
 		for (Query query : queries) {
 			db.store(query);
 		}

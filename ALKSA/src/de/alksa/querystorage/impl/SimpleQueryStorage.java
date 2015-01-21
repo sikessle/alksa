@@ -1,6 +1,6 @@
 package de.alksa.querystorage.impl;
 
-import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -13,7 +13,7 @@ import de.alksa.querystorage.QueryStorage;
 class SimpleQueryStorage implements QueryStorage {
 
 	private StorageDao storage;
-	private List<Query> queries;
+	private Set<Query> queries;
 
 	@Inject
 	public SimpleQueryStorage(StorageDao storage) {
@@ -35,7 +35,7 @@ class SimpleQueryStorage implements QueryStorage {
 	}
 
 	@Override
-	public List<Query> read() {
+	public Set<Query> read() {
 		return queries;
 	}
 }

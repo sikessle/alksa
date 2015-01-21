@@ -1,11 +1,9 @@
 package de.alksa.persistence.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +13,9 @@ import de.alksa.log.LogEntry;
 import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.impl.QueryImpl;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class Db4oStorageDaoTest {
 
@@ -35,11 +36,11 @@ public class Db4oStorageDaoTest {
 
 	@Test
 	public void testLogEntries() {
-		List<LogEntry> expectedEntries = new ArrayList<>();
+		Set<LogEntry> expectedEntries = new HashSet<>();
 		expectedEntries.add(new AttackLogEntry("", "", "", ""));
 
 		storage.saveLogEntries(expectedEntries);
-		List<LogEntry> actualEntries = storage.getLogEntries();
+		Set<LogEntry> actualEntries = storage.getLogEntries();
 
 		assertEquals(expectedEntries.size(), actualEntries.size());
 
@@ -50,11 +51,11 @@ public class Db4oStorageDaoTest {
 
 	@Test
 	public void testQueries() {
-		List<Query> expectedQueries = new ArrayList<>();
+		Set<Query> expectedQueries = new HashSet<>();
 		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", ""));
 
 		storage.saveQueries(expectedQueries);
-		List<Query> actualQueries = storage.getQueries();
+		Set<Query> actualQueries = storage.getQueries();
 
 		assertEquals(expectedQueries.size(), actualQueries.size());
 

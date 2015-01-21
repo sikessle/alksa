@@ -1,6 +1,6 @@
 package de.alksa.log.impl;
 
-import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -12,7 +12,7 @@ import de.alksa.persistence.StorageDao;
 @Singleton
 class SimpleLogger implements Logger {
 
-	private List<LogEntry> entries;
+	private Set<LogEntry> entries;
 	private StorageDao storage;
 
 	@Inject
@@ -35,7 +35,7 @@ class SimpleLogger implements Logger {
 	}
 
 	@Override
-	public List<LogEntry> read() {
+	public Set<LogEntry> read() {
 		return entries;
 	}
 }

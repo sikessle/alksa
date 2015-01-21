@@ -1,22 +1,22 @@
 package de.alksa.persistence;
 
-import java.util.List;
+import java.util.Set;
 
 import de.alksa.log.LogEntry;
 import de.alksa.querystorage.Query;
 
 public interface StorageDao {
 
-	List<LogEntry> getLogEntries();
+	Set<LogEntry> getLogEntries();
 
-	void saveLogEntries(List<LogEntry> entries);
+	void saveLogEntries(Set<LogEntry> entries);
 
-	List<Query> getQueries();
+	Set<Query> getQueries();
 
-	void saveQueries(List<Query> queries);
-	
+	void saveQueries(Set<Query> queries);
+
 	void close();
-	
+
 	void open();
 
 }

@@ -1,15 +1,7 @@
 package de.alksa.log.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,15 +9,24 @@ import org.junit.Test;
 import de.alksa.log.LogEntry;
 import de.alksa.persistence.StorageDao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 public class SimpleLoggerTest {
 
 	private SimpleLogger logger;
-	private List<LogEntry> expectedEntries;
+	private Set<LogEntry> expectedEntries;
 	private StorageDao storageMock;
 
 	@Before
 	public void setUp() throws Exception {
-		expectedEntries = new ArrayList<>();
+		expectedEntries = new HashSet<>();
 		expectedEntries.add(new AttackLogEntry("", "", "", ""));
 
 		storageMock = mock(StorageDao.class);
@@ -36,7 +37,7 @@ public class SimpleLoggerTest {
 
 	@Test
 	public void testRead() {
-		List<LogEntry> readEntries = logger.read();
+		Set<LogEntry> readEntries = logger.read();
 
 		assertEquals(expectedEntries.size(), readEntries.size());
 
@@ -48,7 +49,7 @@ public class SimpleLoggerTest {
 	@Test
 	public void testWrite() {
 		// to avoid concurrent modification exception
-		List<LogEntry> entriesToAdd = new ArrayList<>();
+		Set<LogEntry> entriesToAdd = new HashSet<>();
 		entriesToAdd.addAll(expectedEntries);
 
 		for (LogEntry entry : entriesToAdd) {
@@ -58,7 +59,7 @@ public class SimpleLoggerTest {
 
 		// should not be added
 		logger.write(null);
-		
+
 		assertEquals(expectedEntries.size(), logger.read().size());
 	}
 

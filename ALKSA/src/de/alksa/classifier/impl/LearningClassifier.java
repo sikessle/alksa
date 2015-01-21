@@ -19,6 +19,8 @@ class LearningClassifier implements ClassifierState {
 	public boolean accept(Query query) {
 		Objects.requireNonNull(query);
 
+		queryStorage.write(query);
+
 		return true;
 	}
 

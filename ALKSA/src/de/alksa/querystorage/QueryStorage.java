@@ -1,10 +1,10 @@
 package de.alksa.querystorage;
 
-import java.util.List;
+import java.util.Set;
 
 public interface QueryStorage {
-	
+
 	void write(Query query);
-	
-	List<Query> read();
+
+	Set<Query> read();
 }
