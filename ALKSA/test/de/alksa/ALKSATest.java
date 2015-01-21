@@ -5,7 +5,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ALKSATest {
 
@@ -21,7 +21,14 @@ public class ALKSATest {
 
 	@Test
 	public void testDelegateMethods() {
-		assertTrue(alksa.accept("SELECT * FROM tab", "local", "test"));
+		String learnedQuery = "SELECT * FROM tab";
+		alksa.setLearning(true);
+		assertTrue(alksa.isLearning());
+		assertTrue(alksa.accept(learnedQuery, "local", "test"));
+
+		alksa.setLearning(false);
+		assertFalse(alksa.accept("sfddsfds", "local", "test"));
+		assertTrue(alksa.accept(learnedQuery, "local", "test"));
 	}
 
 }
