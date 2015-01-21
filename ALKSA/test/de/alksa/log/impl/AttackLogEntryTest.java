@@ -14,13 +14,15 @@ public class AttackLogEntryTest {
 		String database = "testDatabase";
 		String databaseUser = "root";
 		String violation = "Columnlist violated";
+		Instant timestamp = Instant.now();
 		AttackLogEntry attack = new AttackLogEntry(query, database,
-				databaseUser, violation, Instant.now());
+				databaseUser, violation, timestamp);
 
 		assertEquals(query, attack.getQuery());
 		assertEquals(database, attack.getDatabase());
 		assertEquals(databaseUser, attack.getDatabaseUser());
 		assertEquals(violation, attack.getViolation());
+		assertEquals(timestamp, attack.getTimestamp());
 	}
 
 	@Test(expected = NullPointerException.class)
