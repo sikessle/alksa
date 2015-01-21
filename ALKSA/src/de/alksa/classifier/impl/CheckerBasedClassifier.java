@@ -2,10 +2,12 @@ package de.alksa.classifier.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.alksa.checker.QueryChecker;
 import de.alksa.classifier.Classifier;
 import de.alksa.log.Logger;
 import de.alksa.parser.Parser;
@@ -15,22 +17,25 @@ import de.alksa.querystorage.impl.QueryImpl;
 import de.alksa.token.Token;
 
 @Singleton
-class SimpleClassifier implements Classifier {
+class CheckerBasedClassifier implements Classifier {
 
 	private ClassifierState state;
 	private boolean learning;
 	private final Parser parser;
 	private final QueryStorage queryStorage;
 	private final Logger logger;
+	private Set<QueryChecker> queryCheckers;
 
 	@Inject
-	public SimpleClassifier(Parser parser, QueryStorage queryStorage,
-			Logger logger) {
+	public CheckerBasedClassifier(Set<QueryChecker> queryCheckers,
+			Parser parser, QueryStorage queryStorage, Logger logger) {
 
+		Objects.requireNonNull(queryCheckers);
 		Objects.requireNonNull(parser);
 		Objects.requireNonNull(queryStorage);
 		Objects.requireNonNull(logger);
 
+		this.queryCheckers = queryCheckers;
 		this.parser = parser;
 		this.queryStorage = queryStorage;
 		this.logger = logger;
@@ -71,7 +76,8 @@ class SimpleClassifier implements Classifier {
 		if (isLearning()) {
 			state = new LearningClassifier(queryStorage);
 		} else {
-			state = new ProductiveClassifier(queryStorage, logger);
+			state = new ProductiveClassifier(queryCheckers, queryStorage,
+					logger);
 		}
 	}
 

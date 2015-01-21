@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import de.alksa.checker.impl.CheckerModule;
 import de.alksa.classifier.Classifier;
 import de.alksa.classifier.impl.ClassifierModule;
 import de.alksa.log.impl.LogModule;
@@ -19,9 +20,9 @@ public class ALKSA {
 	public ALKSA(String storagePath) {
 		Objects.requireNonNull(storagePath);
 
-		Injector injector = Guice.createInjector(new ClassifierModule(),
-				new ParserModule(), new LogModule(), new PersistenceModule(
-						storagePath), new QueryStorageModule());
+		Injector injector = Guice.createInjector(new CheckerModule(),
+				new ClassifierModule(), new ParserModule(), new LogModule(),
+				new PersistenceModule(storagePath), new QueryStorageModule());
 		classifier = injector.getInstance(Classifier.class);
 	}
 

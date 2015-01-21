@@ -8,7 +8,7 @@ public class ClassifierModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(Classifier.class).to(SimpleClassifier.class);
+		bind(Classifier.class).to(CheckerBasedClassifier.class);
 	}
 
 }

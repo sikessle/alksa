@@ -1,12 +1,11 @@
 package de.alksa.classifier.impl;
 
-import java.time.Instant;
 import java.util.Objects;
 import java.util.Set;
 
+import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
-import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 
@@ -14,10 +13,19 @@ class ProductiveClassifier implements ClassifierState {
 
 	private QueryStorage queryStorage;
 	private Logger logger;
+	private QueryChecker matcherChecker;
 
-	public ProductiveClassifier(QueryStorage queryStorage, Logger logger) {
+	public ProductiveClassifier(Set<QueryChecker> queryCheckers,
+			QueryStorage queryStorage, Logger logger) {
+		Objects.requireNonNull(queryCheckers);
 		Objects.requireNonNull(queryStorage);
 		Objects.requireNonNull(logger);
+
+		matcherChecker = createDummyChecker();
+
+		for (QueryChecker checker : queryCheckers) {
+			matcherChecker.appendMatcher(checker);
+		}
 
 		this.queryStorage = queryStorage;
 		this.logger = logger;
@@ -46,21 +54,30 @@ class ProductiveClassifier implements ClassifierState {
 	 */
 	private LogEntry checkQuery(Query subject) {
 		Set<Query> learnedQueries = queryStorage.read();
-		String violation = "<unknown>";
+		LogEntry log;
 
 		// quick check for equal queries
 		if (learnedQueries.contains(subject)) {
 			return null;
 		}
 
-		// for (Query learned : queryStorage.read()) {
-		// if () CREATE CHECKERS CLASSES IN LIST
-		// }
+		for (Query learned : queryStorage.read()) {
+			log = matcherChecker.checkSubjectAgainstLearned(subject, learned);
+			if (log != null) {
+				return log;
+			}
+		}
 
-		// ON FALSE: set logEntry!!!
+		return null;
+	}
 
-		return new AttackLogEntry(subject.getQueryString(),
-				subject.getDatabase(), subject.getDatabaseUser(), violation,
-				Instant.now());
+	private QueryChecker createDummyChecker() {
+		return new QueryChecker() {
+
+			@Override
+			protected LogEntry check(Query subject, Query learned) {
+				return null;
+			}
+		};
 	}
 }

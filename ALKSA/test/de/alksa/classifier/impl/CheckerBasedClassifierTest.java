@@ -1,5 +1,7 @@
 package de.alksa.classifier.impl;
 
+import java.util.HashSet;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,14 +12,16 @@ import de.alksa.querystorage.QueryStorage;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-public class SimpleClassifierTest {
+public class CheckerBasedClassifierTest {
 
 	private String query;
 	private String database;
 	private String databaseUser;
-	private SimpleClassifier classifier;
+	private CheckerBasedClassifier classifier;
 	private Parser parserMock;
 	private QueryStorage queryStorageMock;
 	private Logger loggerMock;
@@ -32,8 +36,8 @@ public class SimpleClassifierTest {
 		queryStorageMock = mock(QueryStorage.class);
 		loggerMock = mock(Logger.class);
 
-		classifier = new SimpleClassifier(parserMock, queryStorageMock,
-				loggerMock);
+		classifier = new CheckerBasedClassifier(new HashSet<>(), parserMock,
+				queryStorageMock, loggerMock);
 	}
 
 	@Test
