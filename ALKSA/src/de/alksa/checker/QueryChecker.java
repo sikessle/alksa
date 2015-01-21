@@ -26,9 +26,12 @@ public abstract class QueryChecker {
 	protected abstract LogEntry check(Query subject, Query learned);
 
 	protected LogEntry createLogEntry(Query subject, String violation) {
+		String detailedViolation = this.getClass().getSimpleName() + ": "
+				+ violation;
+
 		return new AttackLogEntry(subject.getQueryString(),
-				subject.getDatabase(), subject.getDatabaseUser(), violation,
-				Instant.now());
+				subject.getDatabase(), subject.getDatabaseUser(),
+				detailedViolation, Instant.now());
 	}
 
 	public void appendMatcher(QueryChecker next) {

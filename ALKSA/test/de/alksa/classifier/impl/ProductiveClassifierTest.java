@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 
 import com.google.inject.Guice;
@@ -23,8 +24,7 @@ import de.alksa.log.Logger;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
@@ -44,11 +44,14 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	private Set<Query> allowed;
 	private Set<Query> disallowed;
 
+	private LogEntry latestLog;
+
 	@Inject
 	private Set<QueryChecker> checkers;
 
 	private static final String DB = "local";
 	private static final String DB_USER = "tester";
+	private ArgumentCaptor<LogEntry> logCaptor;
 
 	public ProductiveClassifierTest(String learnedString,
 			List<String> allowedStrings, List<String> disallowedStrings) {
@@ -97,6 +100,8 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 		learnedQueries.add(learned);
 
 		when(queryStorageMock.read()).thenReturn(learnedQueries);
+
+		logCaptor = ArgumentCaptor.forClass(LogEntry.class);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -118,8 +123,15 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	@Test
 	public void testAllowedQueries() {
 		for (Query query : allowed) {
-			assertTrue(errorMsg(query), classifier.accept(query));
-			verify(loggerMock, never()).write(any());
+
+			if (!classifier.accept(query)) {
+				verify(loggerMock).write(logCaptor.capture());
+				latestLog = logCaptor.getValue();
+				fail(errorMsg(query));
+			} else {
+				verify(loggerMock, never()).write(any());
+			}
+
 		}
 	}
 
@@ -133,8 +145,9 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	}
 
 	private String errorMsg(Query checkedQuery) {
-		return "LEARNED [" + learned.getQueryString() + "] <> SUBJECT ["
-				+ checkedQuery.getQueryString() + "]";
+		return "\nLEARNED [" + learned.getQueryString() + "]\nSUBJECT ["
+				+ checkedQuery.getQueryString() + "]\nERROR ["
+				+ latestLog.getViolation() + "]";
 	}
 
 	private static class LogEntryWithQuery extends ArgumentMatcher<LogEntry> {
