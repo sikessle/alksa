@@ -18,6 +18,10 @@ abstract class AbstractVisitor implements Visitor {
 		return tokens;
 	}
 
+	public void clearState() {
+		tokens.clear();
+	}
+
 	protected void addToken(Token token) {
 		if (token != null) {
 			this.tokens.add(token);
@@ -25,9 +29,7 @@ abstract class AbstractVisitor implements Visitor {
 	}
 
 	protected void addAllTokens(List<Token> tokenList) {
-		for (Token t : tokenList) {
-			this.tokens.add(t);
-		}
+		tokens.addAll(tokenList);
 	}
 
 	protected List<Token> visitWithCombinedVisitor(Visitable node)
