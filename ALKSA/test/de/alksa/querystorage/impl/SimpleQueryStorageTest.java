@@ -57,6 +57,8 @@ public class SimpleQueryStorageTest {
 
 		for (Query query : queriesToAdd) {
 			queryStorage.write(query);
+			// to check if the same query only gets added once
+			queryStorage.write(query);
 			verify(storageMock, atLeastOnce()).saveQueries(any());
 		}
 

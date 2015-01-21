@@ -55,6 +55,8 @@ public class SimpleLoggerTest {
 
 		for (LogEntry entry : entriesToAdd) {
 			logger.write(entry);
+			// to check if the same query only gets added once
+			logger.write(entry);
 			verify(storageMock, atLeastOnce()).saveLogEntries(any());
 		}
 
