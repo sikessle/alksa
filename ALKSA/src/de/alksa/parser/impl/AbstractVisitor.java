@@ -30,12 +30,12 @@ abstract class AbstractVisitor implements Visitor {
 		}
 	}
 
-	protected List<Token> getRecursiveAllTokensOfNode(Visitable node)
+	protected List<Token> visitWithCombinedVisitor(Visitable node)
 			throws StandardException {
 
 		Objects.requireNonNull(node);
 
-		AbstractVisitor visitor = new MasterVisitor();
+		AbstractVisitor visitor = new CombinedVisitor();
 		node.accept(visitor);
 
 		return visitor.getTokens();

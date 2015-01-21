@@ -28,4 +28,4 @@
 
 ## Subqueries
 
-* Each SELECT is parsed separately   >>>> TODO >>>>>
+* Each SELECT is parsed separately

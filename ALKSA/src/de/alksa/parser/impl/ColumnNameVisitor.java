@@ -29,8 +29,6 @@ class ColumnNameVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean skipChildren(Visitable node) throws StandardException {
-		// FIXME also add ability to visit column names in WHERE / ORDER BY
-		// Statement
 		if (node instanceof ResultColumn) {
 			return false;
 		}

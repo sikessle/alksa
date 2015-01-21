@@ -45,24 +45,24 @@ class SelectVisitor extends AbstractVisitor {
 	private SelectColumnListToken visitSelectColumnList(
 			ResultColumnList columnList) throws StandardException {
 
-		MasterVisitor masterVisitor = new MasterVisitor();
+		CombinedVisitor combinedVisitor = new CombinedVisitor();
 
 		for (ResultColumn resultColumn : columnList) {
-			resultColumn.accept(masterVisitor);
+			resultColumn.accept(combinedVisitor);
 		}
 
-		return new SelectColumnListToken(masterVisitor.getTokens());
+		return new SelectColumnListToken(combinedVisitor.getTokens());
 	}
 
 	private FromListToken visitSelectFromList(FromList fromList)
 			throws StandardException {
-		MasterVisitor masterVisitor = new MasterVisitor();
+		CombinedVisitor combinedVisitor = new CombinedVisitor();
 
 		for (FromTable fromTable : fromList) {
-			fromTable.accept(masterVisitor);
+			fromTable.accept(combinedVisitor);
 		}
 
-		return new FromListToken(masterVisitor.getTokens());
+		return new FromListToken(combinedVisitor.getTokens());
 	}
 
 	private WhereClauseToken visitWhereClause(ValueNode whereClause)
@@ -71,7 +71,7 @@ class SelectVisitor extends AbstractVisitor {
 			return null;
 		}
 
-		AbstractVisitor visitor = new MasterVisitor();
+		AbstractVisitor visitor = new CombinedVisitor();
 		whereClause.accept(visitor);
 
 		return new WhereClauseToken(visitor.getTokens());
@@ -83,15 +83,10 @@ class SelectVisitor extends AbstractVisitor {
 			return null;
 		}
 
-		AbstractVisitor visitor = new MasterVisitor();
+		AbstractVisitor visitor = new CombinedVisitor();
 		havingClause.accept(visitor);
 
 		return new HavingClauseToken(visitor.getTokens());
-	}
-
-	@Override
-	public boolean skipChildren(Visitable node) throws StandardException {
-		return false;
 	}
 
 }
