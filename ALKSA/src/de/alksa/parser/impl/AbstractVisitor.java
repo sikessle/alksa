@@ -18,10 +18,6 @@ abstract class AbstractVisitor implements Visitor {
 		return tokens;
 	}
 
-	public void clearState() {
-		tokens.clear();
-	}
-
 	protected void addToken(Token token) {
 		if (token != null) {
 			this.tokens.add(token);
