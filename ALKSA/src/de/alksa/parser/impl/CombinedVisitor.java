@@ -1,5 +1,8 @@
 package de.alksa.parser.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.Visitable;
 
@@ -11,27 +14,32 @@ import com.foundationdb.sql.parser.Visitable;
 
 class CombinedVisitor extends AbstractVisitor {
 
+	List<AbstractVisitor> visitors;
+
+	public CombinedVisitor() {
+		visitors = new ArrayList<>();
+
+		visitors.add(new ConstantVisitor());
+		visitors.add(new ColumnNameVisitor());
+		visitors.add(new FunctionVisitor());
+		visitors.add(new CalculationVisitor());
+		visitors.add(new FromBaseTableVisitor());
+		visitors.add(new FromJoinVisitor());
+		visitors.add(new FilterVisitor());
+		visitors.add(new SubqueryVisitor());
+
+		// TODO add other types ..
+	}
+
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
 
-		addTokensFromVisitor(node, new ConstantVisitor());
-		addTokensFromVisitor(node, new ColumnNameVisitor());
-		addTokensFromVisitor(node, new FunctionVisitor());
-		addTokensFromVisitor(node, new CalculationVisitor());
-		addTokensFromVisitor(node, new FromBaseTableVisitor());
-		addTokensFromVisitor(node, new FromJoinVisitor());
-		addTokensFromVisitor(node, new FilterVisitor());
-		addTokensFromVisitor(node, new SubqueryVisitor());
-
-		// TODO add other types like nested expression, ..
+		for (AbstractVisitor visitor : visitors) {
+			node.accept(visitor);
+			addAllTokens(visitor.getTokens());
+		}
 
 		return node;
-	}
-
-	private void addTokensFromVisitor(Visitable node, AbstractVisitor visitor)
-			throws StandardException {
-		node.accept(visitor);
-		addAllTokens(visitor.getTokens());
 	}
 
 }
