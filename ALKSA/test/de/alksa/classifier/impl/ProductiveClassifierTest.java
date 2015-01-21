@@ -112,7 +112,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 
 	@Test
 	public void testEqualQuery() {
-		assertTrue(classifier.accept(learned));
+		assertTrue(errorMsg(learned), classifier.accept(learned));
 	}
 
 	@Test
