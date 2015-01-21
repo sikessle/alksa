@@ -14,20 +14,22 @@ public class QueryImplTest {
 	@Test
 	public void testGettersNonNull() {
 		List<Token> sqlQuery = new ArrayList<>();
+		String queryString = "SELECT";
 		String database = "testDatabase";
 		String databaseUser = "root";
-		
-		QueryImpl query = new QueryImpl(sqlQuery, database,
+
+		QueryImpl query = new QueryImpl(sqlQuery, queryString, database,
 				databaseUser);
 
 		assertEquals(sqlQuery, query.getQuery());
+		assertEquals(queryString, query.getQueryString());
 		assertEquals(database, query.getDatabase());
 		assertEquals(databaseUser, query.getDatabaseUser());
 	}
-	
-	@Test(expected=NullPointerException.class)
+
+	@Test(expected = NullPointerException.class)
 	public void testGettersNull() {
-		new QueryImpl(null, null, null);
+		new QueryImpl(null, null, null, null);
 	}
 
 }

@@ -56,7 +56,7 @@ class SimpleClassifier implements Classifier {
 
 	private Query createQuery(String sql, String database, String databaseUser) {
 		List<Token> tokens = parser.parse(sql);
-		return new QueryImpl(tokens, database, databaseUser);
+		return new QueryImpl(tokens, sql, database, databaseUser);
 	}
 
 	@Override

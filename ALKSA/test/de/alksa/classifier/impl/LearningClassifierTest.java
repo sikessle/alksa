@@ -33,6 +33,6 @@ public class LearningClassifierTest extends StateClassifierTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testAcceptWithNPE() {
-		assertTrue(classifier.accept(null));
+		classifier.accept(null);
 	}
 }

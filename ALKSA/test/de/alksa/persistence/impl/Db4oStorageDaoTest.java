@@ -53,7 +53,7 @@ public class Db4oStorageDaoTest {
 	@Test
 	public void testQueries() {
 		Set<Query> expectedQueries = new HashSet<>();
-		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", ""));
+		expectedQueries.add(new QueryImpl(new ArrayList<>(), "", "", ""));
 
 		storage.saveQueries(expectedQueries);
 		Set<Query> actualQueries = storage.getQueries();

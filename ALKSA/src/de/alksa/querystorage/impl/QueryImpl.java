@@ -9,14 +9,19 @@ import de.alksa.token.Token;
 public class QueryImpl implements Query {
 
 	List<Token> query;
+	String queryString;
 	String database;
 	String databaseUser;
 
-	public QueryImpl(List<Token> sqlQuery, String database, String databaseUser) {
+	public QueryImpl(List<Token> sqlQuery, String queryString, String database,
+			String databaseUser) {
 		Objects.requireNonNull(sqlQuery);
+		Objects.requireNonNull(queryString);
 		Objects.requireNonNull(database);
 		Objects.requireNonNull(databaseUser);
+
 		this.query = sqlQuery;
+		this.queryString = queryString;
 		this.database = database;
 		this.databaseUser = databaseUser;
 	}
@@ -24,6 +29,11 @@ public class QueryImpl implements Query {
 	@Override
 	public List<Token> getQuery() {
 		return query;
+	}
+
+	@Override
+	public String getQueryString() {
+		return queryString;
 	}
 
 	@Override
@@ -45,6 +55,8 @@ public class QueryImpl implements Query {
 		result = prime * result
 				+ ((databaseUser == null) ? 0 : databaseUser.hashCode());
 		result = prime * result + ((query == null) ? 0 : query.hashCode());
+		result = prime * result
+				+ ((queryString == null) ? 0 : queryString.hashCode());
 		return result;
 	}
 
@@ -79,6 +91,13 @@ public class QueryImpl implements Query {
 				return false;
 			}
 		} else if (!query.equals(other.query)) {
+			return false;
+		}
+		if (queryString == null) {
+			if (other.queryString != null) {
+				return false;
+			}
+		} else if (!queryString.equals(other.queryString)) {
 			return false;
 		}
 		return true;
