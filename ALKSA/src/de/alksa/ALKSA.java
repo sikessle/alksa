@@ -1,28 +1,42 @@
 package de.alksa;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import de.alksa.classifier.Classifier;
+import de.alksa.classifier.impl.ClassifierModule;
+import de.alksa.log.impl.LogModule;
+import de.alksa.parser.impl.ParserModule;
+import de.alksa.persistence.impl.PersistenceModule;
+import de.alksa.querystorage.impl.QueryStorageModule;
+
 public class ALKSA {
 
-	// private boolean learn;
+	private Classifier classifier;
 
 	public ALKSA() {
-		// Injector injector = Guice.createInjector(new ClassifierModule(), new
-		// ParserModule(), new LogModule(), new PersistenceModule(), new
-		// QueryStorageModule());
-		// TODO build together all ALKSA modules
+		Injector injector = Guice.createInjector(new ClassifierModule(),
+				new ParserModule(), new LogModule(), new PersistenceModule(),
+				new QueryStorageModule());
+		classifier = injector.getInstance(Classifier.class);
 	}
 
-	public void setLearnMode(boolean learn) {
-		// delegate to classifier module
+	/**
+	 * Checks or learns a query.
+	 *
+	 * @return True if the query was successfully checked. False if an error
+	 *         occurred.
+	 */
+	public boolean accept(String sqlQuery, String database, String databaseUser) {
+		return classifier.accept(sqlQuery, database, databaseUser);
 	}
 
-	public void processQuery(String query, String database, String databaseUser) {
-		// delegate to classifier module
+	public void setLearning(boolean learning) {
+		classifier.setLearning(learning);
 	}
 
-	public void clear() {
-		// clear storages
-		// clearn learn mode etc.
-		// delegate to classifier module
+	public boolean isLearning() {
+		return classifier.isLearning();
 	}
 
 }
