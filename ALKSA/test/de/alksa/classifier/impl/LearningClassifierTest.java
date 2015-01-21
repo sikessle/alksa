@@ -3,37 +3,31 @@ package de.alksa.classifier.impl;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.alksa.log.Logger;
-import de.alksa.parser.Parser;
+import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
-public class LearningClassifierTest {
+public class LearningClassifierTest extends StateClassifierTest {
 
 	private LearningClassifier classifier;
 	private QueryStorage queryStorageMock;
+	private Query query;
 
 	@Before
 	public void setUp() throws Exception {
 		queryStorageMock = mock(QueryStorage.class);
 
 		classifier = new LearningClassifier(queryStorageMock);
+		query = createQuery("SELECT name FROM users WHERE x = 2", "local",
+				"tester");
 	}
 
 	@Test
-	public void testLearningMode() {
-		// classifier.setLearning(true);
-		// assertTrue(classifier.accept(query, database, databaseUser));
-		//
-		// verifyLearningMocks();
-	}
-
-	private void verifyLearningMocks() {
-		// verify(parserMock).parse(query);
+	public void testAccept() {
+		assertTrue(classifier.accept(query));
 	}
 
 }
