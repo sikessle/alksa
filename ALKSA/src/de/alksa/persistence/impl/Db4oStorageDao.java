@@ -25,7 +25,7 @@ class Db4oStorageDao implements StorageDao {
 	}
 
 	@Override
-	public List<LogEntry> getProtocolEntries() {
+	public List<LogEntry> getLogEntries() {
 		List<LogEntry> entries = new ArrayList<>();
 		ObjectSet<LogEntry> resultSet = db.query(LogEntry.class);
 
@@ -35,7 +35,7 @@ class Db4oStorageDao implements StorageDao {
 	}
 
 	@Override
-	public void saveProtocolEntries(List<LogEntry> entries) {
+	public void saveLogEntries(List<LogEntry> entries) {
 		for (LogEntry entry : entries) {
 			db.store(entry);
 		}

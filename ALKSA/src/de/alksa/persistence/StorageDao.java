@@ -7,9 +7,9 @@ import de.alksa.querystorage.Query;
 
 public interface StorageDao {
 
-	List<LogEntry> getProtocolEntries();
+	List<LogEntry> getLogEntries();
 
-	void saveProtocolEntries(List<LogEntry> entries);
+	void saveLogEntries(List<LogEntry> entries);
 
 	List<Query> getQueries();
 

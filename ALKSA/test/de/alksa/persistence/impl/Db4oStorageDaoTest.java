@@ -34,12 +34,12 @@ public class Db4oStorageDaoTest {
 	}
 
 	@Test
-	public void testProtocolEntries() {
+	public void testLogEntries() {
 		List<LogEntry> expectedEntries = new ArrayList<>();
 		expectedEntries.add(new AttackLogEntry("", "", "", ""));
 
-		storage.saveProtocolEntries(expectedEntries);
-		List<LogEntry> actualEntries = storage.getProtocolEntries();
+		storage.saveLogEntries(expectedEntries);
+		List<LogEntry> actualEntries = storage.getLogEntries();
 
 		assertEquals(expectedEntries.size(), actualEntries.size());
 

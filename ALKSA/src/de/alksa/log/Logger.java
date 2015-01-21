@@ -2,7 +2,7 @@ package de.alksa.log;
 
 import java.util.List;
 
-public interface Protocol {
+public interface Logger {
 
 	void write(LogEntry entry);
 

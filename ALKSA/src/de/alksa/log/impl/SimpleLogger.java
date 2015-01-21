@@ -5,18 +5,18 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import de.alksa.log.LogEntry;
-import de.alksa.log.Protocol;
+import de.alksa.log.Logger;
 import de.alksa.persistence.StorageDao;
 
-class SimpleProtocol implements Protocol {
+class SimpleLogger implements Logger {
 
 	private List<LogEntry> entries;
 	private StorageDao storage;
 
 	@Inject
-	public SimpleProtocol(StorageDao storage) {
+	public SimpleLogger(StorageDao storage) {
 		this.storage = storage;
-		entries = storage.getProtocolEntries();
+		entries = storage.getLogEntries();
 	}
 
 	@Override
@@ -29,7 +29,7 @@ class SimpleProtocol implements Protocol {
 	}
 
 	private void persist() {
-		storage.saveProtocolEntries(entries);
+		storage.saveLogEntries(entries);
 	}
 
 	@Override

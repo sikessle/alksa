@@ -17,9 +17,9 @@ import org.junit.Test;
 import de.alksa.log.LogEntry;
 import de.alksa.persistence.StorageDao;
 
-public class SimpleProtocolTest {
+public class SimpleLoggerTest {
 
-	private SimpleProtocol protocol;
+	private SimpleLogger logger;
 	private List<LogEntry> expectedEntries;
 	private StorageDao storageMock;
 
@@ -29,14 +29,14 @@ public class SimpleProtocolTest {
 		expectedEntries.add(new AttackLogEntry("", "", "", ""));
 
 		storageMock = mock(StorageDao.class);
-		when(storageMock.getProtocolEntries()).thenReturn(expectedEntries);
+		when(storageMock.getLogEntries()).thenReturn(expectedEntries);
 
-		protocol = new SimpleProtocol(storageMock);
+		logger = new SimpleLogger(storageMock);
 	}
 
 	@Test
 	public void testRead() {
-		List<LogEntry> readEntries = protocol.read();
+		List<LogEntry> readEntries = logger.read();
 
 		assertEquals(expectedEntries.size(), readEntries.size());
 
@@ -52,14 +52,14 @@ public class SimpleProtocolTest {
 		entriesToAdd.addAll(expectedEntries);
 
 		for (LogEntry entry : entriesToAdd) {
-			protocol.write(entry);
-			verify(storageMock, atLeastOnce()).saveProtocolEntries(any());
+			logger.write(entry);
+			verify(storageMock, atLeastOnce()).saveLogEntries(any());
 		}
 
 		// should not be added
-		protocol.write(null);
+		logger.write(null);
 		
-		assertEquals(expectedEntries.size(), protocol.read().size());
+		assertEquals(expectedEntries.size(), logger.read().size());
 	}
 
 }

@@ -7,6 +7,10 @@ class SimpleClassifier implements Classifier {
 
 	private boolean learning;
 
+	public SimpleClassifier() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public boolean accept(Query query) {
 		if (query == null) {
