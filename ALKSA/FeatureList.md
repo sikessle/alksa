@@ -32,4 +32,11 @@
 
 # Classifier - Implemented Features
 
-## ....
+## Set operations
+
+* UNION: Checks each SELECT statement
+
+## Subqueries
+
+* Classified as part of each statement, i.e. in SELECT <subquery> FROM .. the subquery is treated as a column. 
+

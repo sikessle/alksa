@@ -83,9 +83,14 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	public static Collection<Object[]> generateData() {
 		Object[][] data = new Object[1][3];
 
-		data[0][0] = "SELECT col1, col2 FROM tab";
-		data[0][1] = Arrays.asList("SELECT col1 FROM tab");
-		data[0][2] = Arrays.asList("SELECT pass FROM tab");
+		// learned
+		data[0][0] = "SELECT col1 FROM tab";
+		// allowed
+		data[0][1] = Arrays.asList("SELECT col1 FROM tab",
+				"SELECT col1 FROM tab UNION SELECT col1 FROM tab");
+		// disallowed
+		data[0][2] = Arrays
+				.asList("SELECT col1 FROM tab UNION SELECT col2 FROM tab2");
 
 		return Arrays.asList(data);
 	}

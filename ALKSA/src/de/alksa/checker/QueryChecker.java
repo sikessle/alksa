@@ -1,12 +1,12 @@
 package de.alksa.checker;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 
 import de.alksa.log.LogEntry;
 import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
+import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 
 public abstract class QueryChecker {
@@ -17,7 +17,8 @@ public abstract class QueryChecker {
 	public LogEntry checkSubjectAgainstLearned(Query subject, Query learned) {
 
 		this.subject = subject;
-		LogEntry log = check(subject.getQuery(), learned.getQuery());
+		LogEntry log = check(getSelectStatementToken(subject),
+				getSelectStatementToken(learned));
 
 		if (log == null && next != null) {
 			return next.checkSubjectAgainstLearned(subject, learned);
@@ -28,7 +29,17 @@ public abstract class QueryChecker {
 		}
 	}
 
-	protected abstract LogEntry check(List<Token> subject, List<Token> learned);
+	private SelectStatementToken getSelectStatementToken(Query query) {
+		for (Token token : query.getQuery()) {
+			if (token instanceof SelectStatementToken) {
+				return (SelectStatementToken) token;
+			}
+		}
+		throw new IllegalStateException("no SelectStatementToken found");
+	}
+
+	protected abstract LogEntry check(SelectStatementToken subject,
+			SelectStatementToken learned);
 
 	protected LogEntry createLogEntry(String violation) {
 		String detailedViolation = this.getClass().getSimpleName() + ": "

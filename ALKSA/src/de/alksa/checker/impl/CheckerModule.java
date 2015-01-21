@@ -11,7 +11,7 @@ public class CheckerModule extends AbstractModule {
 	protected void configure() {
 		Multibinder<QueryChecker> binder = Multibinder.newSetBinder(binder(),
 				QueryChecker.class);
-		binder.addBinding().to(SelectColumnsChecker.class);
+		binder.addBinding().to(SelectColumnListChecker.class);
 	}
 
 }
