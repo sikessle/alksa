@@ -1,5 +1,8 @@
 package de.alksa.parser.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.FromList;
 import com.foundationdb.sql.parser.FromTable;
@@ -12,6 +15,7 @@ import com.foundationdb.sql.parser.Visitable;
 import de.alksa.token.FromListToken;
 import de.alksa.token.HavingClauseToken;
 import de.alksa.token.SelectColumnListToken;
+import de.alksa.token.Token;
 import de.alksa.token.WhereClauseToken;
 
 class SelectVisitor extends AbstractVisitor {
@@ -45,24 +49,25 @@ class SelectVisitor extends AbstractVisitor {
 	private SelectColumnListToken visitSelectColumnList(
 			ResultColumnList columnList) throws StandardException {
 
-		CombinedVisitor combinedVisitor = new CombinedVisitor();
+		List<Token> tokens = new ArrayList<>();
 
 		for (ResultColumn resultColumn : columnList) {
-			resultColumn.accept(combinedVisitor);
+			tokens.addAll(visitWithCombinedVisitor(resultColumn));
 		}
 
-		return new SelectColumnListToken(combinedVisitor.getTokens());
+		return new SelectColumnListToken(tokens);
 	}
 
 	private FromListToken visitSelectFromList(FromList fromList)
 			throws StandardException {
-		CombinedVisitor combinedVisitor = new CombinedVisitor();
+
+		List<Token> tokens = new ArrayList<>();
 
 		for (FromTable fromTable : fromList) {
-			fromTable.accept(combinedVisitor);
+			tokens.addAll(visitWithCombinedVisitor(fromTable));
 		}
 
-		return new FromListToken(combinedVisitor.getTokens());
+		return new FromListToken(tokens);
 	}
 
 	private WhereClauseToken visitWhereClause(ValueNode whereClause)
@@ -71,10 +76,7 @@ class SelectVisitor extends AbstractVisitor {
 			return null;
 		}
 
-		AbstractVisitor visitor = new CombinedVisitor();
-		whereClause.accept(visitor);
-
-		return new WhereClauseToken(visitor.getTokens());
+		return new WhereClauseToken(visitWithCombinedVisitor(whereClause));
 	}
 
 	private HavingClauseToken visitHavingClause(ValueNode havingClause)
@@ -83,10 +85,7 @@ class SelectVisitor extends AbstractVisitor {
 			return null;
 		}
 
-		AbstractVisitor visitor = new CombinedVisitor();
-		havingClause.accept(visitor);
-
-		return new HavingClauseToken(visitor.getTokens());
+		return new HavingClauseToken(visitWithCombinedVisitor(havingClause));
 	}
 
 }
