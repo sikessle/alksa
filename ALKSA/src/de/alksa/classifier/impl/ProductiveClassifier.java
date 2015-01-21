@@ -1,5 +1,6 @@
 package de.alksa.classifier.impl;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
+import de.alksa.token.Token;
 
 class ProductiveClassifier implements ClassifierState {
 
@@ -62,6 +64,10 @@ class ProductiveClassifier implements ClassifierState {
 		}
 
 		for (Query learned : learnedQueries) {
+			if (isNotSameDatabaseAndUser(subject, learned)) {
+				continue;
+			}
+
 			log = masterChecker.checkSubjectAgainstLearned(subject, learned);
 			if (log == null) {
 				// subject has found one learned query in database which is
@@ -73,11 +79,16 @@ class ProductiveClassifier implements ClassifierState {
 		return log;
 	}
 
+	private boolean isNotSameDatabaseAndUser(Query subject, Query learned) {
+		return !(subject.getDatabase().equals(learned.getDatabase()) && subject
+				.getDatabaseUser().equals(learned.getDatabaseUser()));
+	}
+
 	private QueryChecker createDummyChecker() {
 		return new QueryChecker() {
 
 			@Override
-			protected LogEntry check(Query subject, Query learned) {
+			protected LogEntry check(List<Token> subject, List<Token> learned) {
 				return null;
 			}
 		};

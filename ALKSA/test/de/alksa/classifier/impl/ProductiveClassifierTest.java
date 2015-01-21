@@ -33,6 +33,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests with same Database and Database User
+ */
 @RunWith(Parameterized.class)
 public class ProductiveClassifierTest extends StateClassifierTest {
 
@@ -51,6 +54,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 
 	private static final String DB = "local";
 	private static final String DB_USER = "tester";
+
 	private ArgumentCaptor<LogEntry> logCaptor;
 
 	public ProductiveClassifierTest(String learnedString,
@@ -145,9 +149,14 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	}
 
 	private String errorMsg(Query checkedQuery) {
-		return "\nLEARNED [" + learned.getQueryString() + "]\nSUBJECT ["
-				+ checkedQuery.getQueryString() + "]\nERROR ["
-				+ latestLog.getViolation() + "]";
+		String message = "\nLEARNED [" + learned.getQueryString() + "]";
+		message += "\nSUBJECT [" + checkedQuery.getQueryString() + "]";
+
+		if (latestLog != null) {
+			message += "\nVIOLATION [" + latestLog.getViolation() + "]";
+		}
+
+		return message;
 	}
 
 	private static class LogEntryWithQuery extends ArgumentMatcher<LogEntry> {
