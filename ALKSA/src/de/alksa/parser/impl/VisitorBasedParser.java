@@ -23,7 +23,7 @@ class VisitorBasedParser implements Parser {
 	}
 
 	@Override
-	public List<Token> parse(String sql) {
+	public List<Token> parse(String sql) throws RuntimeException {
 		this.sql = sql;
 		tokenizedQuery.clear();
 
