@@ -1,5 +1,6 @@
 package de.alksa.log.impl;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class SimpleLoggerTest {
 	@Before
 	public void setUp() throws Exception {
 		expectedEntries = new HashSet<>();
-		expectedEntries.add(new AttackLogEntry("", "", "", ""));
+		expectedEntries.add(new AttackLogEntry("", "", "", "", Instant.now()));
 
 		storageMock = mock(StorageDao.class);
 		when(storageMock.getLogEntries()).thenReturn(expectedEntries);

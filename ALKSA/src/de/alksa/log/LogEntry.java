@@ -1,5 +1,7 @@
 package de.alksa.log;
 
+import java.time.Instant;
+
 public interface LogEntry {
 
 	String getQuery();
@@ -9,5 +11,7 @@ public interface LogEntry {
 	String getDatabaseUser();
 
 	String getViolation();
+
+	Instant getTimestamp();
 
 }

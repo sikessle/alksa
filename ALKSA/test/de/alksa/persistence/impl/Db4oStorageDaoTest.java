@@ -1,6 +1,7 @@
 package de.alksa.persistence.impl;
 
 import java.io.File;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class Db4oStorageDaoTest {
 	@Test
 	public void testLogEntries() {
 		Set<LogEntry> expectedEntries = new HashSet<>();
-		expectedEntries.add(new AttackLogEntry("", "", "", ""));
+		expectedEntries.add(new AttackLogEntry("", "", "", "", Instant.now()));
 
 		storage.saveLogEntries(expectedEntries);
 		Set<LogEntry> actualEntries = storage.getLogEntries();

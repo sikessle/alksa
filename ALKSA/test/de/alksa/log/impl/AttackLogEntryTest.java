@@ -2,6 +2,8 @@ package de.alksa.log.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Instant;
+
 import org.junit.Test;
 
 public class AttackLogEntryTest {
@@ -13,7 +15,7 @@ public class AttackLogEntryTest {
 		String databaseUser = "root";
 		String violation = "Columnlist violated";
 		AttackLogEntry attack = new AttackLogEntry(query, database,
-				databaseUser, violation);
+				databaseUser, violation, Instant.now());
 
 		assertEquals(query, attack.getQuery());
 		assertEquals(database, attack.getDatabase());
@@ -21,9 +23,9 @@ public class AttackLogEntryTest {
 		assertEquals(violation, attack.getViolation());
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void testGettersNull() {
-		new AttackLogEntry(null, null, null, null); 
+		new AttackLogEntry(null, null, null, null, null);
 	}
 
 }
