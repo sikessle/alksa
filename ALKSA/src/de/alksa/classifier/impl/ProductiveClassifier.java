@@ -14,7 +14,6 @@ class ProductiveClassifier implements ClassifierState {
 
 	private QueryStorage queryStorage;
 	private Logger logger;
-	private LogEntry latestLogEntry;
 
 	public ProductiveClassifier(QueryStorage queryStorage, Logger logger) {
 		Objects.requireNonNull(queryStorage);
@@ -28,32 +27,40 @@ class ProductiveClassifier implements ClassifierState {
 	public boolean accept(Query query) {
 		Objects.requireNonNull(query);
 
-		if (!isQueryAllowed(query)) {
-			logger.write(latestLogEntry);
+		LogEntry log = checkQuery(query);
+
+		if (log != null) {
+			logger.write(log);
 			return false;
 		}
 
 		return true;
 	}
 
-	private boolean isQueryAllowed(Query test) {
+	/**
+	 * Checks the subject against the learned queries and decides, if it is
+	 * allowed or not.
+	 *
+	 * @return null if the query is allowed. If it is disallowed a LogEntry is
+	 *         created and returned.
+	 */
+	private LogEntry checkQuery(Query subject) {
 		Set<Query> learnedQueries = queryStorage.read();
+		String violation = "<unknown>";
 
 		// quick check for equal queries
-		if (learnedQueries.contains(test)) {
-			return true;
+		if (learnedQueries.contains(subject)) {
+			return null;
 		}
 
 		// for (Query learned : queryStorage.read()) {
-		// if ()
+		// if () CREATE CHECKERS CLASSES IN LIST
 		// }
 
 		// ON FALSE: set logEntry!!!
 
-		latestLogEntry = new AttackLogEntry(test.getQueryString(),
-				test.getDatabase(), test.getDatabaseUser(), "CAUSE",
+		return new AttackLogEntry(subject.getQueryString(),
+				subject.getDatabase(), subject.getDatabaseUser(), violation,
 				Instant.now());
-
-		return false;
 	}
 }
