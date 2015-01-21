@@ -1,6 +1,7 @@
 package de.alksa;
 
 import java.util.Objects;
+import java.util.Set;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -8,6 +9,7 @@ import com.google.inject.Injector;
 import de.alksa.checker.impl.CheckerModule;
 import de.alksa.classifier.Classifier;
 import de.alksa.classifier.impl.ClassifierModule;
+import de.alksa.log.LogEntry;
 import de.alksa.log.impl.LogModule;
 import de.alksa.parser.impl.ParserModule;
 import de.alksa.persistence.impl.PersistenceModule;
@@ -42,6 +44,10 @@ public class ALKSA {
 
 	public boolean isLearning() {
 		return classifier.isLearning();
+	}
+
+	public Set<LogEntry> getLogEntries() {
+		return classifier.getLogEntries();
 	}
 
 }

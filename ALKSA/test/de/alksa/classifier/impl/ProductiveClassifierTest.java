@@ -132,9 +132,9 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 		}
 	}
 
-	private String errorMsg(Query queryTestedAgainstLearned) {
+	private String errorMsg(Query checkedQuery) {
 		return "LEARNED [" + learned.getQueryString() + "] <> SUBJECT ["
-				+ queryTestedAgainstLearned.getQueryString() + "]";
+				+ checkedQuery.getQueryString() + "]";
 	}
 
 	private static class LogEntryWithQuery extends ArgumentMatcher<LogEntry> {

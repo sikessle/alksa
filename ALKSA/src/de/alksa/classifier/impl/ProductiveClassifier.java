@@ -13,7 +13,7 @@ class ProductiveClassifier implements ClassifierState {
 
 	private QueryStorage queryStorage;
 	private Logger logger;
-	private QueryChecker matcherChecker;
+	private QueryChecker masterChecker;
 
 	public ProductiveClassifier(Set<QueryChecker> queryCheckers,
 			QueryStorage queryStorage, Logger logger) {
@@ -21,10 +21,10 @@ class ProductiveClassifier implements ClassifierState {
 		Objects.requireNonNull(queryStorage);
 		Objects.requireNonNull(logger);
 
-		matcherChecker = createDummyChecker();
+		masterChecker = createDummyChecker();
 
 		for (QueryChecker checker : queryCheckers) {
-			matcherChecker.appendMatcher(checker);
+			masterChecker.appendMatcher(checker);
 		}
 
 		this.queryStorage = queryStorage;
@@ -54,21 +54,23 @@ class ProductiveClassifier implements ClassifierState {
 	 */
 	private LogEntry checkQuery(Query subject) {
 		Set<Query> learnedQueries = queryStorage.read();
-		LogEntry log;
+		LogEntry log = null;
 
 		// quick check for equal queries
 		if (learnedQueries.contains(subject)) {
 			return null;
 		}
 
-		for (Query learned : queryStorage.read()) {
-			log = matcherChecker.checkSubjectAgainstLearned(subject, learned);
-			if (log != null) {
-				return log;
+		for (Query learned : learnedQueries) {
+			log = masterChecker.checkSubjectAgainstLearned(subject, learned);
+			if (log == null) {
+				// subject has found one learned query in database which is
+				// similar.
+				break;
 			}
 		}
 
-		return null;
+		return log;
 	}
 
 	private QueryChecker createDummyChecker() {

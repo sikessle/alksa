@@ -1,5 +1,9 @@
 package de.alksa.classifier;
 
+import java.util.Set;
+
+import de.alksa.log.LogEntry;
+
 public interface Classifier {
 
 	/**
@@ -13,5 +17,7 @@ public interface Classifier {
 	void setLearning(boolean learning);
 
 	boolean isLearning();
+
+	Set<LogEntry> getLogEntries();
 
 }

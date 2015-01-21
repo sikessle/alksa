@@ -9,6 +9,7 @@ import com.google.inject.Singleton;
 
 import de.alksa.checker.QueryChecker;
 import de.alksa.classifier.Classifier;
+import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
 import de.alksa.parser.Parser;
 import de.alksa.querystorage.Query;
@@ -79,6 +80,11 @@ class CheckerBasedClassifier implements Classifier {
 			state = new ProductiveClassifier(queryCheckers, queryStorage,
 					logger);
 		}
+	}
+
+	@Override
+	public Set<LogEntry> getLogEntries() {
+		return logger.read();
 	}
 
 }
