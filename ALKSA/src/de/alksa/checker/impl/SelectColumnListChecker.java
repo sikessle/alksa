@@ -10,6 +10,7 @@ public class SelectColumnListChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
+		// if isSubset() or ....
 		return createLogEntry("not yet implemented");
 	}
 

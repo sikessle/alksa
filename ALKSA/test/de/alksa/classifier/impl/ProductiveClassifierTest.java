@@ -88,7 +88,8 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 		// allowed
 		data[0][1] = Arrays.asList("SELECT col1 FROM tab",
 				"SELECT col1 FROM tab UNION SELECT col1 FROM tab");
-		// disallowed
+		// disallowed TODO zweite Query (SELECT col2) etc. muss abgelehnt
+		// werden.
 		data[0][2] = Arrays
 				.asList("SELECT col1 FROM tab UNION SELECT col2 FROM tab2");
 
