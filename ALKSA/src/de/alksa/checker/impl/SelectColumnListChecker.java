@@ -4,6 +4,7 @@ import java.util.Set;
 
 import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
+import de.alksa.token.ColumnNameToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 
@@ -18,11 +19,15 @@ public class SelectColumnListChecker extends QueryChecker {
 		Set<? extends Token> learnedList = learned.getColumnList()
 				.getChildren();
 
-		if (isSubSet(subjectList, learnedList)) {
+		if (containsAsterisk(learnedList) || isSubSet(subjectList, learnedList)) {
 			return null;
 		}
 
-		return createLogEntry("not yet implemented");
+		return createLogEntry("column list is not a subset");
+	}
+
+	private boolean containsAsterisk(Set<? extends Token> learned) {
+		return learned.contains(new ColumnNameToken("*"));
 	}
 
 	private boolean isSubSet(Set<? extends Token> subject,

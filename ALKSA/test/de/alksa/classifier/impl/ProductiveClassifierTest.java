@@ -66,7 +66,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 		Set<Query> disallowedQueries = new HashSet<>();
 
 		fillCollectionWithQueries(allowedStrings, allowedQueries);
-		fillCollectionWithQueries(allowedStrings, disallowedQueries);
+		fillCollectionWithQueries(disallowedStrings, disallowedQueries);
 
 		this.allowed = allowedQueries;
 		this.disallowed = disallowedQueries;
@@ -88,10 +88,16 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 		// allowed
 		data[0][1] = Arrays.asList("SELECT col1, col2 FROM tab",
 				"SELECT col1 FROM tab UNION SELECT col2 FROM tab");
-		// disallowed TODO zweite Query (SELECT col2) etc. muss abgelehnt
-		// werden.
+		// disallowed
 		data[0][2] = Arrays
-				.asList("SELECT col1 FROM tab UNION SELECT col2 FROM tab2");
+				.asList("SELECT col1 FROM tab UNION SELECT colNotAllowed FROM tabNotAllowed");
+
+		// learned
+		// data[1][0] = "SELECT * FROM tab";
+		// allowed
+		// data[1][1] = Arrays.asList("SELECT col1, col2 FROM tab");
+		// disallowed
+		// data[1][2] = Arrays.asList();
 
 		return Arrays.asList(data);
 	}
@@ -161,6 +167,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 		if (latestLog != null) {
 			message += "\nVIOLATION [" + latestLog.getViolation() + "]";
 		}
+		latestLog = null;
 
 		return message;
 	}
