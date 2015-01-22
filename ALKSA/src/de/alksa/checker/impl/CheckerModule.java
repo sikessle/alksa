@@ -13,6 +13,7 @@ public class CheckerModule extends AbstractModule {
 				QueryChecker.class);
 		binder.addBinding().to(SelectColumnListNameChecker.class);
 		binder.addBinding().to(SelectColumnListFunctionChecker.class);
+		binder.addBinding().to(SelectColumnListCalculationChecker.class);
 		// TODO checker: fromList..
 	}
 

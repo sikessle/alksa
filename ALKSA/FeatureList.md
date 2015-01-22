@@ -39,6 +39,7 @@
 * Check of simple column names
 * Support for Asterisk * 
 * Check of functions (without function groups)
+* Check of calculations
 
 ### Set operations
 

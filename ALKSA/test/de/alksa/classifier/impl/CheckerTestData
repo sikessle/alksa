@@ -42,6 +42,7 @@ SELECT COUNT(col2) FROM tab
 SELECT AVG(col1) FROM tab
 
 #~disallowed~#
+SELECT col1 FROM tab
 SELECT col1, col2 FROM tab
 SELECT COUNT(col1) FROM tab
 SELECT COUNT(col3) FROM tab
@@ -49,6 +50,19 @@ SELECT COUNT(col3) FROM tab
 #~ENDQUERY~#
 
 
+#~QUERY~#
+
+#~learned~#
+SELECT 12 * 8 AS x, col2 * 5, col3 FROM tab
+
+#~allowed~#
+SELECT 1 * 1 AS x, col2 * 5 FROM tab
+SELECT 12 * 8 AS x, col2 * 5, col3 + 4 AS col3Added FROM tab
+
+#~disallowed~#
+SELECT 12 * 8 AS x, col2 * 1, col3 FROM tab
+
+#~ENDQUERY~#
 
 
 
