@@ -1,6 +1,6 @@
 package de.alksa.classifier.impl;
 
-import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -21,7 +21,7 @@ public abstract class StateClassifierTest {
 	}
 
 	protected Query createQuery(String sql, String database, String databaseUser) {
-		List<Token> tokens = parser.parse(sql);
+		Set<Token> tokens = parser.parse(sql);
 		return new QueryImpl(tokens, sql, database, databaseUser);
 	}
 }

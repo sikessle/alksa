@@ -63,7 +63,7 @@ class FromJoinVisitor extends AbstractVisitor {
 		AbstractVisitor visitor = new FromBaseTableVisitor();
 		node.accept(visitor);
 
-		return visitor.getTokens().get(0);
+		return visitor.getTokens().iterator().next();
 	}
 
 	private Token getJoinToken(Visitable node) throws StandardException {
@@ -71,7 +71,7 @@ class FromJoinVisitor extends AbstractVisitor {
 
 		node.accept(visitor);
 
-		return visitor.getTokens().get(0);
+		return visitor.getTokens().iterator().next();
 	}
 
 	private FilterToken getOnClause(JoinNode join) throws StandardException {

@@ -1,10 +1,10 @@
 package de.alksa.token;
 
-import java.util.List;
+import java.util.Set;
 
 public class FromListToken extends HierarchyToken {
 
-	public FromListToken(List<? extends Token> tableTokens) {
+	public FromListToken(Set<? extends Token> tableTokens) {
 		setTokens(tableTokens);
 	}
 

@@ -1,18 +1,18 @@
 package de.alksa.token;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class HierarchyToken extends Token {
 
-	private List<? extends Token> tokens;
+	private Set<? extends Token> tokens;
 
-	protected void setTokens(List<? extends Token> tokens) {
-		this.tokens = tokens == null ? new ArrayList<>() : tokens;
+	protected void setTokens(Set<? extends Token> tokens) {
+		this.tokens = tokens == null ? new HashSet<>() : tokens;
 	}
 
-	public List<? extends Token> getChildren() {
+	public Set<? extends Token> getChildren() {
 		return tokens;
 	}
 
@@ -26,18 +26,23 @@ public abstract class HierarchyToken extends Token {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		HierarchyToken other = (HierarchyToken) obj;
 		if (tokens == null) {
-			if (other.tokens != null)
+			if (other.tokens != null) {
 				return false;
-		} else if (!tokens.equals(other.tokens))
+			}
+		} else if (!tokens.equals(other.tokens)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -45,7 +50,7 @@ public abstract class HierarchyToken extends Token {
 	public String toString() {
 		return "("
 				+ tokens.stream().map(Object::toString)
-						.collect(Collectors.joining(",")) + ")";
+				.collect(Collectors.joining(",")) + ")";
 	}
 
 }

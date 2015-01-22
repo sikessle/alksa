@@ -1,12 +1,12 @@
 package de.alksa.token;
 
-import java.util.List;
+import java.util.Set;
 
 public class FunctionToken extends HierarchyToken {
 
 	private String operator;
 
-	public FunctionToken(String operator, List<? extends Token> parameters) {
+	public FunctionToken(String operator, Set<? extends Token> parameters) {
 		setTokens(parameters);
 		this.operator = operator;
 	}
@@ -26,18 +26,23 @@ public class FunctionToken extends HierarchyToken {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		FunctionToken other = (FunctionToken) obj;
 		if (operator == null) {
-			if (other.operator != null)
+			if (other.operator != null) {
 				return false;
-		} else if (!operator.equals(other.operator))
+			}
+		} else if (!operator.equals(other.operator)) {
 			return false;
+		}
 		return true;
 	}
 

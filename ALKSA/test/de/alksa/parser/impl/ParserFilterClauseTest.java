@@ -1,12 +1,8 @@
 package de.alksa.parser.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +17,10 @@ import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 import de.alksa.token.UnaryLogicalFilterToken;
 import de.alksa.token.WhereClauseToken;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Checks filters in WHERE Statements
@@ -49,17 +49,18 @@ public class ParserFilterClauseTest {
 		Token expected = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.OR, andToken, notToken);
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
 		for (Token token : tokens) {
 			if (token instanceof WhereClauseToken) {
-				Token actual = ((WhereClauseToken) token).getChildren().get(0);
+				Token actual = ((WhereClauseToken) token).getChildren()
+						.iterator().next();
 
 				assertEquals(expected, actual);
 
@@ -92,17 +93,18 @@ public class ParserFilterClauseTest {
 		Token expected = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.OR, andToken, notToken);
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
 		for (Token token : tokens) {
 			if (token instanceof WhereClauseToken) {
-				Token actual = ((WhereClauseToken) token).getChildren().get(0);
+				Token actual = ((WhereClauseToken) token).getChildren()
+						.iterator().next();
 
 				assertEquals(expected, actual);
 
@@ -126,7 +128,7 @@ public class ParserFilterClauseTest {
 				new ConstantValueToken(2));
 		Token bLess3 = new ComparisonFilterToken(new ColumnNameToken("b"),
 				ComparisonFilterToken.Type.LESS, new ConstantValueToken(3));
-		List<Token> parameters = new ArrayList<>();
+		Set<Token> parameters = new HashSet<>();
 		parameters.add(new ConstantValueToken(2));
 		Token cEqualAbs2 = new ComparisonFilterToken(new ColumnNameToken("c"),
 				ComparisonFilterToken.Type.EQUAL, new FunctionToken("ABS",
@@ -138,17 +140,18 @@ public class ParserFilterClauseTest {
 		Token expected = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.OR, aGreaterEqual2, andToken);
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
 		for (Token token : tokens) {
 			if (token instanceof WhereClauseToken) {
-				Token actual = ((WhereClauseToken) token).getChildren().get(0);
+				Token actual = ((WhereClauseToken) token).getChildren()
+						.iterator().next();
 
 				assertEquals(expected, actual);
 				tokenExists = true;
@@ -167,20 +170,21 @@ public class ParserFilterClauseTest {
 		boolean tokenExists = false;
 
 		Token expected = new ComparisonFilterToken(new FunctionToken("AVG",
-				Arrays.asList(new ColumnNameToken("col1"))),
+				new HashSet<>(Arrays.asList(new ColumnNameToken("col1")))),
 				ComparisonFilterToken.Type.GREATER, new ConstantValueToken(10));
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
 		for (Token token : tokens) {
 			if (token instanceof HavingClauseToken) {
-				Token actual = ((HavingClauseToken) token).getChildren().get(0);
+				Token actual = ((HavingClauseToken) token).getChildren()
+						.iterator().next();
 
 				assertEquals(expected, actual);
 

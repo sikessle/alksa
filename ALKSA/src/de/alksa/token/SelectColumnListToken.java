@@ -1,10 +1,10 @@
 package de.alksa.token;
 
-import java.util.List;
+import java.util.Set;
 
 public class SelectColumnListToken extends HierarchyToken {
 
-	public SelectColumnListToken(List<? extends Token> columnTokens) {
+	public SelectColumnListToken(Set<? extends Token> columnTokens) {
 		setTokens(columnTokens);
 	}
 

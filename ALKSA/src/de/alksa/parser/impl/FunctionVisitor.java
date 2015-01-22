@@ -1,7 +1,7 @@
 package de.alksa.parser.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.AggregateNode;
@@ -18,7 +18,7 @@ class FunctionVisitor extends AbstractVisitor {
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
-		List<Token> parameters = new ArrayList<>();
+		Set<Token> parameters = new HashSet<>();
 
 		if (node instanceof UnaryArithmeticOperatorNode
 				|| node instanceof AggregateNode) {

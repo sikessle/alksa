@@ -1,8 +1,8 @@
 package de.alksa.parser.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.Visitable;
@@ -12,9 +12,9 @@ import de.alksa.token.Token;
 
 abstract class AbstractVisitor implements Visitor {
 
-	private List<Token> tokens = new ArrayList<>();
+	private Set<Token> tokens = new HashSet<>();
 
-	public List<Token> getTokens() {
+	public Set<Token> getTokens() {
 		return tokens;
 	}
 
@@ -24,11 +24,11 @@ abstract class AbstractVisitor implements Visitor {
 		}
 	}
 
-	protected void addAllTokens(List<Token> tokenList) {
+	protected void addAllTokens(Set<Token> tokenList) {
 		tokens.addAll(tokenList);
 	}
 
-	protected List<Token> visitWithCombinedVisitor(Visitable node)
+	protected Set<Token> visitWithCombinedVisitor(Visitable node)
 			throws StandardException {
 
 		Objects.requireNonNull(node);

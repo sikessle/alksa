@@ -30,7 +30,8 @@ class LearningClassifier implements ClassifierState {
 		// would be better to save just the appropriate part.
 		for (Token token : multiQuery.getQuery()) {
 			if (token instanceof SelectStatementToken) {
-				Query query = new QueryImpl(Arrays.asList(token),
+				Query query = new QueryImpl(
+						new HashSet<>(Arrays.asList(token)),
 						multiQuery.getQueryString(), multiQuery.getDatabase(),
 						multiQuery.getDatabaseUser());
 				queries.add(query);

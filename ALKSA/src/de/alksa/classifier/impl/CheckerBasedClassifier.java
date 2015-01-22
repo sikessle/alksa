@@ -1,6 +1,5 @@
 package de.alksa.classifier.impl;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -61,7 +60,7 @@ class CheckerBasedClassifier implements Classifier {
 	}
 
 	private Query createQuery(String sql, String database, String databaseUser) {
-		List<Token> tokens = parser.parse(sql);
+		Set<Token> tokens = parser.parse(sql);
 		return new QueryImpl(tokens, sql, database, databaseUser);
 	}
 

@@ -1,7 +1,7 @@
 package de.alksa.parser.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.SQLParser;
@@ -23,9 +23,9 @@ class VisitorBasedParser implements Parser {
 	}
 
 	@Override
-	public List<Token> parse(String sql) throws RuntimeException {
+	public Set<Token> parse(String sql) throws RuntimeException {
 		this.sql = sql;
-		List<Token> tokenizedQuery = new ArrayList<>();
+		Set<Token> tokenizedQuery = new HashSet<>();
 
 		try {
 			startParsing(tokenizedQuery);
@@ -36,7 +36,7 @@ class VisitorBasedParser implements Parser {
 		return tokenizedQuery;
 	}
 
-	private void startParsing(List<Token> target) throws StandardException {
+	private void startParsing(Set<Token> target) throws StandardException {
 		stmt = sqlParser.parseStatement(sql);
 
 		AbstractVisitor visitor = new RootVisitor();

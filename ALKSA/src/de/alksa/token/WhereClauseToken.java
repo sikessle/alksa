@@ -1,10 +1,10 @@
 package de.alksa.token;
 
-import java.util.List;
+import java.util.Set;
 
 public class WhereClauseToken extends HierarchyToken {
 
-	public WhereClauseToken(List<? extends Token> filterTokens) {
+	public WhereClauseToken(Set<? extends Token> filterTokens) {
 		setTokens(filterTokens);
 	}
 

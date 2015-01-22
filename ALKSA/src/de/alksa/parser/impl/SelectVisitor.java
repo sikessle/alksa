@@ -1,7 +1,7 @@
 package de.alksa.parser.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.FromList;
@@ -49,7 +49,7 @@ class SelectVisitor extends AbstractVisitor {
 	private SelectColumnListToken visitSelectColumnList(
 			ResultColumnList columnList) throws StandardException {
 
-		List<Token> tokens = new ArrayList<>();
+		Set<Token> tokens = new HashSet<>();
 
 		for (ResultColumn resultColumn : columnList) {
 			tokens.addAll(visitWithCombinedVisitor(resultColumn));
@@ -61,7 +61,7 @@ class SelectVisitor extends AbstractVisitor {
 	private FromListToken visitSelectFromList(FromList fromList)
 			throws StandardException {
 
-		List<Token> tokens = new ArrayList<>();
+		Set<Token> tokens = new HashSet<>();
 
 		for (FromTable fromTable : fromList) {
 			tokens.addAll(visitWithCombinedVisitor(fromTable));

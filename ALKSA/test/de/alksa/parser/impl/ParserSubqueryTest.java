@@ -1,8 +1,7 @@
 package de.alksa.parser.impl;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,8 @@ import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
 import de.alksa.token.WhereClauseToken;
+
+import static org.junit.Assert.assertEquals;
 
 public class ParserSubqueryTest {
 
@@ -29,23 +30,23 @@ public class ParserSubqueryTest {
 	public void testSubqueryInSelectList() {
 		String sql = "SELECT (SELECT x FROM b) AS sub FROM tab";
 
-		Token columnListSubquery = new SelectColumnListToken(
-				Arrays.asList(new ColumnNameToken("x")));
-		Token fromTableSubquery = new FromListToken(
-				Arrays.asList(new TableNameToken("b")));
+		Token columnListSubquery = new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(new ColumnNameToken("x"))));
+		Token fromTableSubquery = new FromListToken(new HashSet<>(
+				Arrays.asList(new TableNameToken("b"))));
 
-		Token subquery = new SelectStatementToken(Arrays.asList(
-				columnListSubquery, fromTableSubquery));
+		Token subquery = new SelectStatementToken(new HashSet<>(Arrays.asList(
+				columnListSubquery, fromTableSubquery)));
 
-		Token columnListTopLevel = new SelectColumnListToken(
-				Arrays.asList(subquery));
-		Token fromTableTopLevel = new FromListToken(
-				Arrays.asList(new TableNameToken("tab")));
+		Token columnListTopLevel = new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(subquery)));
+		Token fromTableTopLevel = new FromListToken(new HashSet<>(
+				Arrays.asList(new TableNameToken("tab"))));
 
-		SelectStatementToken expected = new SelectStatementToken(Arrays.asList(
-				columnListTopLevel, fromTableTopLevel));
+		SelectStatementToken expected = new SelectStatementToken(new HashSet<>(
+				Arrays.asList(columnListTopLevel, fromTableTopLevel)));
 
-		Token actual = parser.parse(sql).get(0);
+		Token actual = parser.parse(sql).iterator().next();
 
 		assertEquals(expected, actual);
 	}
@@ -54,22 +55,23 @@ public class ParserSubqueryTest {
 	public void testSubqueryInFromList() {
 		String sql = "SELECT a FROM (SELECT x FROM b) subAlias";
 
-		Token columnListSubquery = new SelectColumnListToken(
-				Arrays.asList(new ColumnNameToken("x")));
-		Token fromTableSubquery = new FromListToken(
-				Arrays.asList(new TableNameToken("b")));
+		Token columnListSubquery = new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(new ColumnNameToken("x"))));
+		Token fromTableSubquery = new FromListToken(new HashSet<>(
+				Arrays.asList(new TableNameToken("b"))));
 
-		Token subquery = new SelectStatementToken(Arrays.asList(
-				columnListSubquery, fromTableSubquery));
+		Token subquery = new SelectStatementToken(new HashSet<>(Arrays.asList(
+				columnListSubquery, fromTableSubquery)));
 
-		Token columnListTopLevel = new SelectColumnListToken(
-				Arrays.asList(new ColumnNameToken("a")));
-		Token fromTableTopLevel = new FromListToken(Arrays.asList(subquery));
+		Token columnListTopLevel = new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(new ColumnNameToken("a"))));
+		Token fromTableTopLevel = new FromListToken(new HashSet<>(
+				Arrays.asList(subquery)));
 
-		SelectStatementToken expected = new SelectStatementToken(Arrays.asList(
-				columnListTopLevel, fromTableTopLevel));
+		SelectStatementToken expected = new SelectStatementToken(new HashSet<>(
+				Arrays.asList(columnListTopLevel, fromTableTopLevel)));
 
-		Token actual = parser.parse(sql).get(0);
+		Token actual = parser.parse(sql).iterator().next();
 
 		assertEquals(expected, actual);
 	}
@@ -78,28 +80,29 @@ public class ParserSubqueryTest {
 	public void testSubqueryInWhereClause() {
 		String sql = "SELECT a FROM b WHERE a = (SELECT x FROM b)";
 
-		Token columnListSubquery = new SelectColumnListToken(
-				Arrays.asList(new ColumnNameToken("x")));
-		Token fromTableSubquery = new FromListToken(
-				Arrays.asList(new TableNameToken("b")));
+		Token columnListSubquery = new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(new ColumnNameToken("x"))));
+		Token fromTableSubquery = new FromListToken(new HashSet<>(
+				Arrays.asList(new TableNameToken("b"))));
 
-		Token subquery = new SelectStatementToken(Arrays.asList(
-				columnListSubquery, fromTableSubquery));
+		Token subquery = new SelectStatementToken(new HashSet<>(Arrays.asList(
+				columnListSubquery, fromTableSubquery)));
 
-		Token columnListTopLevel = new SelectColumnListToken(
-				Arrays.asList(new ColumnNameToken("a")));
-		Token fromTableTopLevel = new FromListToken(
-				Arrays.asList(new TableNameToken("b")));
+		Token columnListTopLevel = new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(new ColumnNameToken("a"))));
+		Token fromTableTopLevel = new FromListToken(new HashSet<>(
+				Arrays.asList(new TableNameToken("b"))));
 
-		Token whereClauseTopLevel = new WhereClauseToken(
+		Token whereClauseTopLevel = new WhereClauseToken(new HashSet<>(
 				Arrays.asList(new ComparisonFilterToken(
 						new ColumnNameToken("a"),
-						ComparisonFilterToken.Type.EQUAL, subquery)));
+						ComparisonFilterToken.Type.EQUAL, subquery))));
 
-		SelectStatementToken expected = new SelectStatementToken(Arrays.asList(
-				columnListTopLevel, fromTableTopLevel, whereClauseTopLevel));
+		SelectStatementToken expected = new SelectStatementToken(new HashSet<>(
+				Arrays.asList(columnListTopLevel, fromTableTopLevel,
+						whereClauseTopLevel)));
 
-		Token actual = parser.parse(sql).get(0);
+		Token actual = parser.parse(sql).iterator().next();
 
 		assertEquals(expected, actual);
 	}

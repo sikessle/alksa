@@ -1,10 +1,10 @@
 package de.alksa.token;
 
-import java.util.List;
+import java.util.Set;
 
 public class SelectStatementToken extends HierarchyToken {
 
-	public SelectStatementToken(List<? extends Token> tokens) {
+	public SelectStatementToken(Set<? extends Token> tokens) {
 		setTokens(tokens);
 	}
 

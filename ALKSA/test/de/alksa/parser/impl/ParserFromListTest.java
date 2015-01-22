@@ -1,11 +1,7 @@
 package de.alksa.parser.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +15,10 @@ import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 public class ParserFromListTest {
 
 	private VisitorBasedParser parser;
@@ -31,17 +31,17 @@ public class ParserFromListTest {
 	@Test
 	public void testTableName() {
 		String sql = "SELECT c1 FROM users, depart";
-		List<TableNameToken> expected = new ArrayList<>();
-		List<? extends Token> actual;
+		Set<TableNameToken> expected = new HashSet<>();
+		Set<? extends Token> actual;
 		boolean tokenExists = false;
 
 		expected.add(new TableNameToken("users"));
 		expected.add(new TableNameToken("depart"));
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -65,16 +65,16 @@ public class ParserFromListTest {
 	@Test
 	public void testTableNameAlias() {
 		String sql = "SELECT c1 FROM users u, ignore1 CROSS JOIN ignore2";
-		List<TableNameToken> expected = new ArrayList<>();
-		List<? extends Token> actual;
+		Set<TableNameToken> expected = new HashSet<>();
+		Set<? extends Token> actual;
 		boolean tokenExists = false;
 
 		expected.add(new TableNameToken("users"));
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
@@ -123,17 +123,18 @@ public class ParserFromListTest {
 
 		expected.setOnClause(onClause);
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
 		for (Token token : tokens) {
 			if (token instanceof FromListToken) {
-				Token actual = ((FromListToken) token).getChildren().get(0);
+				Token actual = ((FromListToken) token).getChildren().iterator()
+						.next();
 
 				assertEquals(expected, actual);
 
@@ -169,17 +170,18 @@ public class ParserFromListTest {
 
 		JoinToken expected = rightJoin;
 
-		List<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = parser.parse(sql);
 
-		List<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.get(0)).getChildren();
+		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getChildren();
 
 		// otherwise loop could be skipped
 		assertTrue(tokens.size() > 0);
 
 		for (Token token : tokens) {
 			if (token instanceof FromListToken) {
-				Token actual = ((FromListToken) token).getChildren().get(0);
+				Token actual = ((FromListToken) token).getChildren().iterator()
+						.next();
 
 				assertEquals(expected, actual);
 

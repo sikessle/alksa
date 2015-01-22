@@ -1,11 +1,11 @@
 package de.alksa.parser;
 
-import java.util.List;
+import java.util.Set;
 
 import de.alksa.token.Token;
 
 public interface Parser {
 
-	List<Token> parse(String sql) throws RuntimeException;
+	Set<Token> parse(String sql) throws RuntimeException;
 
 }

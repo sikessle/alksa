@@ -34,13 +34,13 @@ class FilterVisitor extends AbstractVisitor {
 
 	private ComparisonFilterToken getComparisonToken(
 			BinaryRelationalOperatorNode relationalNode)
-			throws StandardException {
+					throws StandardException {
 		ComparisonFilterToken.Type operator = getFilterType(relationalNode);
 
 		Token leftPart = visitWithCombinedVisitor(
-				relationalNode.getLeftOperand()).get(0);
+				relationalNode.getLeftOperand()).iterator().next();
 		Token rightPart = visitWithCombinedVisitor(
-				relationalNode.getRightOperand()).get(0);
+				relationalNode.getRightOperand()).iterator().next();
 
 		return new ComparisonFilterToken(leftPart, operator, rightPart);
 	}
@@ -84,7 +84,8 @@ class FilterVisitor extends AbstractVisitor {
 
 			NotNode not = (NotNode) logicalNode;
 			Visitable operand = not.getOperand();
-			Token operandToken = visitWithCombinedVisitor(operand).get(0);
+			Token operandToken = visitWithCombinedVisitor(operand).iterator()
+					.next();
 
 			return new UnaryLogicalFilterToken(
 					UnaryLogicalFilterToken.Type.NOT, operandToken);
@@ -100,8 +101,10 @@ class FilterVisitor extends AbstractVisitor {
 
 		Visitable leftOperand = logicalNode.getLeftOperand();
 		Visitable rightOperand = logicalNode.getRightOperand();
-		Token leftToken = visitWithCombinedVisitor(leftOperand).get(0);
-		Token rightToken = visitWithCombinedVisitor(rightOperand).get(0);
+		Token leftToken = visitWithCombinedVisitor(leftOperand).iterator()
+				.next();
+		Token rightToken = visitWithCombinedVisitor(rightOperand).iterator()
+				.next();
 
 		return new BinaryLogicalFilterToken(type, leftToken, rightToken);
 	}
