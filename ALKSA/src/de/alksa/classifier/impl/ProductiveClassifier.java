@@ -9,6 +9,7 @@ import de.alksa.log.Logger;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 import de.alksa.token.SelectStatementToken;
+import de.alksa.util.TypeUtility;
 
 class ProductiveClassifier extends ClassifierState {
 
@@ -36,7 +37,7 @@ class ProductiveClassifier extends ClassifierState {
 	protected boolean acceptSingleSelectStatementQuery(Query query) {
 		Objects.requireNonNull(query);
 
-		LogEntry log = checkQuery(query);
+		LogEntry log = checkSingleSelectQuery(query);
 
 		if (log != null) {
 			logger.write(log);
@@ -53,7 +54,7 @@ class ProductiveClassifier extends ClassifierState {
 	 * @return null if the query is allowed. If it is disallowed a LogEntry is
 	 *         created and returned.
 	 */
-	private LogEntry checkQuery(Query subject) {
+	private LogEntry checkSingleSelectQuery(Query subject) {
 		Set<Query> learnedQueries = queryStorage.read();
 		LogEntry log = null;
 
@@ -62,6 +63,10 @@ class ProductiveClassifier extends ClassifierState {
 			return null;
 		}
 
+		SelectStatementToken subjectSelect = TypeUtility.getFirstTokenOfType(
+				subject.getQuery(), SelectStatementToken.class);
+		SelectStatementToken learnedSelect;
+
 		for (Query learned : learnedQueries) {
 			// TODO better performance: Use Map structure for storing the
 			// queries
@@ -69,7 +74,12 @@ class ProductiveClassifier extends ClassifierState {
 				continue;
 			}
 
-			log = masterChecker.checkSubjectAgainstLearned(subject, learned);
+			learnedSelect = TypeUtility.getFirstTokenOfType(learned.getQuery(),
+					SelectStatementToken.class);
+
+			log = masterChecker.checkSubjectAgainstLearned(subjectSelect,
+					subject, learnedSelect);
+
 			if (log == null) {
 				// subject has found one learned query in database which is
 				// similar.

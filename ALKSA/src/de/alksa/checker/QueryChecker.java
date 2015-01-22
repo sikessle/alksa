@@ -2,27 +2,27 @@ package de.alksa.checker;
 
 import java.time.Instant;
 import java.util.Objects;
-import java.util.Set;
 
 import de.alksa.log.LogEntry;
 import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
 import de.alksa.token.SelectStatementToken;
-import de.alksa.token.Token;
 
 public abstract class QueryChecker {
 
 	private QueryChecker next;
-	private Query subject;
+	private Query subjectQueryData;
 
-	public LogEntry checkSubjectAgainstLearned(Query subject, Query learned) {
+	public LogEntry checkSubjectAgainstLearned(SelectStatementToken subject,
+			Query subjectQueryData, SelectStatementToken learned) {
 
-		this.subject = subject;
-		LogEntry log = check(getSelectStatementToken(subject),
-				getSelectStatementToken(learned));
+		this.subjectQueryData = subjectQueryData;
+
+		LogEntry log = check(subject, learned);
 
 		if (log == null && next != null) {
-			return next.checkSubjectAgainstLearned(subject, learned);
+			return next.checkSubjectAgainstLearned(subject, subjectQueryData,
+					learned);
 		} else if (log != null) {
 			return log;
 		} else {
@@ -40,15 +40,6 @@ public abstract class QueryChecker {
 		}
 	}
 
-	private SelectStatementToken getSelectStatementToken(Query query) {
-		for (Token token : query.getQuery()) {
-			if (token instanceof SelectStatementToken) {
-				return (SelectStatementToken) token;
-			}
-		}
-		throw new IllegalStateException("no SelectStatementToken found");
-	}
-
 	protected abstract LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned);
 
@@ -56,22 +47,10 @@ public abstract class QueryChecker {
 		String detailedViolation = this.getClass().getSimpleName() + ": "
 				+ violation;
 
-		return new AttackLogEntry(subject.getQueryString(),
-				subject.getDatabase(), subject.getDatabaseUser(),
-				detailedViolation, Instant.now());
-	}
-
-	@SuppressWarnings("unchecked")
-	protected <T> T getFirstTokenOfType(Set<? extends Token> tokens,
-			Class<T> clazz) {
-
-		for (Token token : tokens) {
-			if (clazz.isInstance(token)) {
-				return (T) token;
-			}
-		}
-
-		return null;
+		return new AttackLogEntry(subjectQueryData.getQueryString(),
+				subjectQueryData.getDatabase(),
+				subjectQueryData.getDatabaseUser(), detailedViolation,
+				Instant.now());
 	}
 
 }

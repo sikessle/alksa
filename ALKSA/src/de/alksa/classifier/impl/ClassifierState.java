@@ -7,7 +7,7 @@ import java.util.Set;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.impl.QueryImpl;
 import de.alksa.token.SelectStatementToken;
-import de.alksa.token.Token;
+import de.alksa.util.TypeUtility;
 
 abstract class ClassifierState {
 
@@ -26,13 +26,14 @@ abstract class ClassifierState {
 
 	private Set<Query> splitIntoSingleSelectStatementQueries(Query query) {
 
+		Set<SelectStatementToken> selectTokens = TypeUtility
+				.getAllTokensOfType(query.getQuery(),
+						SelectStatementToken.class);
+
 		Set<Query> selectQueries = new HashSet<>();
 
-		for (Token token : query.getQuery()) {
-			if (token instanceof SelectStatementToken) {
-				selectQueries.add(createQuery((SelectStatementToken) token,
-						query));
-			}
+		for (SelectStatementToken select : selectTokens) {
+			selectQueries.add(createQuery(select, query));
 		}
 
 		return selectQueries;
