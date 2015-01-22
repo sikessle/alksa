@@ -15,7 +15,6 @@ import de.alksa.token.Token;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ParserSelectColumnListTest {
 
@@ -36,68 +35,34 @@ public class ParserSelectColumnListTest {
 		// hiddenCol and col3 should not come up in the select column list
 		String sql = "SELECT users.col1 AS c1, col2, ABS(col3) FROM users WHERE hiddenCol = 'a'";
 		Set<ColumnNameToken> expected = new HashSet<>();
-		Set<? extends Token> actual;
-		boolean tokenExists = false;
 
 		expected.add(new ColumnNameToken("users.col1"));
 		expected.add(new ColumnNameToken("col2"));
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getColumnList().getChildren();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
-
-		for (Token token : tokens) {
-			if (token instanceof SelectColumnListToken) {
-				actual = ((SelectColumnListToken) token).getChildren();
-
-				// minus 1 because of the ABS(col3) column
-				assertEquals(expected.size(), actual.size() - 1);
-				assertTrue(actual.containsAll(expected));
-
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No SelectColumnListToken found");
-		}
+		// minus 1 because of the ABS(col3) column
+		assertEquals(expected.size(), actual.size() - 1);
+		assertTrue(actual.containsAll(expected));
 	}
 
 	@Test
 	public void testColumnNameWithAsterisk() {
 		String sql = "SELECT * FROM users";
 		Set<ColumnNameToken> expected = new HashSet<>();
-		Set<? extends Token> actual;
-		boolean tokenExists = false;
 
 		expected.add(new ColumnNameToken("*"));
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getColumnList().getChildren();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
-
-		for (Token token : tokens) {
-			if (token instanceof SelectColumnListToken) {
-				actual = ((SelectColumnListToken) token).getChildren();
-
-				assertEquals(expected.size(), actual.size());
-				assertTrue(actual.containsAll(expected));
-
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No SelectColumnListToken found");
-		}
+		assertEquals(expected.size(), actual.size());
+		assertTrue(actual.containsAll(expected));
 	}
 
 	@Test
@@ -106,7 +71,6 @@ public class ParserSelectColumnListTest {
 		Set<Token> functionParametersABS = new HashSet<>();
 		Set<Token> functionParametersAVG = new HashSet<>();
 		Set<Token> expected = new HashSet<>();
-		boolean tokenExists = false;
 
 		// ABS(col1)
 		functionParametersABS.add(new ColumnNameToken("col1"));
@@ -118,23 +82,10 @@ public class ParserSelectColumnListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		SelectColumnListToken columnList = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getColumnList();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
-
-		for (Token t : tokens) {
-			if (t instanceof SelectColumnListToken) {
-				checkForFunctions((SelectColumnListToken) t, expected);
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No SelectColumnListToken found");
-		}
-
+		checkForFunctions(columnList, expected);
 	}
 
 	private void checkForFunctions(SelectColumnListToken selectColumnList,
@@ -155,34 +106,17 @@ public class ParserSelectColumnListTest {
 	public void testColumnCalculations() {
 		String sql = "SELECT col1 * 12 AS calc, 25+3 FROM users";
 		Set<CalculationToken> expected = new HashSet<>();
-		Set<? extends Token> actual;
-		boolean tokenExists = false;
 
 		expected.add(new CalculationToken("col1*12"));
 		expected.add(new CalculationToken("25+3"));
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getColumnList().getChildren();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
-
-		for (Token token : tokens) {
-			if (token instanceof SelectColumnListToken) {
-				actual = ((SelectColumnListToken) token).getChildren();
-
-				assertEquals(expected.size(), actual.size());
-				assertTrue(actual.containsAll(expected));
-
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No SelectColumnListToken found");
-		}
+		assertEquals(expected.size(), actual.size());
+		assertTrue(actual.containsAll(expected));
 	}
 
 }

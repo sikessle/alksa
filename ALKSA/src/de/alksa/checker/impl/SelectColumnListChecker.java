@@ -2,6 +2,7 @@ package de.alksa.checker.impl;
 
 import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
+import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.SelectStatementToken;
 
 public class SelectColumnListChecker extends QueryChecker {
@@ -10,7 +11,9 @@ public class SelectColumnListChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		// if isSubset() or ....
+		SelectColumnListToken subjectList = subject.getColumnList();
+		SelectColumnListToken learnedList = learned.getColumnList();
+
 		return createLogEntry("not yet implemented");
 	}
 

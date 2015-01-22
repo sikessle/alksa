@@ -25,9 +25,16 @@ class RootVisitor extends AbstractVisitor {
 	}
 
 	private void visitSelectNode(Visitable node) throws StandardException {
-		AbstractVisitor visitor = new SelectVisitor();
+		SelectVisitor visitor = new SelectVisitor();
 		node.accept(visitor);
-		addToken(new SelectStatementToken(visitor.getTokens()));
+
+		SelectStatementToken select = new SelectStatementToken();
+		select.setColumnList(visitor.getColumnListToken());
+		select.setFromList(visitor.getFromListToken());
+		select.setWhereClause(visitor.getWhereClauseToken());
+		select.setHavingClause(visitor.getHavingClauseToken());
+
+		addToken(select);
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public abstract class HierarchyToken extends Token {
 	public String toString() {
 		return "("
 				+ tokens.stream().map(Object::toString)
-				.collect(Collectors.joining(",")) + ")";
+						.collect(Collectors.joining(",")) + ")";
 	}
 
 }

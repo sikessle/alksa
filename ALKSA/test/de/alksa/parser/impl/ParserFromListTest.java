@@ -17,7 +17,6 @@ import de.alksa.token.Token;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ParserFromListTest {
 
@@ -32,75 +31,41 @@ public class ParserFromListTest {
 	public void testTableName() {
 		String sql = "SELECT c1 FROM users, depart";
 		Set<TableNameToken> expected = new HashSet<>();
-		Set<? extends Token> actual;
-		boolean tokenExists = false;
 
 		expected.add(new TableNameToken("users"));
 		expected.add(new TableNameToken("depart"));
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		FromListToken actual = ((SelectStatementToken) parsedTokens.iterator()
+				.next()).getFromList();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
-
-		for (Token token : tokens) {
-			if (token instanceof FromListToken) {
-				actual = ((FromListToken) token).getChildren();
-
-				assertEquals(expected.size(), actual.size());
-				assertTrue(actual.containsAll(expected));
-
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No FromListToken found");
-		}
+		assertEquals(expected.size(), actual.getChildren().size());
+		assertTrue(actual.getChildren().containsAll(expected));
 	}
 
 	@Test
 	public void testTableNameAlias() {
 		String sql = "SELECT c1 FROM users u, ignore1 CROSS JOIN ignore2";
 		Set<TableNameToken> expected = new HashSet<>();
-		Set<? extends Token> actual;
-		boolean tokenExists = false;
 
 		expected.add(new TableNameToken("users"));
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		FromListToken actual = ((SelectStatementToken) parsedTokens.iterator()
+				.next()).getFromList();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
-
-		for (Token token : tokens) {
-			if (token instanceof FromListToken) {
-				actual = ((FromListToken) token).getChildren();
-
-				// minus 1 because of the ignored join
-				assertEquals(expected.size(), actual.size() - 1);
-				assertTrue(actual.containsAll(expected));
-
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No FromListToken found");
-		}
+		// minus 1 because of the ignored join
+		assertEquals(expected.size(), actual.getChildren().size() - 1);
+		assertTrue(actual.getChildren().containsAll(expected));
 	}
 
 	@Test
 	public void testSimpleJoin() {
 		FilterToken onClause = new ComparisonFilterToken(new ColumnNameToken(
 				"col1"), ComparisonFilterToken.Type.EQUAL, new ColumnNameToken(
-						"col2"));
+				"col2"));
 		String onString = "on col1 = col2";
 		testJoinType(JoinToken.Type.INNER, onClause, onString);
 		testJoinType(JoinToken.Type.NATURAL, null, "");
@@ -112,7 +77,6 @@ public class ParserFromListTest {
 	private void testJoinType(JoinToken.Type joinType, FilterToken onClause,
 			String onClauseString) {
 		String sql = "SELECT c1 FROM users " + joinType + " JOIN departments";
-		boolean tokenExists = false;
 
 		if (onClause != null) {
 			sql += " " + onClauseString;
@@ -125,33 +89,18 @@ public class ParserFromListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		FromListToken fromList = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getFromList();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
+		Token actual = fromList.getChildren().iterator().next();
 
-		for (Token token : tokens) {
-			if (token instanceof FromListToken) {
-				Token actual = ((FromListToken) token).getChildren().iterator()
-						.next();
-
-				assertEquals(expected, actual);
-
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No FromListToken found");
-		}
+		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testMultiJoin() {
 		// (ll LEFT lr) RIGHT rr
 		String sql = "SELECT c1 FROM ll LEFT OUTER JOIN lr on c1 = c2 RIGHT OUTER JOIN rr on c3 = c4";
-		boolean tokenExists = false;
 
 		JoinToken leftJoin = new JoinToken(new TableNameToken("ll"),
 				JoinToken.Type.LEFT_OUTER, new TableNameToken("lr"));
@@ -172,25 +121,11 @@ public class ParserFromListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		Set<? extends Token> tokens = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getChildren();
+		FromListToken fromList = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getFromList();
 
-		// otherwise loop could be skipped
-		assertTrue(tokens.size() > 0);
+		Token actual = fromList.getChildren().iterator().next();
 
-		for (Token token : tokens) {
-			if (token instanceof FromListToken) {
-				Token actual = ((FromListToken) token).getChildren().iterator()
-						.next();
-
-				assertEquals(expected, actual);
-
-				tokenExists = true;
-			}
-		}
-
-		if (!tokenExists) {
-			fail("No FromListToken found");
-		}
+		assertEquals(expected, actual);
 	}
 }

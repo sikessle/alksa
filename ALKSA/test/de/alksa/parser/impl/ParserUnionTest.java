@@ -30,21 +30,21 @@ public class ParserUnionTest {
 	public void testUnion() {
 		String sql = "SELECT a FROM t1 UNION SELECT b FROM t2";
 		Set<SelectStatementToken> expected = new HashSet<>();
-		Set<Token> firstSelectTokens = new HashSet<>();
-		Set<Token> secondSelectTokens = new HashSet<>();
 
-		firstSelectTokens.add(new SelectColumnListToken(new HashSet<>(Arrays
-				.asList(new ColumnNameToken("a")))));
-		firstSelectTokens.add(new FromListToken(new HashSet<>(Arrays
+		SelectStatementToken firstSelect = new SelectStatementToken();
+		firstSelect.setColumnList(new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(new ColumnNameToken("a")))));
+		firstSelect.setFromList(new FromListToken(new HashSet<>(Arrays
 				.asList(new TableNameToken("t1")))));
 
-		secondSelectTokens.add(new SelectColumnListToken(new HashSet<>(Arrays
-				.asList(new ColumnNameToken("b")))));
-		secondSelectTokens.add(new FromListToken(new HashSet<>(Arrays
+		SelectStatementToken secondSelect = new SelectStatementToken();
+		secondSelect.setColumnList(new SelectColumnListToken(new HashSet<>(
+				Arrays.asList(new ColumnNameToken("b")))));
+		secondSelect.setFromList(new FromListToken(new HashSet<>(Arrays
 				.asList(new TableNameToken("t2")))));
 
-		expected.add(new SelectStatementToken(firstSelectTokens));
-		expected.add(new SelectStatementToken(secondSelectTokens));
+		expected.add(firstSelect);
+		expected.add(secondSelect);
 
 		Set<Token> actual = parser.parse(sql);
 

@@ -2,6 +2,7 @@ package de.alksa.checker;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 import de.alksa.log.LogEntry;
 import de.alksa.log.impl.AttackLogEntry;
@@ -29,6 +30,16 @@ public abstract class QueryChecker {
 		}
 	}
 
+	public void appendMatcher(QueryChecker next) {
+		Objects.requireNonNull(next);
+
+		if (this.next == null) {
+			this.next = next;
+		} else {
+			this.next.appendMatcher(next);
+		}
+	}
+
 	private SelectStatementToken getSelectStatementToken(Query query) {
 		for (Token token : query.getQuery()) {
 			if (token instanceof SelectStatementToken) {
@@ -50,14 +61,17 @@ public abstract class QueryChecker {
 				detailedViolation, Instant.now());
 	}
 
-	public void appendMatcher(QueryChecker next) {
-		Objects.requireNonNull(next);
+	@SuppressWarnings("unchecked")
+	protected <T> T getFirstTokenOfType(Set<? extends Token> tokens,
+			Class<T> clazz) {
 
-		if (this.next == null) {
-			this.next = next;
-		} else {
-			this.next.appendMatcher(next);
+		for (Token token : tokens) {
+			if (clazz.isInstance(token)) {
+				return (T) token;
+			}
 		}
+
+		return null;
 	}
 
 }

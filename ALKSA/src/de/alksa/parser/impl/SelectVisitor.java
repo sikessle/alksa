@@ -20,6 +20,11 @@ import de.alksa.token.WhereClauseToken;
 
 class SelectVisitor extends AbstractVisitor {
 
+	private SelectColumnListToken columnListToken;
+	private FromListToken fromListToken;
+	private WhereClauseToken whereClauseToken;
+	private HavingClauseToken havingClauseToken;
+
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
 		if (node instanceof SelectNode) {
@@ -29,21 +34,44 @@ class SelectVisitor extends AbstractVisitor {
 		return node;
 	}
 
+	public SelectColumnListToken getColumnListToken() {
+		return columnListToken;
+	}
+
+	public FromListToken getFromListToken() {
+		return fromListToken;
+	}
+
+	public WhereClauseToken getWhereClauseToken() {
+		return whereClauseToken;
+	}
+
+	public HavingClauseToken getHavingClauseToken() {
+		return havingClauseToken;
+	}
+
 	/**
 	 * Processes the whole node "SELECT .. FROM .. WHERE .."
 	 */
 	private void visitSelectNode(SelectNode select) throws StandardException {
-		ResultColumnList resultColumnList = select.getResultColumns();
-		addToken(visitSelectColumnList(resultColumnList));
+		columnListToken = visitSelectColumnList(select.getResultColumns());
 
-		FromList fromList = select.getFromList();
-		addToken(visitSelectFromList(fromList));
+		fromListToken = visitSelectFromList(select.getFromList());
 
-		ValueNode whereClause = select.getWhereClause();
-		addToken(visitWhereClause(whereClause));
+		whereClauseToken = visitWhereClause(select.getWhereClause());
 
-		ValueNode havingClause = select.getHavingClause();
-		addToken(visitHavingClause(havingClause));
+		havingClauseToken = visitHavingClause(select.getHavingClause());
+
+		addTokenIfNotNull(columnListToken);
+		addTokenIfNotNull(fromListToken);
+		addTokenIfNotNull(whereClauseToken);
+		addTokenIfNotNull(havingClauseToken);
+	}
+
+	private void addTokenIfNotNull(Token token) {
+		if (token != null) {
+			addToken(token);
+		}
 	}
 
 	private SelectColumnListToken visitSelectColumnList(
