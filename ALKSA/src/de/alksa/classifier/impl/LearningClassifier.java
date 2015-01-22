@@ -24,24 +24,33 @@ class LearningClassifier implements ClassifierState {
 	@Override
 	public boolean accept(Query multiQuery) {
 		Objects.requireNonNull(multiQuery);
-		Set<Query> queries = new HashSet<>();
+		Set<Query> selectStatements = new HashSet<>();
+		Query select = null;
 
 		// TODO currently we save the original queryString with UNION etc. It
-		// would be better to save just the appropriate part.
+		// would be better to save just the appropriate part. Limitation by
+		// parser.
 		for (Token token : multiQuery.getQuery()) {
-			if (token instanceof SelectStatementToken) {
-				Query query = new QueryImpl(
-						new HashSet<>(Arrays.asList(token)),
-						multiQuery.getQueryString(), multiQuery.getDatabase(),
-						multiQuery.getDatabaseUser());
-				queries.add(query);
+			select = separateTopLevelSelectStatements(token, multiQuery);
+			if (select != null) {
+				selectStatements.add(select);
 			}
 		}
 
-		for (Query query : queries) {
+		for (Query query : selectStatements) {
 			queryStorage.write(query);
 		}
 
 		return true;
+	}
+
+	private Query separateTopLevelSelectStatements(Token subject,
+			Query multiQuery) {
+		if (subject instanceof SelectStatementToken) {
+			return new QueryImpl(new HashSet<>(Arrays.asList(subject)),
+					multiQuery.getQueryString(), multiQuery.getDatabase(),
+					multiQuery.getDatabaseUser());
+		}
+		return null;
 	}
 }
