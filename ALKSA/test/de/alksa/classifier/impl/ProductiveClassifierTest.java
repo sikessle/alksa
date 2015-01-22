@@ -91,7 +91,9 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 				"CheckerTestData").getPath();
 		Path path = new File(pathString).toPath();
 
-		return Arrays.asList(dataParser.parse(path));
+		Object[][] data = dataParser.parse(path);
+
+		return Arrays.asList(data);
 	}
 
 	@Before

@@ -10,6 +10,8 @@ SELECT col1 FROM tab UNION SELECT col2 FROM tab
 #~disallowed~#
 SELECT col1 FROM tab UNION SELECT colNotAllowed FROM tabNotAllowed
 
+#~ENDQUERY~#
+
 #~QUERY~#
 
 #~learned~#
@@ -17,4 +19,7 @@ SELECT * FROM tab
 
 #~allowed~#
 SELECT col1, col2 FROM tab
+
 #~disallowed~#
+
+#~ENDQUERY~#
