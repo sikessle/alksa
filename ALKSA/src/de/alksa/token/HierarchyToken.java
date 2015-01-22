@@ -13,7 +13,7 @@ public abstract class HierarchyToken extends Token {
 	}
 
 	public Set<? extends Token> getChildren() {
-		return tokens;
+		return new HashSet<>(tokens);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public abstract class HierarchyToken extends Token {
 	public String toString() {
 		return "("
 				+ tokens.stream().map(Object::toString)
-						.collect(Collectors.joining(",")) + ")";
+				.collect(Collectors.joining(",")) + ")";
 	}
 
 }

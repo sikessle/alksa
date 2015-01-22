@@ -38,5 +38,5 @@
 
 ## Subqueries
 
-* Classified as part of each statement, i.e. in SELECT <subquery> FROM .. the subquery is treated as a column. 
+* Classified as part of each statement, i.e. in SELECT <subquery> FROM .. the subquery is treated as a column. Therefore the subquery itself must be exactly the same, no variations allowed. 
 
