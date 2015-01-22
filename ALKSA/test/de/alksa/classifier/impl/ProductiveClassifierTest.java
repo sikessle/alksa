@@ -1,5 +1,7 @@
 package de.alksa.classifier.impl;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,7 +26,9 @@ import de.alksa.log.Logger;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
@@ -81,25 +85,13 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 
 	@Parameters
 	public static Collection<Object[]> generateData() {
-		Object[][] data = new Object[1][3];
+		TestDataParser dataParser = new TestDataParser();
 
-		// learned
-		data[0][0] = "SELECT col1, col2 FROM tab";
-		// allowed
-		data[0][1] = Arrays.asList("SELECT col1, col2 FROM tab",
-				"SELECT col1 FROM tab UNION SELECT col2 FROM tab");
-		// disallowed
-		data[0][2] = Arrays
-				.asList("SELECT col1 FROM tab UNION SELECT colNotAllowed FROM tabNotAllowed");
+		String pathString = ProductiveClassifierTest.class.getResource(
+				"CheckerTestData").getPath();
+		Path path = new File(pathString).toPath();
 
-		// learned
-		// data[1][0] = "SELECT * FROM tab";
-		// allowed
-		// data[1][1] = Arrays.asList("SELECT col1, col2 FROM tab");
-		// disallowed
-		// data[1][2] = Arrays.asList();
-
-		return Arrays.asList(data);
+		return Arrays.asList(dataParser.parse(path));
 	}
 
 	@Before
