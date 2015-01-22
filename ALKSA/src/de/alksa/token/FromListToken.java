@@ -8,9 +8,4 @@ public class FromListToken extends HierarchyToken {
 		setTokens(tableTokens);
 	}
 
-	@Override
-	public String toString() {
-		return " FROM " + super.toString();
-	}
-
 }

@@ -1,12 +1,12 @@
 #~QUERY~#
 
 #~learned~#
-SELECT AVG(col1) FROM tab
+SELECT col1 FROM tab
 
 #~allowed~#
-SELECT AVG(col1) FROM tab
+SELECT col1 FROM tab
 
 #~disallowed~#
-SELECT COUNT(col1) FROM tab
+SELECT col2 FROM tab
 
 #~ENDQUERY~#
