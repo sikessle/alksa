@@ -127,19 +127,20 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 
 	@Test
 	public void testEqualQuery() {
-		assertTrue(errorMsg(learned), classifier.accept(learned));
+		assertTrue(errorMsg(learned, "equal queries should be accepted"),
+				classifier.accept(learned));
 	}
 
 	@Test
 	public void testAllowedQueries() {
 		for (Query query : allowed) {
-
+			System.out.println(query.getQuery());
 			if (classifier.accept(query)) {
 				verify(loggerMock, never()).write(any());
 			} else {
 				verify(loggerMock).write(logCaptor.capture());
 				latestLog = logCaptor.getValue();
-				fail(errorMsg(query));
+				fail(errorMsg(query, "was rejected but should be allowed"));
 			}
 
 		}
@@ -148,19 +149,22 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	@Test
 	public void testDisallowedQueries() {
 		for (Query query : disallowed) {
-			assertFalse(errorMsg(query), classifier.accept(query));
+			System.out.println(query.getQuery());
+			assertFalse(errorMsg(query, "was allowed but should be rejected"),
+					classifier.accept(query));
 			verify(loggerMock).write(
 					argThat(new LogEntryWithQuery(query.getQueryString())));
 		}
 	}
 
-	private String errorMsg(Query checkedQuery) {
+	private String errorMsg(Query checkedQuery, String info) {
 		String message = "\nLEARNED [" + learned.getQueryString() + "]";
 		message += "\nSUBJECT [" + checkedQuery.getQueryString() + "]";
 
 		if (latestLog != null) {
 			message += "\nVIOLATION [" + latestLog.getViolation() + "]";
 		}
+		message += "\nINFO: " + info;
 		latestLog = null;
 
 		return message;

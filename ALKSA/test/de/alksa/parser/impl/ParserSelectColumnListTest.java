@@ -44,8 +44,6 @@ public class ParserSelectColumnListTest {
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getColumnList().getChildren();
 
-		System.out.println(parsedTokens);
-
 		// minus 1 because of the ABS(col3) column
 		assertEquals(expected.size(), actual.size() - 1);
 		assertTrue(actual.containsAll(expected));
