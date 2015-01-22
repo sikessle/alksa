@@ -12,6 +12,9 @@ public class CheckerModule extends AbstractModule {
 		Multibinder<QueryChecker> binder = Multibinder.newSetBinder(binder(),
 				QueryChecker.class);
 		binder.addBinding().to(SelectColumnListChecker.class);
+		// TODO checker: remove function tokens, calculation tokens. Check
+		// separately
+		// TODO checker: fromList..
 	}
 
 }

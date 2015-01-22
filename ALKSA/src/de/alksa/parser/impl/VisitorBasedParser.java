@@ -16,7 +16,6 @@ class VisitorBasedParser implements Parser {
 
 	private String sql;
 	private SQLParser sqlParser;
-	private StatementNode stmt;
 
 	public VisitorBasedParser() {
 		sqlParser = new SQLParser();
@@ -37,8 +36,7 @@ class VisitorBasedParser implements Parser {
 	}
 
 	private void startParsing(Set<Token> target) throws StandardException {
-		stmt = sqlParser.parseStatement(sql);
-
+		StatementNode stmt = sqlParser.parseStatement(sql);
 		AbstractVisitor visitor = new RootVisitor();
 		stmt.accept(visitor);
 		target.addAll(visitor.getTokens());

@@ -21,7 +21,12 @@ public abstract class StateClassifierTest {
 	}
 
 	protected Query createQuery(String sql, String database, String databaseUser) {
-		Set<Token> tokens = parser.parse(sql);
-		return new QueryImpl(tokens, sql, database, databaseUser);
+		try {
+			Set<Token> tokens = parser.parse(sql);
+			return new QueryImpl(tokens, sql, database, databaseUser);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

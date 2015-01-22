@@ -134,12 +134,12 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	public void testAllowedQueries() {
 		for (Query query : allowed) {
 
-			if (!classifier.accept(query)) {
+			if (classifier.accept(query)) {
+				verify(loggerMock, never()).write(any());
+			} else {
 				verify(loggerMock).write(logCaptor.capture());
 				latestLog = logCaptor.getValue();
 				fail(errorMsg(query));
-			} else {
-				verify(loggerMock, never()).write(any());
 			}
 
 		}
