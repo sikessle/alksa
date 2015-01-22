@@ -8,6 +8,7 @@ SELECT col1, col2 FROM tab
 SELECT col1 FROM tab UNION SELECT col2 FROM tab
 SELECT col1 FROM tab
 SELECT col2 FROM tab
+SELECT ABS(col1) FROM tab
 
 #~disallowed~#
 SELECT col1 FROM tab UNION SELECT colNotAllowed FROM tabNotAllowed
@@ -18,14 +19,12 @@ SELECT * FROM tab
 
 #~QUERY~#
 
-
-#~QUERY~#
-
 #~learned~#
 SELECT * FROM tab
 
 #~allowed~#
 SELECT col1, col2 FROM tab
+SELECT ABS(col1) FROM tab
 
 #~disallowed~#
 
@@ -39,11 +38,13 @@ SELECT AVG(col1), col2 FROM tab
 
 #~allowed~#
 SELECT col2 FROM tab
-SELECT COUNT(col1) FROM tab
+SELECT COUNT(col2) FROM tab
+SELECT AVG(col1) FROM tab
 
 #~disallowed~#
 SELECT col1, col2 FROM tab
-SELECT col1, col2 FROM tab
+SELECT COUNT(col1) FROM tab
+SELECT COUNT(col3) FROM tab
 
 #~ENDQUERY~#
 

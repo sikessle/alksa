@@ -5,9 +5,9 @@ import java.util.Set;
 
 import de.alksa.token.Token;
 
-public class TypeUtility {
+public class TypeUtil {
 
-	private TypeUtility() {
+	private TypeUtil() {
 	}
 
 	@SuppressWarnings("unchecked")

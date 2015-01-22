@@ -9,7 +9,7 @@ import de.alksa.log.Logger;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 import de.alksa.token.SelectStatementToken;
-import de.alksa.util.TypeUtility;
+import de.alksa.util.TypeUtil;
 
 class ProductiveClassifier extends ClassifierState {
 
@@ -63,7 +63,7 @@ class ProductiveClassifier extends ClassifierState {
 			return null;
 		}
 
-		SelectStatementToken subjectSelect = TypeUtility.getFirstTokenOfType(
+		SelectStatementToken subjectSelect = TypeUtil.getFirstTokenOfType(
 				subject.getQuery(), SelectStatementToken.class);
 		SelectStatementToken learnedSelect;
 
@@ -74,7 +74,7 @@ class ProductiveClassifier extends ClassifierState {
 				continue;
 			}
 
-			learnedSelect = TypeUtility.getFirstTokenOfType(learned.getQuery(),
+			learnedSelect = TypeUtil.getFirstTokenOfType(learned.getQuery(),
 					SelectStatementToken.class);
 
 			log = masterChecker.checkSubjectAgainstLearned(subjectSelect,
