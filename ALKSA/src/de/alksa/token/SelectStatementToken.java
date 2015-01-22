@@ -45,7 +45,7 @@ public class SelectStatementToken extends Token {
 
 		sb.append("SELECT [");
 		if (columnList != null) {
-			sb.append(fromList);
+			sb.append(columnList);
 			sb.append(" ");
 		}
 		if (fromList != null) {
