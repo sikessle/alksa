@@ -10,7 +10,7 @@ import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 import de.alksa.token.SelectStatementToken;
 
-class ProductiveClassifier implements ClassifierState {
+class ProductiveClassifier extends ClassifierState {
 
 	private QueryStorage queryStorage;
 	private Logger logger;
@@ -33,7 +33,7 @@ class ProductiveClassifier implements ClassifierState {
 	}
 
 	@Override
-	public boolean accept(Query query) {
+	protected boolean acceptSingleSelectStatementQuery(Query query) {
 		Objects.requireNonNull(query);
 
 		LogEntry log = checkQuery(query);
