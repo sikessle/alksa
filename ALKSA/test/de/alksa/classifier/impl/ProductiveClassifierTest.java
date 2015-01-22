@@ -140,7 +140,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 			} else {
 				verify(loggerMock).write(logCaptor.capture());
 				latestLog = logCaptor.getValue();
-				fail(errorMsg(query, "was rejected but should be allowed"));
+				fail(errorMsg(query, "Subject is expected to be ACCEPTED"));
 			}
 
 		}
@@ -150,7 +150,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	public void testDisallowedQueries() {
 		for (Query query : disallowed) {
 			System.out.println(query.getQuery());
-			assertFalse(errorMsg(query, "was allowed but should be rejected"),
+			assertFalse(errorMsg(query, "Subject is expected to be REJECTED"),
 					classifier.accept(query));
 			verify(loggerMock).write(
 					argThat(new LogEntryWithQuery(query.getQueryString())));
@@ -158,7 +158,11 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	}
 
 	private String errorMsg(Query checkedQuery, String info) {
-		String message = "\nLEARNED [" + learned.getQueryString() + "]";
+		String caller = Thread.currentThread().getStackTrace()[2]
+				.getMethodName();
+
+		String message = "\nTEST [" + caller + "]";
+		message += "\nLEARNED [" + learned.getQueryString() + "]";
 		message += "\nSUBJECT [" + checkedQuery.getQueryString() + "]";
 
 		if (latestLog != null) {
