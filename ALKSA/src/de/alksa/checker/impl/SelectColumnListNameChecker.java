@@ -9,7 +9,7 @@ import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 import de.alksa.util.TypeUtility;
 
-public class SelectColumnListChecker extends QueryChecker {
+public class SelectColumnListNameChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,
@@ -24,7 +24,7 @@ public class SelectColumnListChecker extends QueryChecker {
 			return null;
 		}
 
-		return createLogEntry("column list is not a subset");
+		return createLogEntry("column names are not a subset");
 	}
 
 	private boolean containsAsterisk(Set<? extends Token> learned) {
