@@ -7,6 +7,7 @@ import de.alksa.log.LogEntry;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
+import de.alksa.util.TypeUtility;
 
 public class SelectColumnListChecker extends QueryChecker {
 
@@ -14,10 +15,10 @@ public class SelectColumnListChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		Set<? extends Token> subjectList = subject.getColumnList()
-				.getChildren();
-		Set<? extends Token> learnedList = learned.getColumnList()
-				.getChildren();
+		Set<? extends Token> subjectList = TypeUtility.getAllTokensOfType(
+				subject.getColumnList().getChildren(), ColumnNameToken.class);
+		Set<? extends Token> learnedList = TypeUtility.getAllTokensOfType(
+				learned.getColumnList().getChildren(), ColumnNameToken.class);
 
 		if (containsAsterisk(learnedList) || isSubSet(subjectList, learnedList)) {
 			return null;

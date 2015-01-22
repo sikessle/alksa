@@ -134,7 +134,6 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	@Test
 	public void testAllowedQueries() {
 		for (Query query : allowed) {
-			System.out.println(query.getQuery());
 			if (classifier.accept(query)) {
 				verify(loggerMock, never()).write(any());
 			} else {
@@ -149,7 +148,6 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	@Test
 	public void testDisallowedQueries() {
 		for (Query query : disallowed) {
-			System.out.println(query.getQuery());
 			assertFalse(errorMsg(query, "Subject is expected to be REJECTED"),
 					classifier.accept(query));
 			verify(loggerMock).write(

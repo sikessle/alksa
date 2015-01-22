@@ -39,6 +39,7 @@ SELECT AVG(col1), col2 FROM tab
 
 #~allowed~#
 SELECT col2 FROM tab
+SELECT COUNT(col1) FROM tab
 
 #~disallowed~#
 SELECT col1, col2 FROM tab
