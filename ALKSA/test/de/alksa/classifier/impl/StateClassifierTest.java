@@ -1,5 +1,6 @@
 package de.alksa.classifier.impl;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.google.inject.Guice;
@@ -22,15 +23,20 @@ public abstract class StateClassifierTest {
 		parser = injector.getInstance(Parser.class);
 	}
 
-	protected Query createQuery(String sql, String database, String databaseUser) {
-		try {
-			Set<Token> tokens = parser.parse(sql);
-			SelectStatementToken select = TypeUtil.getFirstTokenOfType(tokens,
-					SelectStatementToken.class);
-			return new SingleSelectQuery(select, sql, database, databaseUser);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+	protected Set<Query> createQueries(String sql, String database,
+			String databaseUser) {
+		Set<Query> queries = new HashSet<>();
+
+		Set<Token> tokens = parser.parse(sql);
+
+		Set<SelectStatementToken> selectStatements = TypeUtil
+				.getAllTokensOfType(tokens, SelectStatementToken.class);
+
+		for (SelectStatementToken select : selectStatements) {
+			queries.add(new SingleSelectQuery(select, sql, database,
+					databaseUser));
 		}
+
+		return queries;
 	}
 }

@@ -53,8 +53,8 @@ class CheckerBasedClassifier implements Classifier {
 		}
 
 		try {
-			Set<Query> query = createQuery(sql, database, databaseUser);
-			return state.accept(query);
+			Set<Query> queries = createQueries(sql, database, databaseUser);
+			return state.accept(queries);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			return false;
@@ -62,7 +62,7 @@ class CheckerBasedClassifier implements Classifier {
 
 	}
 
-	private Set<Query> createQuery(String sql, String database,
+	private Set<Query> createQueries(String sql, String database,
 			String databaseUser) {
 		Set<Query> queries = new HashSet<>();
 
@@ -91,8 +91,7 @@ class CheckerBasedClassifier implements Classifier {
 		if (isLearning()) {
 			state = new LearningState(queryStorage);
 		} else {
-			state = new ProductiveState(queryCheckers, queryStorage,
-					logger);
+			state = new ProductiveState(queryCheckers, queryStorage, logger);
 		}
 	}
 

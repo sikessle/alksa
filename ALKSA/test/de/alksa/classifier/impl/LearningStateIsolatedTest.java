@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class LearningStateTest extends StateClassifierTest {
+public class LearningStateIsolatedTest extends StateClassifierTest {
 
 	private LearningState classifier;
 	private QueryStorage queryStorageMock;
@@ -29,7 +29,8 @@ public class LearningStateTest extends StateClassifierTest {
 
 		classifier = new LearningState(queryStorageMock);
 
-		query = createQuery("SELECT name FROM users", db, user);
+		query = createQueries("SELECT name FROM users", db, user).iterator()
+				.next();
 	}
 
 	@Test
