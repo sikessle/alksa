@@ -12,18 +12,14 @@ import com.foundationdb.sql.parser.SelectNode;
 import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
 
-import de.alksa.token.FromListToken;
-import de.alksa.token.HavingClauseToken;
-import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.Token;
-import de.alksa.token.WhereClauseToken;
 
 class SelectVisitor extends AbstractVisitor {
 
-	private SelectColumnListToken columnListToken;
-	private FromListToken fromListToken;
-	private WhereClauseToken whereClauseToken;
-	private HavingClauseToken havingClauseToken;
+	private Set<Token> columnList;
+	private Set<Token> fromList;
+	private Set<Token> whereClause;
+	private Set<Token> havingClause;
 
 	@Override
 	public Visitable visit(Visitable node) throws StandardException {
@@ -34,48 +30,42 @@ class SelectVisitor extends AbstractVisitor {
 		return node;
 	}
 
-	public SelectColumnListToken getColumnListToken() {
-		return columnListToken;
+	public Set<Token> getColumnList() {
+		return columnList;
 	}
 
-	public FromListToken getFromListToken() {
-		return fromListToken;
+	public Set<Token> getFromList() {
+		return fromList;
 	}
 
-	public WhereClauseToken getWhereClauseToken() {
-		return whereClauseToken;
+	public Set<Token> getWhereClause() {
+		return whereClause;
 	}
 
-	public HavingClauseToken getHavingClauseToken() {
-		return havingClauseToken;
+	public Set<Token> getHavingClause() {
+		return havingClause;
 	}
 
 	/**
 	 * Processes the whole node "SELECT .. FROM .. WHERE .."
 	 */
 	private void visitSelectNode(SelectNode select) throws StandardException {
-		columnListToken = visitSelectColumnList(select.getResultColumns());
+		columnList = visitSelectColumnList(select.getResultColumns());
 
-		fromListToken = visitSelectFromList(select.getFromList());
+		fromList = visitSelectFromList(select.getFromList());
 
-		whereClauseToken = visitWhereClause(select.getWhereClause());
+		whereClause = visitWhereClause(select.getWhereClause());
 
-		havingClauseToken = visitHavingClause(select.getHavingClause());
+		havingClause = visitHavingClause(select.getHavingClause());
 
-		addTokenIfNotNull(columnListToken);
-		addTokenIfNotNull(fromListToken);
-		addTokenIfNotNull(whereClauseToken);
-		addTokenIfNotNull(havingClauseToken);
+		addAllTokens(columnList);
+		addAllTokens(fromList);
+		addAllTokens(whereClause);
+		addAllTokens(havingClause);
 	}
 
-	private void addTokenIfNotNull(Token token) {
-		if (token != null) {
-			addToken(token);
-		}
-	}
-
-	private SelectColumnListToken visitSelectColumnList(
-			ResultColumnList columnList) throws StandardException {
+	private Set<Token> visitSelectColumnList(ResultColumnList columnList)
+			throws StandardException {
 
 		Set<Token> tokens = new HashSet<>();
 
@@ -83,10 +73,10 @@ class SelectVisitor extends AbstractVisitor {
 			tokens.addAll(visitWithCombinedVisitor(resultColumn));
 		}
 
-		return new SelectColumnListToken(tokens);
+		return tokens;
 	}
 
-	private FromListToken visitSelectFromList(FromList fromList)
+	private Set<Token> visitSelectFromList(FromList fromList)
 			throws StandardException {
 
 		Set<Token> tokens = new HashSet<>();
@@ -95,25 +85,25 @@ class SelectVisitor extends AbstractVisitor {
 			tokens.addAll(visitWithCombinedVisitor(fromTable));
 		}
 
-		return new FromListToken(tokens);
+		return tokens;
 	}
 
-	private WhereClauseToken visitWhereClause(ValueNode whereClause)
+	private Set<Token> visitWhereClause(ValueNode whereClause)
 			throws StandardException {
 		if (whereClause == null) {
 			return null;
 		}
 
-		return new WhereClauseToken(visitWithCombinedVisitor(whereClause));
+		return visitWithCombinedVisitor(whereClause);
 	}
 
-	private HavingClauseToken visitHavingClause(ValueNode havingClause)
+	private Set<Token> visitHavingClause(ValueNode havingClause)
 			throws StandardException {
 		if (havingClause == null) {
 			return null;
 		}
 
-		return new HavingClauseToken(visitWithCombinedVisitor(havingClause));
+		return visitWithCombinedVisitor(havingClause);
 	}
 
 }

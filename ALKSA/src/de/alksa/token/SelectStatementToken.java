@@ -4,40 +4,40 @@ import java.util.Set;
 
 public class SelectStatementToken extends Token {
 
-	private SelectColumnListToken columnList;
-	private FromListToken fromList;
-	private WhereClauseToken whereClause;
-	private HavingClauseToken havingClause;
+	private Set<Token> columnList;
+	private Set<Token> fromList;
+	private Set<Token> whereClause;
+	private Set<Token> havingClause;
 
 	public Set<? extends Token> getColumnList() {
-		return columnList.getChildren();
+		return columnList;
 	}
 
-	public void setColumnListToken(SelectColumnListToken columnList) {
+	public void setColumnList(Set<Token> columnList) {
 		this.columnList = columnList;
 	}
 
 	public Set<? extends Token> getFromList() {
-		return fromList.getChildren();
+		return fromList;
 	}
 
-	public void setFromListToken(FromListToken fromList) {
+	public void setFromList(Set<Token> fromList) {
 		this.fromList = fromList;
 	}
 
 	public Set<? extends Token> getWhereClause() {
-		return whereClause.getChildren();
+		return whereClause;
 	}
 
-	public void setWhereClauseToken(WhereClauseToken whereClause) {
+	public void setWhereClause(Set<Token> whereClause) {
 		this.whereClause = whereClause;
 	}
 
 	public Set<? extends Token> getHavingClause() {
-		return havingClause.getChildren();
+		return havingClause;
 	}
 
-	public void setHavingClauseToken(HavingClauseToken havingClause) {
+	public void setHavingClause(Set<Token> havingClause) {
 		this.havingClause = havingClause;
 	}
 

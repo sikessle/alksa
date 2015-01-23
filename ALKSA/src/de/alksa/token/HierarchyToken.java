@@ -6,13 +6,13 @@ import java.util.stream.Collectors;
 
 public abstract class HierarchyToken extends Token {
 
-	private Set<? extends Token> tokens;
+	private Set<Token> tokens;
 
 	protected void setTokens(Set<? extends Token> tokens) {
-		this.tokens = tokens == null ? new HashSet<>() : tokens;
+		this.tokens = tokens == null ? new HashSet<>() : new HashSet<>(tokens);
 	}
 
-	public Set<? extends Token> getChildren() {
+	public Set<Token> getChildren() {
 		return new HashSet<>(tokens);
 	}
 

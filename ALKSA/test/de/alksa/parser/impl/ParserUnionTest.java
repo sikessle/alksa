@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.alksa.token.ColumnNameToken;
-import de.alksa.token.FromListToken;
-import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
@@ -32,16 +30,16 @@ public class ParserUnionTest {
 		Set<SelectStatementToken> expected = new HashSet<>();
 
 		SelectStatementToken firstSelect = new SelectStatementToken();
-		firstSelect.setColumnListToken(new SelectColumnListToken(new HashSet<>(
-				Arrays.asList(new ColumnNameToken("a")))));
-		firstSelect.setFromListToken(new FromListToken(new HashSet<>(Arrays
-				.asList(new TableNameToken("t1")))));
+		firstSelect.setColumnList(new HashSet<>(Arrays
+				.asList(new ColumnNameToken("a"))));
+		firstSelect.setFromList(new HashSet<>(Arrays.asList(new TableNameToken(
+				"t1"))));
 
 		SelectStatementToken secondSelect = new SelectStatementToken();
-		secondSelect.setColumnListToken(new SelectColumnListToken(new HashSet<>(
-				Arrays.asList(new ColumnNameToken("b")))));
-		secondSelect.setFromListToken(new FromListToken(new HashSet<>(Arrays
-				.asList(new TableNameToken("t2")))));
+		secondSelect.setColumnList(new HashSet<>(Arrays
+				.asList(new ColumnNameToken("b"))));
+		secondSelect.setFromList(new HashSet<>(Arrays
+				.asList(new TableNameToken("t2"))));
 
 		expected.add(firstSelect);
 		expected.add(secondSelect);

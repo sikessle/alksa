@@ -25,7 +25,9 @@ abstract class AbstractVisitor implements Visitor {
 	}
 
 	protected void addAllTokens(Set<Token> tokenList) {
-		tokens.addAll(tokenList);
+		if (tokenList != null) {
+			tokens.addAll(tokenList);
+		}
 	}
 
 	protected Set<Token> visitWithCombinedVisitor(Visitable node)
