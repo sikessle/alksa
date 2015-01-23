@@ -13,7 +13,7 @@ public class SelectColumnListCalculationChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		subject.getColumnList();
+		// subject.getColumnList();
 
 		return null;
 	}

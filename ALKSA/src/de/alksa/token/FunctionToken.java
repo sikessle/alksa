@@ -6,7 +6,7 @@ public class FunctionToken extends HierarchyToken {
 
 	private String operator;
 
-	public FunctionToken(String operator, Set<? extends Token> parameters) {
+	public FunctionToken(String operator, Set<Token> parameters) {
 		setTokens(parameters);
 		this.operator = operator;
 	}

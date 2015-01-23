@@ -1,23 +1,24 @@
 package de.alksa.classifier.impl;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Set;
 
 import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
+import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 import de.alksa.token.SelectStatementToken;
-import de.alksa.util.TypeUtil;
 
-class ProductiveClassifier extends ClassifierState {
+class ProductiveState extends ClassifierState {
 
 	private QueryStorage queryStorage;
 	private Logger logger;
 	private QueryChecker masterChecker;
 
-	public ProductiveClassifier(Set<QueryChecker> queryCheckers,
+	public ProductiveState(Set<QueryChecker> queryCheckers,
 			QueryStorage queryStorage, Logger logger) {
 		Objects.requireNonNull(queryCheckers);
 		Objects.requireNonNull(queryStorage);
@@ -34,10 +35,10 @@ class ProductiveClassifier extends ClassifierState {
 	}
 
 	@Override
-	protected boolean acceptSingleSelectStatementQuery(Query query) {
+	protected boolean acceptSingleQuery(Query query) {
 		Objects.requireNonNull(query);
 
-		LogEntry log = checkSingleSelectQuery(query);
+		LogEntry log = checkQuery(query);
 
 		if (log != null) {
 			logger.write(log);
@@ -54,17 +55,23 @@ class ProductiveClassifier extends ClassifierState {
 	 * @return null if the query is allowed. If it is disallowed a LogEntry is
 	 *         created and returned.
 	 */
-	private LogEntry checkSingleSelectQuery(Query subject) {
+	private LogEntry checkQuery(Query subject) {
 		Set<Query> learnedQueries = queryStorage.read();
 		LogEntry log = null;
+
+		// can't compare to non-existing queries
+		if (learnedQueries.isEmpty()) {
+			return new AttackLogEntry(subject.getQueryString(),
+					subject.getDatabase(), subject.getDatabaseUser(),
+					"no matching query found", Instant.now());
+		}
 
 		// quick check for equal queries
 		if (learnedQueries.contains(subject)) {
 			return null;
 		}
 
-		SelectStatementToken subjectSelect = TypeUtil.getFirstTokenOfType(
-				subject.getQuery(), SelectStatementToken.class);
+		SelectStatementToken subjectSelect = subject.getSelectStatement();
 		SelectStatementToken learnedSelect;
 
 		for (Query learned : learnedQueries) {
@@ -74,8 +81,7 @@ class ProductiveClassifier extends ClassifierState {
 				continue;
 			}
 
-			learnedSelect = TypeUtil.getFirstTokenOfType(learned.getQuery(),
-					SelectStatementToken.class);
+			learnedSelect = learned.getSelectStatement();
 
 			log = masterChecker.checkSubjectAgainstLearned(subjectSelect,
 					subject, learnedSelect);

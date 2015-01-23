@@ -8,12 +8,12 @@ public abstract class HierarchyToken extends Token {
 
 	private Set<Token> tokens;
 
-	protected void setTokens(Set<? extends Token> tokens) {
-		this.tokens = tokens == null ? new HashSet<>() : new HashSet<>(tokens);
+	protected void setTokens(Set<Token> tokens) {
+		this.tokens = tokens == null ? new HashSet<>() : tokens;
 	}
 
 	public Set<Token> getChildren() {
-		return new HashSet<>(tokens);
+		return tokens;
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public abstract class HierarchyToken extends Token {
 	public String toString() {
 		return "("
 				+ tokens.stream().map(Object::toString)
-				.collect(Collectors.joining(",")) + ")";
+						.collect(Collectors.joining(",")) + ")";
 	}
 
 }

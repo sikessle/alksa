@@ -41,9 +41,9 @@ import static org.mockito.Mockito.when;
  * Tests with same Database and Database User
  */
 @RunWith(Parameterized.class)
-public class ProductiveClassifierTest extends StateClassifierTest {
+public class ProductiveStateTest extends StateClassifierTest {
 
-	private ProductiveClassifier classifier;
+	private ProductiveState classifier;
 	private QueryStorage queryStorageMock;
 	private Logger loggerMock;
 
@@ -61,7 +61,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 
 	private ArgumentCaptor<LogEntry> logCaptor;
 
-	public ProductiveClassifierTest(String learnedString,
+	public ProductiveStateTest(String learnedString,
 			List<String> allowedStrings, List<String> disallowedStrings) {
 
 		this.learned = createQuery(learnedString, DB, DB_USER);
@@ -77,7 +77,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	}
 
 	private void fillCollectionWithQueries(List<String> queries,
-			Collection<? super Query> target) {
+			Collection<Query> target) {
 		for (String query : queries) {
 			target.add(createQuery(query, DB, DB_USER));
 		}
@@ -87,7 +87,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	public static Collection<Object[]> generateData() {
 		TestDataParser dataParser = new TestDataParser();
 
-		String pathString = ProductiveClassifierTest.class.getResource(
+		String pathString = ProductiveStateTest.class.getResource(
 				"CheckerTestData").getPath();
 		Path path = new File(pathString).toPath();
 
@@ -104,7 +104,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 		Set<Query> learnedQueries = new HashSet<>();
 		Guice.createInjector(new CheckerModule()).injectMembers(this);
 
-		classifier = new ProductiveClassifier(checkers, queryStorageMock,
+		classifier = new ProductiveState(checkers, queryStorageMock,
 				loggerMock);
 
 		learnedQueries.add(learned);
@@ -121,20 +121,20 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 
 	@Test
 	public void testStorageAccess() {
-		classifier.accept(learned);
+		classifier.accept(new HashSet<>(Arrays.asList(learned)));
 		verify(queryStorageMock).read();
 	}
 
 	@Test
 	public void testEqualQuery() {
 		assertTrue(errorMsg(learned, "equal queries should be accepted"),
-				classifier.accept(learned));
+				classifier.accept(new HashSet<>(Arrays.asList(learned))));
 	}
 
 	@Test
 	public void testAllowedQueries() {
 		for (Query query : allowed) {
-			if (classifier.accept(query)) {
+			if (classifier.accept(new HashSet<>(Arrays.asList(query)))) {
 				verify(loggerMock, never()).write(any());
 			} else {
 				verify(loggerMock).write(logCaptor.capture());
@@ -149,7 +149,7 @@ public class ProductiveClassifierTest extends StateClassifierTest {
 	public void testDisallowedQueries() {
 		for (Query query : disallowed) {
 			assertFalse(errorMsg(query, "Subject is expected to be REJECTED"),
-					classifier.accept(query));
+					classifier.accept(new HashSet<>(Arrays.asList(query))));
 			verify(loggerMock).write(
 					argThat(new LogEntryWithQuery(query.getQueryString())));
 		}

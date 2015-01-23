@@ -12,7 +12,8 @@ import org.junit.Test;
 import de.alksa.log.LogEntry;
 import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
-import de.alksa.querystorage.impl.QueryImpl;
+import de.alksa.querystorage.impl.SingleSelectQuery;
+import de.alksa.token.SelectStatementToken;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -52,7 +53,8 @@ public class Db4oStorageDaoTest {
 	@Test
 	public void testQueries() {
 		Set<Query> expectedQueries = new HashSet<>();
-		expectedQueries.add(new QueryImpl(new HashSet<>(), "", "", ""));
+		expectedQueries.add(new SingleSelectQuery(new SelectStatementToken(),
+				"", "", ""));
 
 		storage.saveQueries(expectedQueries);
 		Set<Query> actualQueries = storage.getQueries();

@@ -1,5 +1,6 @@
 package de.alksa.classifier.impl;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,8 +14,10 @@ import de.alksa.log.Logger;
 import de.alksa.parser.Parser;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
-import de.alksa.querystorage.impl.QueryImpl;
+import de.alksa.querystorage.impl.SingleSelectQuery;
+import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
+import de.alksa.util.TypeUtil;
 
 @Singleton
 class CheckerBasedClassifier implements Classifier {
@@ -50,7 +53,7 @@ class CheckerBasedClassifier implements Classifier {
 		}
 
 		try {
-			Query query = createQuery(sql, database, databaseUser);
+			Set<Query> query = createQuery(sql, database, databaseUser);
 			return state.accept(query);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
@@ -59,9 +62,21 @@ class CheckerBasedClassifier implements Classifier {
 
 	}
 
-	private Query createQuery(String sql, String database, String databaseUser) {
+	private Set<Query> createQuery(String sql, String database,
+			String databaseUser) {
+		Set<Query> queries = new HashSet<>();
+
 		Set<Token> tokens = parser.parse(sql);
-		return new QueryImpl(tokens, sql, database, databaseUser);
+
+		Set<SelectStatementToken> selectStatements = TypeUtil
+				.getAllTokensOfType(tokens, SelectStatementToken.class);
+
+		for (SelectStatementToken select : selectStatements) {
+			queries.add(new SingleSelectQuery(select, sql, database,
+					databaseUser));
+		}
+
+		return queries;
 	}
 
 	@Override
@@ -74,9 +89,9 @@ class CheckerBasedClassifier implements Classifier {
 		this.learning = learning;
 
 		if (isLearning()) {
-			state = new LearningClassifier(queryStorage);
+			state = new LearningState(queryStorage);
 		} else {
-			state = new ProductiveClassifier(queryCheckers, queryStorage,
+			state = new ProductiveState(queryCheckers, queryStorage,
 					logger);
 		}
 	}

@@ -8,8 +8,10 @@ import com.google.inject.Injector;
 import de.alksa.parser.Parser;
 import de.alksa.parser.impl.ParserModule;
 import de.alksa.querystorage.Query;
-import de.alksa.querystorage.impl.QueryImpl;
+import de.alksa.querystorage.impl.SingleSelectQuery;
+import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
+import de.alksa.util.TypeUtil;
 
 public abstract class StateClassifierTest {
 
@@ -23,7 +25,9 @@ public abstract class StateClassifierTest {
 	protected Query createQuery(String sql, String database, String databaseUser) {
 		try {
 			Set<Token> tokens = parser.parse(sql);
-			return new QueryImpl(tokens, sql, database, databaseUser);
+			SelectStatementToken select = TypeUtil.getFirstTokenOfType(tokens,
+					SelectStatementToken.class);
+			return new SingleSelectQuery(select, sql, database, databaseUser);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

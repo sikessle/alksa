@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import de.alksa.persistence.StorageDao;
 import de.alksa.querystorage.Query;
+import de.alksa.token.SelectStatementToken;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,8 +30,10 @@ public class SimpleQueryStorageTest {
 	@Before
 	public void setUp() throws Exception {
 		expectedQueries = new HashSet<>();
-		expectedQueries.add(new QueryImpl(new HashSet<>(), "", "", ""));
-		expectedQueries.add(new QueryImpl(new HashSet<>(), "x", "y", "z"));
+		expectedQueries.add(new SingleSelectQuery(new SelectStatementToken(),
+				"", "", ""));
+		expectedQueries.add(new SingleSelectQuery(new SelectStatementToken(),
+				"x", "y", "z"));
 
 		storageMock = mock(StorageDao.class);
 		when(storageMock.getQueries()).thenReturn(expectedQueries);

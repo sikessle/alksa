@@ -24,8 +24,8 @@ public class TypeUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> Set<T> getAllTokensOfType(Set<? extends Token> tokens,
-			Class<T> clazz) {
+	public static <T extends Token> Set<T> getAllTokensOfType(
+			Set<? extends Token> tokens, Class<T> clazz) {
 
 		Set<T> matchingTokens = new HashSet<>();
 
