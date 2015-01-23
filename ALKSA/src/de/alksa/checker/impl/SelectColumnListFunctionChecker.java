@@ -22,17 +22,17 @@ public class SelectColumnListFunctionChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		Set<FunctionToken> learnedFuncs = TypeUtil.getAllTokensOfType(
-				learned.getColumnList(), FunctionToken.class);
-		Set<FunctionToken> subjectFuncs = TypeUtil.getAllTokensOfType(
-				subject.getColumnList(), FunctionToken.class);
+		Set<FunctionToken> learnedFuncs = copyFunctionTokens(learned
+				.getColumnList());
+		Set<FunctionToken> subjectFuncs = copyFunctionTokens(subject
+				.getColumnList());
 
 		Set<ColumnNameToken> learnedBound = getBoundColumns(learnedFuncs);
 
-		Set<ColumnNameToken> subjectUnbound = TypeUtil.getAllTokensOfType(
-				subject.getColumnList(), ColumnNameToken.class);
-		Set<ColumnNameToken> learnedUnbound = TypeUtil.getAllTokensOfType(
-				learned.getColumnList(), ColumnNameToken.class);
+		Set<ColumnNameToken> learnedUnbound = copyColumnNameTokens(learned
+				.getColumnList());
+		Set<ColumnNameToken> subjectUnbound = copyColumnNameTokens(subject
+				.getColumnList());
 
 		Set<ColumnNameToken> learnedBoundIntersectSubjectUnbound = new HashSet<>(
 				learnedBound);
@@ -58,8 +58,7 @@ public class SelectColumnListFunctionChecker extends QueryChecker {
 		Set<ColumnNameToken> funcColumns;
 
 		for (FunctionToken func : subjectFuncs) {
-			funcColumns = TypeUtil.getAllTokensOfType(func.getChildren(),
-					ColumnNameToken.class);
+			funcColumns = copyColumnNameTokens(func.getChildren());
 			funcColumns.removeAll(learnedUnbound);
 
 			if (funcColumns.isEmpty()) {
@@ -68,10 +67,6 @@ public class SelectColumnListFunctionChecker extends QueryChecker {
 		}
 
 		return learnedFuncs.containsAll(cleanedSubjectFuncs);
-	}
-
-	private boolean containsAsterisk(Set<ColumnNameToken> tokens) {
-		return tokens.contains(new ColumnNameToken("*"));
 	}
 
 	private Set<ColumnNameToken> getBoundColumns(Set<FunctionToken> tokens) {

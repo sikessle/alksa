@@ -6,8 +6,6 @@ import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.SelectStatementToken;
-import de.alksa.token.Token;
-import de.alksa.util.TypeUtil;
 
 public class SelectColumnListNameChecker extends QueryChecker {
 
@@ -15,24 +13,15 @@ public class SelectColumnListNameChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		Set<ColumnNameToken> subjectList = TypeUtil.getAllTokensOfType(
-				subject.getColumnList(), ColumnNameToken.class);
-		Set<ColumnNameToken> learnedList = TypeUtil.getAllTokensOfType(
-				learned.getColumnList(), ColumnNameToken.class);
+		Set<ColumnNameToken> subjectList = copyColumnNameTokens(subject
+				.getColumnList());
+		Set<ColumnNameToken> learnedList = copyColumnNameTokens(learned
+				.getColumnList());
 
-		if (containsAsterisk(learnedList) || isSubSet(subjectList, learnedList)) {
+		if (containsAsterisk(learnedList) || isSubset(learnedList, subjectList)) {
 			return null;
 		}
 
 		return createLogEntry("column names are not a subset");
-	}
-
-	private boolean containsAsterisk(Set<ColumnNameToken> learned) {
-		return learned.contains(new ColumnNameToken("*"));
-	}
-
-	private boolean isSubSet(Set<ColumnNameToken> subject,
-			Set<? extends Token> learned) {
-		return learned.containsAll(subject);
 	}
 }

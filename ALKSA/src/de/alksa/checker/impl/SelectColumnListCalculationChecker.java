@@ -1,7 +1,10 @@
 package de.alksa.checker.impl;
 
+import java.util.Set;
+
 import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
+import de.alksa.token.CalculationToken;
 import de.alksa.token.SelectStatementToken;
 
 /**
@@ -13,7 +16,10 @@ public class SelectColumnListCalculationChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		// subject.getColumnList();
+		Set<CalculationToken> subjectCalcs = copyCalculationTokens(subject
+				.getColumnList());
+		Set<CalculationToken> learnedCalcs = copyCalculationTokens(learned
+				.getColumnList());
 
 		return null;
 	}
