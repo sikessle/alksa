@@ -34,12 +34,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests with same Database and Database User
@@ -132,6 +128,7 @@ public class ProductiveStateTest extends StateClassifierTest {
 	@Test
 	public void testAllowedQueries() {
 		for (Query query : allowed) {
+			reset(loggerMock);
 			if (classifier.accept(query.getQueryString(), DB, DB_USER)) {
 				verify(loggerMock, never()).write(any());
 			} else {
@@ -146,10 +143,14 @@ public class ProductiveStateTest extends StateClassifierTest {
 	@Test
 	public void testDisallowedQueries() {
 		for (Query query : disallowed) {
-			assertFalse(errorMsg(query, "Subject is expected to be REJECTED"),
-					classifier.accept(query.getQueryString(), DB, DB_USER));
-			// verify(loggerMock).write(
-			// argThat(new LogEntryWithQuery(query.getQueryString())));
+			reset(loggerMock);
+			if (classifier.accept(query.getQueryString(), DB, DB_USER)) {
+				verify(loggerMock, never()).write(any());
+				fail(errorMsg(query, "Subject is expected to be REJECTED"));
+			} else {
+				verify(loggerMock).write(
+						argThat(new LogEntryWithQuery(query.getQueryString())));
+			}
 		}
 	}
 
