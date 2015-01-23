@@ -10,6 +10,7 @@ import de.alksa.querystorage.Query;
 import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.FunctionToken;
+import de.alksa.token.JoinToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
@@ -95,6 +96,10 @@ public abstract class QueryChecker {
 	protected Set<TableNameToken> copyTableNameTokens(
 			Set<? extends Token> tokens) {
 		return TypeUtil.getAllTokensOfType(tokens, TableNameToken.class);
+	}
+
+	protected Set<JoinToken> copyJoinTokens(Set<? extends Token> tokens) {
+		return TypeUtil.getAllTokensOfType(tokens, JoinToken.class);
 	}
 
 }

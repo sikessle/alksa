@@ -9,6 +9,9 @@ public class SelectStatementToken extends Token {
 	private Set<Token> whereClause;
 	private Set<Token> havingClause;
 
+	/**
+	 * @return null if this token type is not existent
+	 */
 	public Set<? extends Token> getColumnList() {
 		return columnList;
 	}
@@ -17,6 +20,9 @@ public class SelectStatementToken extends Token {
 		this.columnList = columnList;
 	}
 
+	/**
+	 * @return null if this token type is not existent
+	 */
 	public Set<? extends Token> getFromList() {
 		return fromList;
 	}
@@ -25,6 +31,9 @@ public class SelectStatementToken extends Token {
 		this.fromList = fromList;
 	}
 
+	/**
+	 * @return null if this token type is not existent
+	 */
 	public Set<? extends Token> getWhereClause() {
 		return whereClause;
 	}
@@ -33,6 +42,9 @@ public class SelectStatementToken extends Token {
 		this.whereClause = whereClause;
 	}
 
+	/**
+	 * @return null if this token type is not existent
+	 */
 	public Set<? extends Token> getHavingClause() {
 		return havingClause;
 	}

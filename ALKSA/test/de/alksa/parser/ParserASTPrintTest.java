@@ -31,7 +31,8 @@ public class ParserASTPrintTest {
 						{ "SELECT (SELECT x FROM b) AS sub FROM tab" },
 						{ "SELECT a FROM b UNION SELECT c FROM d" },
 						{ "SELECT a FROM (SELECT x FROM b) subAlias" },
-						{ "SELECT a AS d FROM b WHERE a = (SELECT x FROM b)" } });
+						{ "SELECT a AS d FROM b WHERE a = (SELECT x FROM b)" },
+						{ "SELECT a FROM tab1, tab2" } });
 	}
 
 	@Test

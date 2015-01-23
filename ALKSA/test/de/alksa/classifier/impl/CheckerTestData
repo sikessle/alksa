@@ -125,3 +125,44 @@ SELECT col1 FROM (SELECT * FROM otherTable) AS subqery
 
 #~ENDQUERY~#
 
+
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tabLeft FULL OUTER JOIN tabRight ON c1=c2
+
+#~allowed~#
+SELECT col1 FROM tabLeft FULL OUTER JOIN tabRight ON c1=c2
+
+#~disallowed~#
+SELECT col1 FROM tabLeft LEFT OUTER JOIN tabRight ON c1=c2
+SELECT col1 FROM tabOtherLeft FULL OUTER JOIN tabRight ON c1=c2
+
+#~ENDQUERY~#
+
+
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab WHERE col1 = 2
+
+#~allowed~#
+SELECT col1 FROM tab WHERE col1 = 2
+
+#~disallowed~#
+SELECT col1 FROM tab
+
+#~ENDQUERY~#
+
+
+
+
+
+
+
+
+
+
+
+
+

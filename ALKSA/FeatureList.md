@@ -15,6 +15,7 @@
 
 * Table names
 * Multiple Joins: Inner, Full Outer, Left Outer, Right Outer, Natural
+* CROSS Joins are not detected
 
 ### WHERE clause
 
@@ -47,13 +48,10 @@
 
 ## FROM table list
 
-* Joins must be subset
-* Each Join must be exactly the same (same table and type).
-* Additional Joins with unbound tables
+* Each Join must be exactly the same (same table, type and ON clause).
 
 ### WHERE clause
 
-* ON clause from Join-Statement ???? 
 * Logic AND/OR/NOT  ????
 * Comparison < > = <= >= ?????
 
@@ -68,5 +66,5 @@
 
 ### Subqueries
 
-* Classified as part of each statement, i.e. in SELECT <subquery> FROM .. the subquery is treated as a column. Therefore the subquery itself must be exactly the same, no variations allowed. 
+* Classified as part of each statement, i.e. in SELECT <subquery> FROM .. the subquery is treated as a column. Therefore the subquery itself must be exactly the same, no variations allowed. Applies to column list, table list and where clause.
 
