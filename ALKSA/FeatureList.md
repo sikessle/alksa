@@ -20,7 +20,7 @@
 ### WHERE clause
 
 * ON clause from Join-Statement 
-* Logic AND/OR/NOT
+* Logic AND/OR/NOT (not in CCNF)
 * Comparison < > = <= >=
 
 ### HAVING clause
@@ -52,9 +52,10 @@
 
 ### WHERE clause
 
-* Logic AND/OR/NOT  ????
-* Comparison < > = <= >= ?????
-
+* Check for existence
+* Logic AND/OR/NOT  ????   (removal of disjunctions, adding of conjunctions with unbound columns)
+* Comparison < > = <= >= ?????  (subset
+* Subqueries must match
 
 ### HAVING clause
 
