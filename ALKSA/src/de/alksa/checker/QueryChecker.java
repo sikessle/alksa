@@ -40,6 +40,10 @@ public abstract class QueryChecker {
 		}
 	}
 
+	/**
+	 * It is expected that no implementations changes the parameters or its
+	 * members.
+	 */
 	protected abstract LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned);
 

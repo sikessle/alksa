@@ -15,9 +15,9 @@ public class SelectColumnListNameChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		Set<? extends Token> subjectList = TypeUtil.getAllTokensOfType(
+		Set<ColumnNameToken> subjectList = TypeUtil.getAllTokensOfType(
 				subject.getColumnList(), ColumnNameToken.class);
-		Set<? extends Token> learnedList = TypeUtil.getAllTokensOfType(
+		Set<ColumnNameToken> learnedList = TypeUtil.getAllTokensOfType(
 				learned.getColumnList(), ColumnNameToken.class);
 
 		if (containsAsterisk(learnedList) || isSubSet(subjectList, learnedList)) {
@@ -27,11 +27,11 @@ public class SelectColumnListNameChecker extends QueryChecker {
 		return createLogEntry("column names are not a subset");
 	}
 
-	private boolean containsAsterisk(Set<? extends Token> learned) {
+	private boolean containsAsterisk(Set<ColumnNameToken> learned) {
 		return learned.contains(new ColumnNameToken("*"));
 	}
 
-	private boolean isSubSet(Set<? extends Token> subject,
+	private boolean isSubSet(Set<ColumnNameToken> subject,
 			Set<? extends Token> learned) {
 		return learned.containsAll(subject);
 	}

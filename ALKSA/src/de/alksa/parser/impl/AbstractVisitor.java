@@ -15,7 +15,7 @@ abstract class AbstractVisitor implements Visitor {
 	private Set<Token> tokens = new HashSet<>();
 
 	public Set<Token> getTokens() {
-		return new HashSet<>(tokens);
+		return tokens;
 	}
 
 	protected void addToken(Token token) {
