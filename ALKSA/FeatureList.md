@@ -42,13 +42,14 @@
 
 * Check of simple column names
 * Support for Asterisk * 
-* Check of functions (without function groups)
-* Check of calculations as strings, calculations with unbound columns are not allowed. (like in SELECT unbound .. cannot be altered to SELECT unbound*2 .. )
+* Check of functions (without function groups). Additional functions on unbound columns are allowed.
+* Check of calculations as strings, calculations with unbound columns are not allowed. (i.e. SELECT unbound .. cannot be altered to SELECT unbound*2 .. )
 
 ## FROM table list
 
-* Table names must be subset
-* Join must be exactly the same (same table and type).
+* Joins must be subset
+* Each Join must be exactly the same (same table and type).
+* Additional Joins with unbound tables
 
 ### WHERE clause
 

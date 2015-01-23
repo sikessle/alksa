@@ -16,6 +16,7 @@ public class CheckerModule extends AbstractModule {
 		binder.addBinding().to(SelectColumnListCalculationChecker.class);
 		binder.addBinding().to(SelectColumnListSubqueryChecker.class);
 		binder.addBinding().to(FromListTableChecker.class);
+		binder.addBinding().to(FromListSubqueryChecker.class);
 		// TODO checker: join..
 	}
 

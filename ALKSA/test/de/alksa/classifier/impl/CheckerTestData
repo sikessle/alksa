@@ -89,6 +89,7 @@ SELECT (SELECT * FROM sub) FROM tab
 
 #~disallowed~#
 SELECT c1, (SELECT * FROM otherTable) FROM tab
+SELECT (SELECT * FROM otherTable) FROM tab
 
 #~ENDQUERY~#
 
@@ -109,5 +110,18 @@ SELECT col1 FROM tab1, tab2, tab3
 #~ENDQUERY~#
 
 
+#~QUERY~#
 
+#~learned~#
+SELECT col1 FROM tab1, (SELECT * FROM sub) AS subqery
+
+#~allowed~#
+SELECT col1 FROM tab1
+SELECT col1 FROM (SELECT * FROM sub) AS subqery
+
+#~disallowed~#
+SELECT col1 FROM tab1, (SELECT * FROM otherTable) AS subqery
+SELECT col1 FROM (SELECT * FROM otherTable) AS subqery
+
+#~ENDQUERY~#
 

@@ -22,6 +22,6 @@ public class FromListTableChecker extends QueryChecker {
 			return null;
 		}
 
-		return createLogEntry("column names are not a subset");
+		return createLogEntry("table names are not a subset");
 	}
 }
