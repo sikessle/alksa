@@ -1,5 +1,9 @@
 # Parser - Implemented Features
 
+### Alias
+
+* No support 
+
 ### SELECT column list
 
 * Column names
@@ -39,7 +43,7 @@
 * Check of simple column names
 * Support for Asterisk * 
 * Check of functions (without function groups)
-* Check of calculations as strings
+* Check of calculations as strings, calculations with unbound columns are not allowed. (like in SELECT unbound .. cannot be altered to SELECT unbound*2 .. )
 
 ### Set operations
 

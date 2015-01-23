@@ -56,9 +56,7 @@ SELECT COUNT(col3) FROM tab
 SELECT 12 * 8 AS x, col2 * 5, col3 FROM tab
 
 #~allowed~#
-SELECT 1 * 1 AS x, col2 * 5 FROM tab
-SELECT 12 * 8 AS x, col2 * 5, col3 + 4 AS col3Added FROM tab
-SELECT 12 * 8 AS x, col2 * 5, ABS(col3) + 4 AS col3AFunc FROM tab
+SELECT 12 * 8 AS x,  FROM tab
 
 #~disallowed~#
 SELECT 12 * 8 AS x, col2 * 1, col3 FROM tab

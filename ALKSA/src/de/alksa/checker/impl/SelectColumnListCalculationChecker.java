@@ -21,7 +21,10 @@ public class SelectColumnListCalculationChecker extends QueryChecker {
 		Set<CalculationToken> learnedCalcs = copyCalculationTokens(learned
 				.getColumnList());
 
+		if (!isSubset(learnedCalcs, subjectCalcs)) {
+			return createLogEntry("functions do not match");
+		}
+
 		return null;
 	}
-
 }
