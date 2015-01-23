@@ -101,11 +101,28 @@ public class ParserSelectColumnListTest {
 	}
 
 	@Test
-	public void testColumnCalculations() {
+	public void testColumnCalculationsWithNames() {
 		String sql = "SELECT col1 * 12 AS calc, 25+3 FROM users";
 		Set<CalculationToken> expected = new HashSet<>();
 
 		expected.add(new CalculationToken("col1*12"));
+		expected.add(new CalculationToken("25+3"));
+
+		Set<Token> parsedTokens = parser.parse(sql);
+
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getColumnList();
+
+		assertEquals(expected.size(), actual.size());
+		assertTrue(actual.containsAll(expected));
+	}
+
+	@Test
+	public void testColumnCalculationsWithFunctions() {
+		String sql = "SELECT ABS(col1) * 12 AS calc, 25+3 FROM users";
+		Set<CalculationToken> expected = new HashSet<>();
+
+		expected.add(new CalculationToken("ABS(col1)*12"));
 		expected.add(new CalculationToken("25+3"));
 
 		Set<Token> parsedTokens = parser.parse(sql);

@@ -1,14 +1,15 @@
 package de.alksa.parser.impl;
 
+import java.util.Set;
+
 import com.foundationdb.sql.StandardException;
 import com.foundationdb.sql.parser.BinaryArithmeticOperatorNode;
-import com.foundationdb.sql.parser.ColumnReference;
-import com.foundationdb.sql.parser.NumericConstantNode;
 import com.foundationdb.sql.parser.ResultColumn;
 import com.foundationdb.sql.parser.ValueNode;
 import com.foundationdb.sql.parser.Visitable;
 
 import de.alksa.token.CalculationToken;
+import de.alksa.token.Token;
 
 class CalculationVisitor extends AbstractVisitor {
 
@@ -29,16 +30,11 @@ class CalculationVisitor extends AbstractVisitor {
 		return node;
 	}
 
-	private String getOperand(ValueNode node) {
-		if (node instanceof NumericConstantNode) {
-			NumericConstantNode constant = (NumericConstantNode) node;
-			return constant.getValue().toString();
-		} else if (node instanceof ColumnReference) {
-			ColumnReference ref = (ColumnReference) node;
-			return ref.getSQLColumnName();
-		}
+	private String getOperand(ValueNode node) throws StandardException {
 
-		return "<unkown>";
+		Set<Token> operand = visitWithCombinedVisitor(node);
+
+		return operand.iterator().next().toString();
 	}
 
 	@Override

@@ -56,6 +56,9 @@ class ProductiveState extends ClassifierState {
 	 *         created and returned.
 	 */
 	private LogEntry checkQuery(Query subject) {
+
+		System.out.println(subject.getSelectStatement());
+
 		Set<Query> learnedQueries = queryStorage.read();
 		LogEntry log = null;
 
