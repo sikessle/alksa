@@ -45,6 +45,22 @@
 * Check of functions (without function groups)
 * Check of calculations as strings, calculations with unbound columns are not allowed. (like in SELECT unbound .. cannot be altered to SELECT unbound*2 .. )
 
+## FROM table list
+
+* Table names must be subset
+* Join must be exactly the same (same table and type).
+
+### WHERE clause
+
+* ON clause from Join-Statement ???? 
+* Logic AND/OR/NOT  ????
+* Comparison < > = <= >= ?????
+
+
+### HAVING clause
+
+* Same as WHERE Clause
+
 ### Set operations
 
 * UNION: Checks each SELECT statement. Caveat: The query string with UNION is saved for each separate SELECT statement. The query string of each separate SELECT should be saved for each SELECT.

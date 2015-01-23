@@ -4,24 +4,20 @@ import java.util.Set;
 
 import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
-import de.alksa.token.CalculationToken;
 import de.alksa.token.SelectStatementToken;
 
-/**
- * Checks calculations which involve a column or function
- */
-public class SelectColumnListCalculationChecker extends QueryChecker {
+public class SelectColumnListSubqueryChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		Set<CalculationToken> subjectCalcs = copyCalculationTokens(subject
+		Set<SelectStatementToken> subjectSubqueries = copySelectStatementTokens(subject
 				.getColumnList());
-		Set<CalculationToken> learnedCalcs = copyCalculationTokens(learned
+		Set<SelectStatementToken> learnedSubqueries = copySelectStatementTokens(learned
 				.getColumnList());
 
-		if (isSubset(learnedCalcs, subjectCalcs)) {
+		if (isSubset(learnedSubqueries, subjectSubqueries)) {
 			return null;
 		}
 

@@ -11,6 +11,7 @@ import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.SelectStatementToken;
+import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
 import de.alksa.util.TypeUtil;
 
@@ -84,6 +85,16 @@ public abstract class QueryChecker {
 	protected Set<CalculationToken> copyCalculationTokens(
 			Set<? extends Token> tokens) {
 		return TypeUtil.getAllTokensOfType(tokens, CalculationToken.class);
+	}
+
+	protected Set<SelectStatementToken> copySelectStatementTokens(
+			Set<? extends Token> tokens) {
+		return TypeUtil.getAllTokensOfType(tokens, SelectStatementToken.class);
+	}
+
+	protected Set<TableNameToken> copyTableNameTokens(
+			Set<? extends Token> tokens) {
+		return TypeUtil.getAllTokensOfType(tokens, TableNameToken.class);
 	}
 
 }

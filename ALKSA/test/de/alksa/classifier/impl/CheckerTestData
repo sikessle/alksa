@@ -78,4 +78,36 @@ SELECT ABS(col1) * 1 FROM tab
 #~ENDQUERY~#
 
 
+#~QUERY~#
+
+#~learned~#
+SELECT c1, (SELECT * FROM sub) FROM tab
+
+#~allowed~#
+SELECT c1 FROM tab
+SELECT (SELECT * FROM sub) FROM tab
+
+#~disallowed~#
+SELECT c1, (SELECT * FROM otherTable) FROM tab
+
+#~ENDQUERY~#
+
+
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab1, tab2
+
+#~allowed~#
+SELECT col1 FROM tab1, tab2
+SELECT col1 FROM tab1
+SELECT col1 FROM tab2
+
+#~disallowed~#
+SELECT col1 FROM tab1, tab2, tab3
+
+#~ENDQUERY~#
+
+
+
 
