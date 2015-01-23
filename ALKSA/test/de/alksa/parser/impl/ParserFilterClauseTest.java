@@ -12,11 +12,9 @@ import de.alksa.token.ColumnNameToken;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.ConstantValueToken;
 import de.alksa.token.FunctionToken;
-import de.alksa.token.HavingClauseToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 import de.alksa.token.UnaryLogicalFilterToken;
-import de.alksa.token.WhereClauseToken;
 
 import static org.junit.Assert.assertEquals;
 
@@ -42,15 +40,13 @@ public class ParserFilterClauseTest {
 		Token notToken = new UnaryLogicalFilterToken(
 				UnaryLogicalFilterToken.Type.NOT, new ColumnNameToken("c"));
 
-		Set<? extends Token> filterTokens = new HashSet<>(
+		Set<? extends Token> expected = new HashSet<>(
 				Arrays.asList(new BinaryLogicalFilterToken(
 						BinaryLogicalFilterToken.Type.OR, andToken, notToken)));
 
-		Token expected = new WhereClauseToken(filterTokens);
-
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		WhereClauseToken actual = ((SelectStatementToken) parsedTokens
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getWhereClause();
 
 		assertEquals(expected, actual);
@@ -72,15 +68,13 @@ public class ParserFilterClauseTest {
 		Token notToken = new UnaryLogicalFilterToken(
 				UnaryLogicalFilterToken.Type.NOT, cEqualsA);
 
-		Set<? extends Token> filterTokens = new HashSet<>(
+		Set<? extends Token> expected = new HashSet<>(
 				Arrays.asList(new BinaryLogicalFilterToken(
 						BinaryLogicalFilterToken.Type.OR, andToken, notToken)));
 
-		Token expected = new WhereClauseToken(filterTokens);
-
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		WhereClauseToken actual = ((SelectStatementToken) parsedTokens
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getWhereClause();
 
 		assertEquals(expected, actual);
@@ -105,16 +99,14 @@ public class ParserFilterClauseTest {
 		Token andToken = new BinaryLogicalFilterToken(
 				BinaryLogicalFilterToken.Type.AND, bLess3, cEqualAbs2);
 
-		Set<? extends Token> filterTokens = new HashSet<>(
+		Set<? extends Token> expected = new HashSet<>(
 				Arrays.asList(new BinaryLogicalFilterToken(
 						BinaryLogicalFilterToken.Type.OR, aGreaterEqual2,
 						andToken)));
 
-		Token expected = new WhereClauseToken(filterTokens);
-
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		WhereClauseToken actual = ((SelectStatementToken) parsedTokens
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getWhereClause();
 
 		assertEquals(expected, actual);
@@ -125,17 +117,15 @@ public class ParserFilterClauseTest {
 		// AVG(col1) > 10
 		String sql = "SELECT AVG(col1) FROM y GROUP BY col1 HAVING AVG(col1) > 10";
 
-		Set<? extends Token> filterTokens = new HashSet<>(
+		Set<? extends Token> expected = new HashSet<>(
 				Arrays.asList(new ComparisonFilterToken(new FunctionToken(
 						"AVG", new HashSet<>(Arrays.asList(new ColumnNameToken(
 								"col1")))), ComparisonFilterToken.Type.GREATER,
 								new ConstantValueToken(10))));
 
-		Token expected = new HavingClauseToken(filterTokens);
-
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		HavingClauseToken actual = ((SelectStatementToken) parsedTokens
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getHavingClause();
 
 		assertEquals(expected, actual);

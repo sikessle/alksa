@@ -16,9 +16,9 @@ public class SelectColumnListNameChecker extends QueryChecker {
 			SelectStatementToken learned) {
 
 		Set<? extends Token> subjectList = TypeUtil.getAllTokensOfType(
-				subject.getColumnList().getChildren(), ColumnNameToken.class);
+				subject.getColumnList(), ColumnNameToken.class);
 		Set<? extends Token> learnedList = TypeUtil.getAllTokensOfType(
-				learned.getColumnList().getChildren(), ColumnNameToken.class);
+				learned.getColumnList(), ColumnNameToken.class);
 
 		if (containsAsterisk(learnedList) || isSubSet(subjectList, learnedList)) {
 			return null;

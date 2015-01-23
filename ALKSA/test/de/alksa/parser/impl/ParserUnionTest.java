@@ -32,15 +32,15 @@ public class ParserUnionTest {
 		Set<SelectStatementToken> expected = new HashSet<>();
 
 		SelectStatementToken firstSelect = new SelectStatementToken();
-		firstSelect.setColumnList(new SelectColumnListToken(new HashSet<>(
+		firstSelect.setColumnListToken(new SelectColumnListToken(new HashSet<>(
 				Arrays.asList(new ColumnNameToken("a")))));
-		firstSelect.setFromList(new FromListToken(new HashSet<>(Arrays
+		firstSelect.setFromListToken(new FromListToken(new HashSet<>(Arrays
 				.asList(new TableNameToken("t1")))));
 
 		SelectStatementToken secondSelect = new SelectStatementToken();
-		secondSelect.setColumnList(new SelectColumnListToken(new HashSet<>(
+		secondSelect.setColumnListToken(new SelectColumnListToken(new HashSet<>(
 				Arrays.asList(new ColumnNameToken("b")))));
-		secondSelect.setFromList(new FromListToken(new HashSet<>(Arrays
+		secondSelect.setFromListToken(new FromListToken(new HashSet<>(Arrays
 				.asList(new TableNameToken("t2")))));
 
 		expected.add(firstSelect);

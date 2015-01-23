@@ -22,17 +22,17 @@ public class SelectColumnListFunctionChecker extends QueryChecker {
 	protected LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned) {
 
-		Set<FunctionToken> learnedFuncs = TypeUtil.getAllTokensOfType(learned
-				.getColumnList().getChildren(), FunctionToken.class);
-		Set<FunctionToken> subjectFuncs = TypeUtil.getAllTokensOfType(subject
-				.getColumnList().getChildren(), FunctionToken.class);
+		Set<FunctionToken> learnedFuncs = TypeUtil.getAllTokensOfType(
+				learned.getColumnList(), FunctionToken.class);
+		Set<FunctionToken> subjectFuncs = TypeUtil.getAllTokensOfType(
+				subject.getColumnList(), FunctionToken.class);
 
 		Set<ColumnNameToken> learnedBound = getBoundColumns(learnedFuncs);
 
 		Set<ColumnNameToken> subjectUnbound = TypeUtil.getAllTokensOfType(
-				subject.getColumnList().getChildren(), ColumnNameToken.class);
+				subject.getColumnList(), ColumnNameToken.class);
 		Set<ColumnNameToken> learnedUnbound = TypeUtil.getAllTokensOfType(
-				learned.getColumnList().getChildren(), ColumnNameToken.class);
+				learned.getColumnList(), ColumnNameToken.class);
 
 		Set<ColumnNameToken> learnedBoundIntersectSubjectUnbound = new HashSet<>(
 				learnedBound);

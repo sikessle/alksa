@@ -9,7 +9,6 @@ import org.junit.Test;
 import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.FunctionToken;
-import de.alksa.token.SelectColumnListToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 
@@ -42,7 +41,7 @@ public class ParserSelectColumnListTest {
 		Set<Token> parsedTokens = parser.parse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getColumnList().getChildren();
+				.iterator().next()).getColumnList();
 
 		// minus 1 because of the ABS(col3) column
 		assertEquals(expected.size(), actual.size() - 1);
@@ -59,7 +58,7 @@ public class ParserSelectColumnListTest {
 		Set<Token> parsedTokens = parser.parse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getColumnList().getChildren();
+				.iterator().next()).getColumnList();
 
 		assertEquals(expected.size(), actual.size());
 		assertTrue(actual.containsAll(expected));
@@ -82,15 +81,14 @@ public class ParserSelectColumnListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		SelectColumnListToken columnList = ((SelectStatementToken) parsedTokens
+		Set<? extends Token> columnList = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getColumnList();
 
 		checkForFunctions(columnList, expected);
 	}
 
-	private void checkForFunctions(SelectColumnListToken selectColumnList,
+	private void checkForFunctions(Set<? extends Token> actualColumns,
 			Set<Token> expectedColumns) {
-		Set<? extends Token> actualColumns = selectColumnList.getChildren();
 
 		assertEquals(expectedColumns.size(), actualColumns.size());
 
@@ -113,7 +111,7 @@ public class ParserSelectColumnListTest {
 		Set<Token> parsedTokens = parser.parse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
-				.iterator().next()).getColumnList().getChildren();
+				.iterator().next()).getColumnList();
 
 		assertEquals(expected.size(), actual.size());
 		assertTrue(actual.containsAll(expected));

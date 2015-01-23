@@ -36,8 +36,8 @@ public class ParserSubqueryTest {
 				Arrays.asList(new TableNameToken("b"))));
 
 		SelectStatementToken subquery = new SelectStatementToken();
-		subquery.setColumnList(columnListSubquery);
-		subquery.setFromList(fromListSubquery);
+		subquery.setColumnListToken(columnListSubquery);
+		subquery.setFromListToken(fromListSubquery);
 
 		SelectColumnListToken columnListTopLevel = new SelectColumnListToken(
 				new HashSet<>(Arrays.asList(subquery)));
@@ -45,8 +45,8 @@ public class ParserSubqueryTest {
 				Arrays.asList(new TableNameToken("tab"))));
 
 		SelectStatementToken expected = new SelectStatementToken();
-		expected.setColumnList(columnListTopLevel);
-		expected.setFromList(fromListTopLevel);
+		expected.setColumnListToken(columnListTopLevel);
+		expected.setFromListToken(fromListTopLevel);
 
 		Token actual = parser.parse(sql).iterator().next();
 
@@ -63,8 +63,8 @@ public class ParserSubqueryTest {
 				Arrays.asList(new TableNameToken("b"))));
 
 		SelectStatementToken subquery = new SelectStatementToken();
-		subquery.setColumnList(columnListSubquery);
-		subquery.setFromList(fromListSubquery);
+		subquery.setColumnListToken(columnListSubquery);
+		subquery.setFromListToken(fromListSubquery);
 
 		SelectColumnListToken columnListTopLevel = new SelectColumnListToken(
 				new HashSet<>(Arrays.asList(new ColumnNameToken("a"))));
@@ -72,8 +72,8 @@ public class ParserSubqueryTest {
 				Arrays.asList(subquery)));
 
 		SelectStatementToken expected = new SelectStatementToken();
-		expected.setColumnList(columnListTopLevel);
-		expected.setFromList(fromListTopLevel);
+		expected.setColumnListToken(columnListTopLevel);
+		expected.setFromListToken(fromListTopLevel);
 
 		Token actual = parser.parse(sql).iterator().next();
 
@@ -90,8 +90,8 @@ public class ParserSubqueryTest {
 				Arrays.asList(new TableNameToken("b"))));
 
 		SelectStatementToken subquery = new SelectStatementToken();
-		subquery.setColumnList(columnListSubquery);
-		subquery.setFromList(fromListSubquery);
+		subquery.setColumnListToken(columnListSubquery);
+		subquery.setFromListToken(fromListSubquery);
 
 		SelectColumnListToken columnListTopLevel = new SelectColumnListToken(
 				new HashSet<>(Arrays.asList(new ColumnNameToken("a"))));
@@ -104,9 +104,9 @@ public class ParserSubqueryTest {
 						ComparisonFilterToken.Type.EQUAL, subquery))));
 
 		SelectStatementToken expected = new SelectStatementToken();
-		expected.setColumnList(columnListTopLevel);
-		expected.setFromList(fromListTopLevel);
-		expected.setWhereClause(whereClauseTopLevel);
+		expected.setColumnListToken(columnListTopLevel);
+		expected.setFromListToken(fromListTopLevel);
+		expected.setWhereClauseToken(whereClauseTopLevel);
 
 		Token actual = parser.parse(sql).iterator().next();
 

@@ -9,7 +9,6 @@ import org.junit.Test;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.FilterToken;
-import de.alksa.token.FromListToken;
 import de.alksa.token.JoinToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
@@ -37,11 +36,11 @@ public class ParserFromListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		FromListToken actual = ((SelectStatementToken) parsedTokens.iterator()
-				.next()).getFromList();
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getFromList();
 
-		assertEquals(expected.size(), actual.getChildren().size());
-		assertTrue(actual.getChildren().containsAll(expected));
+		assertEquals(expected.size(), actual.size());
+		assertTrue(actual.containsAll(expected));
 	}
 
 	@Test
@@ -53,19 +52,19 @@ public class ParserFromListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		FromListToken actual = ((SelectStatementToken) parsedTokens.iterator()
-				.next()).getFromList();
+		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getFromList();
 
 		// minus 1 because of the ignored join
-		assertEquals(expected.size(), actual.getChildren().size() - 1);
-		assertTrue(actual.getChildren().containsAll(expected));
+		assertEquals(expected.size(), actual.size() - 1);
+		assertTrue(actual.containsAll(expected));
 	}
 
 	@Test
 	public void testSimpleJoin() {
 		FilterToken onClause = new ComparisonFilterToken(new ColumnNameToken(
 				"col1"), ComparisonFilterToken.Type.EQUAL, new ColumnNameToken(
-				"col2"));
+						"col2"));
 		String onString = "on col1 = col2";
 		testJoinType(JoinToken.Type.INNER, onClause, onString);
 		testJoinType(JoinToken.Type.NATURAL, null, "");
@@ -89,10 +88,10 @@ public class ParserFromListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		FromListToken fromList = ((SelectStatementToken) parsedTokens
+		Set<? extends Token> fromList = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getFromList();
 
-		Token actual = fromList.getChildren().iterator().next();
+		Token actual = fromList.iterator().next();
 
 		assertEquals(expected, actual);
 	}
@@ -121,10 +120,10 @@ public class ParserFromListTest {
 
 		Set<Token> parsedTokens = parser.parse(sql);
 
-		FromListToken fromList = ((SelectStatementToken) parsedTokens
+		Set<? extends Token> fromList = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getFromList();
 
-		Token actual = fromList.getChildren().iterator().next();
+		Token actual = fromList.iterator().next();
 
 		assertEquals(expected, actual);
 	}

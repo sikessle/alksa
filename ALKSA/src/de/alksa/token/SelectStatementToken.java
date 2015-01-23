@@ -1,5 +1,7 @@
 package de.alksa.token;
 
+import java.util.Set;
+
 public class SelectStatementToken extends Token {
 
 	private SelectColumnListToken columnList;
@@ -7,35 +9,35 @@ public class SelectStatementToken extends Token {
 	private WhereClauseToken whereClause;
 	private HavingClauseToken havingClause;
 
-	public SelectColumnListToken getColumnList() {
-		return columnList;
+	public Set<? extends Token> getColumnList() {
+		return columnList.getChildren();
 	}
 
-	public void setColumnList(SelectColumnListToken columnList) {
+	public void setColumnListToken(SelectColumnListToken columnList) {
 		this.columnList = columnList;
 	}
 
-	public FromListToken getFromList() {
-		return fromList;
+	public Set<? extends Token> getFromList() {
+		return fromList.getChildren();
 	}
 
-	public void setFromList(FromListToken fromList) {
+	public void setFromListToken(FromListToken fromList) {
 		this.fromList = fromList;
 	}
 
-	public WhereClauseToken getWhereClause() {
-		return whereClause;
+	public Set<? extends Token> getWhereClause() {
+		return whereClause.getChildren();
 	}
 
-	public void setWhereClause(WhereClauseToken whereClause) {
+	public void setWhereClauseToken(WhereClauseToken whereClause) {
 		this.whereClause = whereClause;
 	}
 
-	public HavingClauseToken getHavingClause() {
-		return havingClause;
+	public Set<? extends Token> getHavingClause() {
+		return havingClause.getChildren();
 	}
 
-	public void setHavingClause(HavingClauseToken havingClause) {
+	public void setHavingClauseToken(HavingClauseToken havingClause) {
 		this.havingClause = havingClause;
 	}
 

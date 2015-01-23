@@ -29,10 +29,10 @@ class RootVisitor extends AbstractVisitor {
 		node.accept(visitor);
 
 		SelectStatementToken select = new SelectStatementToken();
-		select.setColumnList(visitor.getColumnListToken());
-		select.setFromList(visitor.getFromListToken());
-		select.setWhereClause(visitor.getWhereClauseToken());
-		select.setHavingClause(visitor.getHavingClauseToken());
+		select.setColumnListToken(visitor.getColumnListToken());
+		select.setFromListToken(visitor.getFromListToken());
+		select.setWhereClauseToken(visitor.getWhereClauseToken());
+		select.setHavingClauseToken(visitor.getHavingClauseToken());
 
 		addToken(select);
 	}
