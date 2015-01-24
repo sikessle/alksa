@@ -49,7 +49,7 @@
 
 ## FROM table list
 
-* Each Join must be exactly the same (same table, type and ON clause).
+* table list must be exactly the same (same table name, join or subquery).
 
 ### WHERE clause
 

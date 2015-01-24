@@ -3,12 +3,13 @@ package de.alksa.checker.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.SelectStatementToken;
 
-public class WhereClauseComparisonChecker extends WhereClauseChecker {
+public class WhereClauseComparisonChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,
