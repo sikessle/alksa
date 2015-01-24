@@ -7,7 +7,6 @@ import de.alksa.log.LogEntry;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.SelectStatementToken;
-import de.alksa.token.Token;
 
 public class WhereClauseComparisonChecker extends WhereClauseChecker {
 
@@ -22,52 +21,30 @@ public class WhereClauseComparisonChecker extends WhereClauseChecker {
 		// Get all ComparisonTokens which involve a column.
 		// Check if the columns are a subset of the Learned.selectColumnList.
 
-		getRecursiveInvolvedColumnNames(copyComparisonFilterTokens(subject
+		Set<ColumnNameToken> learnedColumnNames = copyColumnNameTokens(learned
+				.getColumnList());
+
+		Set<ColumnNameToken> subjectComparisonColumnNames = getInvolvedColumnNamesRecursive(copyComparisonFilterTokens(subject
 				.getWhereClause()));
+
+		if (!isSubset(learnedColumnNames, subjectComparisonColumnNames)) {
+			return createLogEntry("columns used which are not stated in the column list");
+		}
 
 		return null;
 	}
 
-	private Set<ColumnNameToken> getRecursiveInvolvedColumnNames(
+	private Set<ColumnNameToken> getInvolvedColumnNamesRecursive(
 			Set<ComparisonFilterToken> tokens) {
 
 		Set<ColumnNameToken> result = new HashSet<>();
 
 		for (ComparisonFilterToken token : tokens) {
-			result.addAll(getRecursiveColumnNameTokens(token));
+			result.addAll(copyRecursiveTokensOfType(token,
+					ColumnNameToken.class));
 		}
 
 		return result;
 	}
-
-	private Set<ColumnNameToken> getRecursiveColumnNameTokens(
-			ComparisonFilterToken token) {
-		Set<ColumnNameToken> result = new HashSet<>();
-
-		// left side
-		if (token.getLeftPart() instanceof ColumnNameToken) {
-			result.add((ColumnNameToken) token.getLeftPart());
-		} else {
-
-		}
-
-		// right side
-		if (token.getRightPart() instanceof ColumnNameToken) {
-			result.add((ColumnNameToken) token.getRightPart());
-		} else {
-
-		}
-
-		return result;
-	}
-
-	private ColumnNameToken getColumnNameTokenRecursive(Token token) {
-		if (token instanceof ColumnNameToken) {
-			return (ColumnNameToken) token;
-		}
-		return null;
-	}
-
-	// FilterToken
 
 }

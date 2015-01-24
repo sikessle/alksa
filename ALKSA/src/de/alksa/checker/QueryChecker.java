@@ -1,6 +1,7 @@
 package de.alksa.checker;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.FunctionToken;
+import de.alksa.token.HierarchyToken;
 import de.alksa.token.JoinToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
@@ -69,6 +71,23 @@ public abstract class QueryChecker {
 	protected boolean isSubset(Set<? extends Token> superSet,
 			Set<? extends Token> subSet) {
 		return superSet.containsAll(subSet);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> Set<T> copyRecursiveTokensOfType(HierarchyToken token,
+			Class<T> type) {
+		Set<T> result = new HashSet<>();
+
+		for (Token child : token.getChildren()) {
+			if (type.isInstance(child)) {
+				result.add((T) child);
+			} else if (child instanceof HierarchyToken) {
+				result.addAll(copyRecursiveTokensOfType((HierarchyToken) child,
+						type));
+			}
+		}
+
+		return result;
 	}
 
 	protected boolean containsAsterisk(Set<? extends Token> tokens) {

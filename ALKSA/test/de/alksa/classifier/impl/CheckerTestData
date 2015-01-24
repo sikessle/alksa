@@ -165,6 +165,22 @@ SELECT col1 FROM tab WHERE col1 > 1500
 
 #~disallowed~#
 SELECT col1 FROM tab WHERE hiddenCol = 2
+SELECT col1 FROM tab WHERE col1 > ABS(hiddenCol)
+
+#~ENDQUERY~#
+
+
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab WHERE col1 = 2 
+
+#~allowed~#
+SELECT col1 FROM tab WHERE col1 > 1500
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE hiddenCol = 2
+SELECT col1 FROM tab WHERE col1 > ABS(hiddenCol)
 
 #~ENDQUERY~#
 
