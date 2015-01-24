@@ -53,9 +53,17 @@
 
 ### WHERE clause
 
+<<< IMPLEMENT!!! >>>
+* Subqueries must match   
+* CHECK EACH TYPE RECURSIVELY (THIS WILL WORK!), (i.e comparison, logic etc.)
+* Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions. No CCNF.
+* Comparisons must match
+* General: Check on each type (logic, comparison, etc.) if is: equal(learned) OR usesOnlyVisibleColumnsWhichAreNotAlreadyUsedInLearnedWhereStatement
+<<< IMPLEMENT!!! >>>
+
 * Check for existence
-* Subqueries must match   <<< IMPLEMENT!!! >>>
-* Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions with unbound columns. No CCNF. <<< IMPLEMENT!!! >>>
+* Subqueries must match   
+* Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions with unbound columns. No CCNF. 
 * Comparisons with explicitly stated columns (displayed in select column list) are allowed. No checking for subsets comparisons (i.e. col > 1500 instead of col > 1000).
 * Functions: allowed on explicitly stated columns (displayed in select column list).
 * General: A query may use a new statement in the where clause only if the column is visible in the select column list
