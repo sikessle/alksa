@@ -101,11 +101,11 @@ SELECT col1 FROM tab1, tab2
 
 #~allowed~#
 SELECT col1 FROM tab1, tab2
-SELECT col1 FROM tab1
-SELECT col1 FROM tab2
 
 #~disallowed~#
 SELECT col1 FROM tab1, tab2, tab3
+SELECT col1 FROM tab1
+SELECT col1 FROM tab2, tab3
 
 #~ENDQUERY~#
 
@@ -116,12 +116,12 @@ SELECT col1 FROM tab1, tab2, tab3
 SELECT col1 FROM tab1, (SELECT * FROM sub) AS subqery
 
 #~allowed~#
-SELECT col1 FROM tab1
-SELECT col1 FROM (SELECT * FROM sub) AS subqery
+SELECT col1 FROM tab1, (SELECT * FROM sub) AS subqery
 
 #~disallowed~#
 SELECT col1 FROM tab1, (SELECT * FROM otherTable) AS subqery
 SELECT col1 FROM (SELECT * FROM otherTable) AS subqery
+SELECT col1 FROM tab1
 
 #~ENDQUERY~#
 

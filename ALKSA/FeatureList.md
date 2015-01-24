@@ -16,6 +16,7 @@
 * Table names
 * Multiple Joins: Inner, Full Outer, Left Outer, Right Outer, Natural
 * CROSS Joins are not detected
+* Implicit Inner Joins are not detected but are implicit detectable if multiple column names occur (i.e. FROM tab1, tab2)
 
 ### WHERE clause
 
@@ -53,7 +54,7 @@
 ### WHERE clause
 
 * Check for existence
-* Logic AND/OR/NOT  ????   (removal of disjunctions, adding of conjunctions with unbound columns)
+* Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions with unbound columns. No CCNF.
 * Comparisons with explicitly stated columns (displayed in select column list) are allowed. No checking for subsets comparisons (i.e. col > 1500 instead of col > 1000).
 * Subqueries must match
 

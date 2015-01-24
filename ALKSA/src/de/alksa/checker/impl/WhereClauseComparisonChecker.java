@@ -18,9 +18,6 @@ public class WhereClauseComparisonChecker extends WhereClauseChecker {
 			return null;
 		}
 
-		// Get all ComparisonTokens which involve a column.
-		// Check if the columns are a subset of the Learned.selectColumnList.
-
 		Set<ColumnNameToken> learnedColumnNames = copyColumnNameTokens(learned
 				.getColumnList());
 

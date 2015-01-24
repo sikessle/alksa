@@ -15,8 +15,7 @@ public class CheckerModule extends AbstractModule {
 		binder.addBinding().to(SelectColumnListFunctionChecker.class);
 		binder.addBinding().to(SelectColumnListCalculationChecker.class);
 		binder.addBinding().to(SelectColumnListSubqueryChecker.class);
-		binder.addBinding().to(FromListTableChecker.class);
-		binder.addBinding().to(FromListSubqueryChecker.class);
+		binder.addBinding().to(FromListChecker.class);
 		binder.addBinding().to(FromListJoinChecker.class);
 		binder.addBinding().to(WhereClauseExistsChecker.class);
 		binder.addBinding().to(WhereClauseComparisonChecker.class);
