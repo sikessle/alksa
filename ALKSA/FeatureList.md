@@ -54,9 +54,11 @@
 ### WHERE clause
 
 * Check for existence
-* Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions with unbound columns. No CCNF.
+* Subqueries must match   <<< IMPLEMENT!!! >>>
+* Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions with unbound columns. No CCNF. <<< IMPLEMENT!!! >>>
 * Comparisons with explicitly stated columns (displayed in select column list) are allowed. No checking for subsets comparisons (i.e. col > 1500 instead of col > 1000).
-* Subqueries must match
+* Functions: allowed on explicitly stated columns (displayed in select column list).
+* General: A query may use a new statement in the where clause only if the column is visible in the select column list
 
 ### HAVING clause
 

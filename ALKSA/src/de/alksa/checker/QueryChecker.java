@@ -94,6 +94,11 @@ public abstract class QueryChecker {
 		return tokens.contains(new ColumnNameToken("*"));
 	}
 
+	protected Set<HierarchyToken> copyHierarchyTokens(
+			Set<? extends Token> tokens) {
+		return TypeUtil.getAllTokensOfType(tokens, HierarchyToken.class);
+	}
+
 	protected Set<ColumnNameToken> copyColumnNameTokens(
 			Set<? extends Token> tokens) {
 		return TypeUtil.getAllTokensOfType(tokens, ColumnNameToken.class);

@@ -166,6 +166,7 @@ SELECT col1 FROM tab WHERE col1 > 1500
 #~disallowed~#
 SELECT col1 FROM tab WHERE hiddenCol = 2
 SELECT col1 FROM tab WHERE col1 > ABS(hiddenCol)
+SELECT col1 FROM tab WHERE col1 = 2 AND ABS(hiddenCol) = 1
 
 #~ENDQUERY~#
 
@@ -180,7 +181,7 @@ SELECT col1 FROM tab WHERE col1 > 1500
 
 #~disallowed~#
 SELECT col1 FROM tab WHERE hiddenCol = 2
-SELECT col1 FROM tab WHERE col1 > ABS(hiddenCol)
+SELECT col1 FROM tab WHERE col1 = 2 AND ABS(hiddenCol) = 3
 
 #~ENDQUERY~#
 
