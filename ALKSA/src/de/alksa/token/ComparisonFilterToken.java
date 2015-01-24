@@ -1,10 +1,13 @@
 package de.alksa.token;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 public class ComparisonFilterToken extends FilterToken {
 
 	public enum Type {
 		EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL;
-		
+
 		@Override
 		public String toString() {
 			switch (this) {
@@ -34,6 +37,8 @@ public class ComparisonFilterToken extends FilterToken {
 		this.leftPart = leftPart;
 		this.comparisonType = comparisonType;
 		this.rightPart = rightPart;
+
+		setTokens(new HashSet<>(Arrays.asList(leftPart, rightPart)));
 	}
 
 	public Token getLeftPart() {
@@ -51,7 +56,7 @@ public class ComparisonFilterToken extends FilterToken {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((comparisonType == null) ? 0 : comparisonType.hashCode());
 		result = prime * result
@@ -63,25 +68,33 @@ public class ComparisonFilterToken extends FilterToken {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		ComparisonFilterToken other = (ComparisonFilterToken) obj;
-		if (comparisonType != other.comparisonType)
+		if (comparisonType != other.comparisonType) {
 			return false;
+		}
 		if (leftPart == null) {
-			if (other.leftPart != null)
+			if (other.leftPart != null) {
 				return false;
-		} else if (!leftPart.equals(other.leftPart))
+			}
+		} else if (!leftPart.equals(other.leftPart)) {
 			return false;
+		}
 		if (rightPart == null) {
-			if (other.rightPart != null)
+			if (other.rightPart != null) {
 				return false;
-		} else if (!rightPart.equals(other.rightPart))
+			}
+		} else if (!rightPart.equals(other.rightPart)) {
 			return false;
+		}
 		return true;
 	}
 

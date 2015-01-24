@@ -19,6 +19,7 @@ public class CheckerModule extends AbstractModule {
 		binder.addBinding().to(FromListSubqueryChecker.class);
 		binder.addBinding().to(FromListJoinChecker.class);
 		binder.addBinding().to(WhereClauseExistsChecker.class);
+		binder.addBinding().to(WhereClauseComparisonChecker.class);
 	}
 
 }

@@ -1,5 +1,8 @@
 package de.alksa.token;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 public class UnaryLogicalFilterToken extends FilterToken {
 
 	public enum Type {
@@ -12,6 +15,7 @@ public class UnaryLogicalFilterToken extends FilterToken {
 	public UnaryLogicalFilterToken(Type type, Token parameter) {
 		this.type = type;
 		this.parameter = parameter;
+		setTokens(new HashSet<>(Arrays.asList(parameter)));
 	}
 
 	public Type getType() {
@@ -25,7 +29,7 @@ public class UnaryLogicalFilterToken extends FilterToken {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((parameter == null) ? 0 : parameter.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -34,20 +38,26 @@ public class UnaryLogicalFilterToken extends FilterToken {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		UnaryLogicalFilterToken other = (UnaryLogicalFilterToken) obj;
 		if (parameter == null) {
-			if (other.parameter != null)
+			if (other.parameter != null) {
 				return false;
-		} else if (!parameter.equals(other.parameter))
+			}
+		} else if (!parameter.equals(other.parameter)) {
 			return false;
-		if (type != other.type)
+		}
+		if (type != other.type) {
 			return false;
+		}
 		return true;
 	}
 

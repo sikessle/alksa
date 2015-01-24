@@ -54,7 +54,7 @@
 
 * Check for existence
 * Logic AND/OR/NOT  ????   (removal of disjunctions, adding of conjunctions with unbound columns)
-* Comparison < > = <= >= ?????  (subset
+* Comparisons with explicitly stated columns (displayed in select column list) are allowed. No checking for subsets comparisons (i.e. col > 1500 instead of col > 1000).
 * Subqueries must match
 
 ### HAVING clause

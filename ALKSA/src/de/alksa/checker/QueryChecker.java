@@ -9,6 +9,7 @@ import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
 import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
+import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.JoinToken;
 import de.alksa.token.SelectStatementToken;
@@ -100,6 +101,11 @@ public abstract class QueryChecker {
 
 	protected Set<JoinToken> copyJoinTokens(Set<? extends Token> tokens) {
 		return TypeUtil.getAllTokensOfType(tokens, JoinToken.class);
+	}
+
+	protected Set<ComparisonFilterToken> copyComparisonFilterTokens(
+			Set<? extends Token> tokens) {
+		return TypeUtil.getAllTokensOfType(tokens, ComparisonFilterToken.class);
 	}
 
 }

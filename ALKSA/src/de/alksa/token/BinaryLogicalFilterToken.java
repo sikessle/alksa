@@ -1,5 +1,7 @@
 package de.alksa.token;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class BinaryLogicalFilterToken extends FilterToken {
@@ -20,6 +22,8 @@ public class BinaryLogicalFilterToken extends FilterToken {
 		this.type = type;
 		this.firstOperand = firstOperand;
 		this.secondOperand = secondOperand;
+
+		setTokens(new HashSet<>(Arrays.asList(firstOperand, secondOperand)));
 	}
 
 	public Token getfirstOperand() {
@@ -37,7 +41,7 @@ public class BinaryLogicalFilterToken extends FilterToken {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((firstOperand == null) ? 0 : firstOperand.hashCode());
 		result = prime * result
@@ -46,25 +50,36 @@ public class BinaryLogicalFilterToken extends FilterToken {
 		return result;
 	}
 
-	/**
-	 * The order of first and second operand does not matter.
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		BinaryLogicalFilterToken other = (BinaryLogicalFilterToken) obj;
-		if (type != other.type)
+		if (firstOperand == null) {
+			if (other.firstOperand != null) {
+				return false;
+			}
+		} else if (!firstOperand.equals(other.firstOperand)) {
 			return false;
-
-		return (firstOperand.equals(other.firstOperand) && secondOperand
-				.equals(other.secondOperand))
-				|| (firstOperand.equals(other.secondOperand) && secondOperand
-						.equals(other.firstOperand));
+		}
+		if (secondOperand == null) {
+			if (other.secondOperand != null) {
+				return false;
+			}
+		} else if (!secondOperand.equals(other.secondOperand)) {
+			return false;
+		}
+		if (type != other.type) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

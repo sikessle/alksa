@@ -155,6 +155,20 @@ SELECT col1 FROM tab
 #~ENDQUERY~#
 
 
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab
+
+#~allowed~#
+SELECT col1 FROM tab WHERE col1 > 1500
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE hiddenCol = 2
+
+#~ENDQUERY~#
+
+
 
 
 
