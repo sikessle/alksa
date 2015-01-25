@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
-public class BinaryLogicalFilterToken extends FilterToken {
+public class BinaryLogicalFilterToken extends LogicalToken {
 
 	public enum Type {
 		AND, OR

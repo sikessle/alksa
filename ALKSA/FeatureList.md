@@ -55,7 +55,6 @@
 
 <<< IMPLEMENT!!! >>>
 
-* Subqueries must match 
 * Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions. No CCNF.
 
 <<< IMPLEMENT!!! >>>

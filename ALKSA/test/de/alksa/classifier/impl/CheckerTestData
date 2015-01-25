@@ -187,6 +187,20 @@ SELECT col1 FROM tab WHERE col1 > 1500
 #~ENDQUERY~#
 
 
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab WHERE x = 1 AND y = 2  
+
+#~allowed~#
+SELECT col1 FROM tab WHERE x = 1 AND y = 2
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE x = 1
+
+#~ENDQUERY~#
+
+
 
 
 
