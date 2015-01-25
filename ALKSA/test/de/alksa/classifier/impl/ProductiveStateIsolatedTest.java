@@ -38,7 +38,9 @@ public class ProductiveStateIsolatedTest extends StateClassifierTest {
 		Injector injector = Guice.createInjector(new CheckerModule());
 		injector.injectMembers(this);
 
-		classifier = new ProductiveState(checkers, queryStorageMock, loggerMock);
+		// single checker is enough for this test.
+		QueryChecker checker = checkers.iterator().next();
+		classifier = new ProductiveState(checker, queryStorageMock, loggerMock);
 
 	}
 

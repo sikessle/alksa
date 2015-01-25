@@ -27,7 +27,7 @@ class CheckerBasedClassifier implements Classifier {
 	private final Parser parser;
 	private final QueryStorage queryStorage;
 	private final Logger logger;
-	private Set<QueryChecker> queryCheckers;
+	private QueryChecker masterChecker;
 
 	@Inject
 	public CheckerBasedClassifier(Set<QueryChecker> queryCheckers,
@@ -38,12 +38,28 @@ class CheckerBasedClassifier implements Classifier {
 		Objects.requireNonNull(queryStorage);
 		Objects.requireNonNull(logger);
 
-		this.queryCheckers = queryCheckers;
 		this.parser = parser;
 		this.queryStorage = queryStorage;
 		this.logger = logger;
 
+		masterChecker = createDummyChecker();
+
+		for (QueryChecker checker : queryCheckers) {
+			masterChecker.appendMatcher(checker);
+		}
+
 		setLearning(false);
+	}
+
+	private QueryChecker createDummyChecker() {
+		return new QueryChecker() {
+
+			@Override
+			protected LogEntry check(SelectStatementToken subject,
+					SelectStatementToken learned) {
+				return null;
+			}
+		};
 	}
 
 	@Override
@@ -91,7 +107,7 @@ class CheckerBasedClassifier implements Classifier {
 		if (isLearning()) {
 			state = new LearningState(queryStorage);
 		} else {
-			state = new ProductiveState(queryCheckers, queryStorage, logger);
+			state = new ProductiveState(masterChecker, queryStorage, logger);
 		}
 	}
 

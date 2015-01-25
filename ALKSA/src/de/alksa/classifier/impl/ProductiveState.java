@@ -18,18 +18,13 @@ class ProductiveState extends ClassifierState {
 	private Logger logger;
 	private QueryChecker masterChecker;
 
-	public ProductiveState(Set<QueryChecker> queryCheckers,
+	public ProductiveState(QueryChecker masterChecker,
 			QueryStorage queryStorage, Logger logger) {
-		Objects.requireNonNull(queryCheckers);
+		Objects.requireNonNull(masterChecker);
 		Objects.requireNonNull(queryStorage);
 		Objects.requireNonNull(logger);
 
-		masterChecker = createDummyChecker();
-
-		for (QueryChecker checker : queryCheckers) {
-			masterChecker.appendMatcher(checker);
-		}
-
+		this.masterChecker = masterChecker;
 		this.queryStorage = queryStorage;
 		this.logger = logger;
 	}
@@ -100,16 +95,5 @@ class ProductiveState extends ClassifierState {
 	private boolean isNotSameDatabaseAndUser(Query subject, Query learned) {
 		return !(subject.getDatabase().equals(learned.getDatabase()) && subject
 				.getDatabaseUser().equals(learned.getDatabaseUser()));
-	}
-
-	private QueryChecker createDummyChecker() {
-		return new QueryChecker() {
-
-			@Override
-			protected LogEntry check(SelectStatementToken subject,
-					SelectStatementToken learned) {
-				return null;
-			}
-		};
 	}
 }

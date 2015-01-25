@@ -3,11 +3,9 @@ package de.alksa;
 import java.io.File;
 
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ALKSATest {
 
@@ -21,8 +19,7 @@ public class ALKSATest {
 		alksa = new ALKSA(storagePath);
 	}
 
-	// TODO remove Ignore, when final testing starts
-	@Ignore
+	@Test
 	public void testDelegateMethods() {
 		String learnedQuery = "SELECT * FROM tab";
 		alksa.setLearning(true);
@@ -31,6 +28,12 @@ public class ALKSATest {
 
 		alksa.setLearning(false);
 		assertFalse(alksa.accept("sfddsfds", "local", "test"));
+		// illegal statements should trigger no log
+		assertEquals(0, alksa.getLogEntries().size());
+
+		assertFalse(alksa.accept(
+				"SELECT * FROM tab LEFT OUTER JOIN tab2 ON c1=c2", "local",
+				"test"));
 		assertEquals(1, alksa.getLogEntries().size());
 
 		assertTrue(alksa.accept(learnedQuery, "local", "test"));
