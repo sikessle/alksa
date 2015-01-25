@@ -110,8 +110,6 @@ public class WhereClauseLogicChecker extends WhereClauseChecker {
 			return false;
 		}
 
-		// subset
-
 		return false;
 	}
 
