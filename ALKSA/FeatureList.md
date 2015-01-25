@@ -53,12 +53,6 @@
 
 ### WHERE clause
 
-<<< IMPLEMENT!!! >>>
-
-* Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions. No CCNF.
-
-<<< IMPLEMENT!!! >>>
-
 * Check for existence
 * Subqueries must match   
 * Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions with unbound columns. No CCNF. 
