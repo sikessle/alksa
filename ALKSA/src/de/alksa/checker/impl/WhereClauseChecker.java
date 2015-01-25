@@ -5,6 +5,7 @@ import java.util.Set;
 
 import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
+import de.alksa.token.ColumnNameToken;
 import de.alksa.token.FilterToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
@@ -13,6 +14,10 @@ public abstract class WhereClauseChecker extends QueryChecker {
 
 	protected Set<? extends Token> subjectColumnList;
 	protected Set<? extends Token> learnedColumnList;
+	/**
+	 * Including subqueries
+	 */
+	protected Set<Token> legalColumnsForNewFilters;
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,
@@ -25,6 +30,7 @@ public abstract class WhereClauseChecker extends QueryChecker {
 
 		this.subjectColumnList = subject.getColumnList();
 		this.learnedColumnList = learned.getColumnList();
+		this.legalColumnsForNewFilters = createLegalColumns(learnedWhere);
 
 		return checkWhereClause(subjectWhere, learnedWhere);
 	}
@@ -34,6 +40,25 @@ public abstract class WhereClauseChecker extends QueryChecker {
 			return new HashSet<FilterToken>();
 		}
 		return copyFilterTokens(set);
+	}
+
+	/**
+	 * Legal: column is in select list and not in where filter
+	 */
+	private Set<Token> createLegalColumns(Set<FilterToken> learnedWhere) {
+		Set<Token> result = new HashSet<>();
+
+		result.addAll(copyColumnNameTokens(learnedColumnList));
+		result.addAll(copySelectStatementTokens(learnedColumnList));
+
+		// remove the learned where columns/subqueries, because they are already
+		// in use
+		result.removeAll(copyRecursiveTokensOfType(learnedWhere,
+				ColumnNameToken.class));
+		result.removeAll(copyRecursiveTokensOfType(learnedWhere,
+				SelectStatementToken.class));
+
+		return result;
 	}
 
 	/**

@@ -75,21 +75,33 @@ public abstract class QueryChecker {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T> Set<T> copyRecursiveTokensOfType(HierarchyToken token,
-			Class<T> type) {
+	protected <T> Set<T> copyRecursiveTokensOfType(Token token, Class<T> type) {
 		Set<T> result = new HashSet<>();
 
 		if (type.isInstance(token)) {
 			result.add((T) token);
 		}
 
-		for (Token child : token.getChildren()) {
-			if (type.isInstance(child)) {
-				result.add((T) child);
-			} else if (child instanceof HierarchyToken) {
-				result.addAll(copyRecursiveTokensOfType((HierarchyToken) child,
-						type));
+		if (token instanceof HierarchyToken) {
+			HierarchyToken hToken = (HierarchyToken) token;
+			for (Token child : hToken.getChildren()) {
+				if (type.isInstance(child)) {
+					result.add((T) child);
+				} else if (child instanceof HierarchyToken) {
+					result.addAll(copyRecursiveTokensOfType(child, type));
+				}
 			}
+		}
+
+		return result;
+	}
+
+	protected <T> Set<T> copyRecursiveTokensOfType(Set<? extends Token> tokens,
+			Class<T> type) {
+		Set<T> result = new HashSet<>();
+
+		for (Token token : tokens) {
+			result.addAll(copyRecursiveTokensOfType(token, type));
 		}
 
 		return result;
