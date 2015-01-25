@@ -15,6 +15,7 @@ import de.alksa.token.FilterToken;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.HierarchyToken;
 import de.alksa.token.JoinToken;
+import de.alksa.token.LogicalFilterToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.TableNameToken;
 import de.alksa.token.Token;
@@ -151,6 +152,11 @@ public abstract class QueryChecker {
 
 	protected Set<FilterToken> copyFilterTokens(Set<? extends Token> tokens) {
 		return TypeUtil.getAllTokensOfType(tokens, FilterToken.class);
+	}
+
+	protected Set<LogicalFilterToken> copyLogicalFilterTokens(
+			Set<? extends Token> tokens) {
+		return TypeUtil.getAllTokensOfType(tokens, LogicalFilterToken.class);
 	}
 
 }

@@ -3,7 +3,7 @@ package de.alksa.token;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class UnaryLogicalFilterToken extends LogicalToken {
+public class UnaryLogicalFilterToken extends LogicalFilterToken {
 
 	public enum Type {
 		NOT

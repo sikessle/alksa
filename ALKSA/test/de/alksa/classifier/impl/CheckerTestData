@@ -190,6 +190,22 @@ SELECT col1 FROM tab WHERE col1 > 1500
 #~QUERY~#
 
 #~learned~#
+SELECT col1, col2 FROM tab  
+
+#~allowed~#
+SELECT col1 FROM tab WHERE col1 = 20 AND col2 = 30
+SELECT col1 FROM tab WHERE col1 = 20 OR col2 = 30
+SELECT col1 FROM tab WHERE col1 = 20 OR col2 = 30 OR col2 = 10
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE col1 = 20 AND hiddenCol = 10
+
+#~ENDQUERY~#
+
+
+#~QUERY~#
+
+#~learned~#
 SELECT col1 FROM tab WHERE x = 1 AND y = 2  
 
 #~allowed~#
@@ -201,9 +217,64 @@ SELECT col1 FROM tab WHERE x = 1
 #~ENDQUERY~#
 
 
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab WHERE x = 1 OR y = 2
+
+#~allowed~#
+SELECT col1 FROM tab WHERE x = 1
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE x = 1 AND y = 2
+
+#~ENDQUERY~#
 
 
+#~QUERY~#
 
+#~learned~#
+SELECT col1 FROM tab WHERE x = 1 AND y = 2 AND z = 3
+
+#~allowed~#
+SELECT col1 FROM tab WHERE x = 1 AND y = 2 AND z = 3
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE x = 1 AND y = 2
+SELECT col1 FROM tab WHERE x = 1 AND y = 2 AND z = 3 AND hidden = 4
+
+#~ENDQUERY~#
+
+
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab WHERE x = 1 OR y = 2 OR z = 3
+
+#~allowed~#
+SELECT col1 FROM tab WHERE x = 1 OR y = 2
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE x = 1 AND y = 2
+
+#~ENDQUERY~#
+
+
+#~QUERY~#
+
+#~learned~#
+SELECT col1 FROM tab WHERE x = 1 OR y = 2 OR z = 3
+
+#~allowed~#
+SELECT col1 FROM tab WHERE x = 1 OR y = 2
+SELECT col1 FROM tab WHERE x = 1
+
+#~disallowed~#
+SELECT col1 FROM tab WHERE x = 1 OR y = 2 OR z = 3 OR z = 4
+SELECT col1 FROM tab WHERE x = 1 OR hidden = 2
+SELECT col1 FROM tab WHERE hidden = 2
+
+#~ENDQUERY~#
 
 
 
