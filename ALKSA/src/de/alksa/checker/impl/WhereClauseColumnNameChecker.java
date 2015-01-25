@@ -3,43 +3,63 @@ package de.alksa.checker.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.token.ColumnNameToken;
+import de.alksa.token.FilterToken;
 import de.alksa.token.HierarchyToken;
-import de.alksa.token.SelectStatementToken;
 
 /**
- * Checks if only column names have been used, which are in the select column
- * list.
+ * Checks if subject uses only column names which are:<br>
+ * 1. in the learned where statement<br>
+ * 2. OR visible in select column list AND not already in the learned where
+ * statement
  */
-public class WhereClauseColumnNameChecker extends QueryChecker {
+public class WhereClauseColumnNameChecker extends WhereClauseChecker {
 
 	@Override
-	protected LogEntry check(SelectStatementToken subject,
-			SelectStatementToken learned) {
+	protected LogEntry checkWhereClause(Set<FilterToken> subject,
+			Set<FilterToken> learned) {
 
-		if (subject.getWhereClause() == null) {
+		if (subject.isEmpty()) {
 			return null;
 		}
 
-		Set<ColumnNameToken> learnedSelectAndWhereColumnNames = copyColumnNameTokens(learned
-				.getColumnList());
-
-		if (learned.getWhereClause() != null) {
-			Set<ColumnNameToken> learnedWhereColumnNames = getInvolvedColumnNamesRecursive(copyHierarchyTokens(learned
-					.getWhereClause()));
-			learnedSelectAndWhereColumnNames.addAll(learnedWhereColumnNames);
+		// set of learned where columns
+		Set<ColumnNameToken> learnedWhereColumns;
+		if (learned.isEmpty()) {
+			learnedWhereColumns = new HashSet<>();
+		} else {
+			learnedWhereColumns = getInvolvedColumnNamesRecursive(copyHierarchyTokens(learned));
 		}
 
-		Set<ColumnNameToken> subjectWhereColumnNames = getInvolvedColumnNamesRecursive(copyHierarchyTokens(subject
-				.getWhereClause()));
+		// set of subject where columns
+		Set<ColumnNameToken> subjectWhereColumns = getInvolvedColumnNamesRecursive(copyHierarchyTokens(subject));
 
-		if (!isSubset(learnedSelectAndWhereColumnNames, subjectWhereColumnNames)) {
-			return createLogEntry("columns used which are not stated in the column list");
+		// if:
+		// subject where is subset of learned where: then return null
+		if (isSubset(learnedWhereColumns, subjectWhereColumns)) {
+			return null;
+		} else {
+			// else:
+			// remove all learnedWhereColumns from subject to get the rest
+			Set<ColumnNameToken> subjectNoSubsetColumns = subjectWhereColumns;
+			subjectNoSubsetColumns.removeAll(learnedWhereColumns);
+
+			// set of learned select columns
+			Set<ColumnNameToken> allowedColumns = copyColumnNameTokens(learnedColumnList);
+			// subtract from learned select columns the learned where statements
+			// =: allowedColumns
+			allowedColumns.removeAll(learnedWhereColumns);
+			// if:
+			// subject where is subset of allowed columns: then return null
+			if (isSubset(allowedColumns, subjectNoSubsetColumns)) {
+				return null;
+			} else {
+				// else: return error.
+				return createLogEntry("used columns which are already in use or not visible");
+			}
+
 		}
-
-		return null;
 	}
 
 	private Set<ColumnNameToken> getInvolvedColumnNamesRecursive(

@@ -54,11 +54,10 @@
 ### WHERE clause
 
 <<< IMPLEMENT!!! >>>
-* Subqueries must match   
-* CHECK EACH TYPE RECURSIVELY (THIS WILL WORK!), (i.e comparison, logic etc.)
+
+* Subqueries must match 
 * Logic AND/OR/NOT: Removal of disjunctions, adding of conjunctions. No CCNF.
-* Comparisons must match
-* General: Check on each type (logic, comparison, etc.) if is: equal(learned) OR usesOnlyVisibleColumnsWhichAreNotAlreadyUsedInLearnedWhereStatement
+
 <<< IMPLEMENT!!! >>>
 
 * Check for existence

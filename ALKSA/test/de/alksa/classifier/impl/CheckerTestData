@@ -177,11 +177,12 @@ SELECT col1 FROM tab WHERE col1 = 2 AND ABS(hiddenCol) = 1
 SELECT col1 FROM tab WHERE col1 = 2 
 
 #~allowed~#
-SELECT col1 FROM tab WHERE col1 > 1500
+SELECT col1 FROM tab WHERE col1 = 2
 
 #~disallowed~#
 SELECT col1 FROM tab WHERE hiddenCol = 2
 SELECT col1 FROM tab WHERE col1 = 2 AND ABS(hiddenCol) = 3
+SELECT col1 FROM tab WHERE col1 > 1500
 
 #~ENDQUERY~#
 

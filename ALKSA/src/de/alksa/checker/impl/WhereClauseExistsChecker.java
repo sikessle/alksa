@@ -1,21 +1,19 @@
 package de.alksa.checker.impl;
 
-import de.alksa.checker.QueryChecker;
-import de.alksa.log.LogEntry;
-import de.alksa.token.SelectStatementToken;
+import java.util.Set;
 
-public class WhereClauseExistsChecker extends QueryChecker {
+import de.alksa.log.LogEntry;
+import de.alksa.token.FilterToken;
+
+public class WhereClauseExistsChecker extends WhereClauseChecker {
 
 	@Override
-	protected LogEntry check(SelectStatementToken subject,
-			SelectStatementToken learned) {
+	protected LogEntry checkWhereClause(Set<FilterToken> subject,
+			Set<FilterToken> learned) {
 
-		if (learned.getWhereClause() != null) {
-			if (subject.getWhereClause() == null) {
-				return createLogEntry("no where clause found");
-			}
+		if (!learned.isEmpty() && subject.isEmpty()) {
+			return createLogEntry("where clause was removed");
 		}
-
 		return null;
 	}
 

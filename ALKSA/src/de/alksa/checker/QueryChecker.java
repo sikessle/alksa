@@ -11,6 +11,7 @@ import de.alksa.querystorage.Query;
 import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.ComparisonFilterToken;
+import de.alksa.token.FilterToken;
 import de.alksa.token.FunctionToken;
 import de.alksa.token.HierarchyToken;
 import de.alksa.token.JoinToken;
@@ -78,6 +79,10 @@ public abstract class QueryChecker {
 			Class<T> type) {
 		Set<T> result = new HashSet<>();
 
+		if (type.isInstance(token)) {
+			result.add((T) token);
+		}
+
 		for (Token child : token.getChildren()) {
 			if (type.isInstance(child)) {
 				result.add((T) child);
@@ -130,6 +135,10 @@ public abstract class QueryChecker {
 	protected Set<ComparisonFilterToken> copyComparisonFilterTokens(
 			Set<? extends Token> tokens) {
 		return TypeUtil.getAllTokensOfType(tokens, ComparisonFilterToken.class);
+	}
+
+	protected Set<FilterToken> copyFilterTokens(Set<? extends Token> tokens) {
+		return TypeUtil.getAllTokensOfType(tokens, FilterToken.class);
 	}
 
 }

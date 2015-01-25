@@ -4,9 +4,8 @@ import java.util.Set;
 
 import de.alksa.log.LogEntry;
 import de.alksa.token.FilterToken;
-import de.alksa.token.Token;
 
-public class WhereClauseLogicChecker extends WhereClauseChecker {
+public class WhereClauseComparisonChecker extends WhereClauseChecker {
 
 	@Override
 	protected LogEntry checkWhereClause(Set<FilterToken> subject,
