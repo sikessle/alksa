@@ -1,3 +1,9 @@
+# General
+
+### Learning/Productive Phase
+
+* The learning or productive phase must be set manually.
+
 # Parser - Implemented Features
 
 ### Alias
