@@ -27,6 +27,11 @@ class Db4oStorageDao implements StorageDao {
 	}
 
 	@Override
+	public final void open() {
+		db = Db4oEmbedded.openFile(dbPath);
+	}
+
+	@Override
 	public Set<LogEntry> getLogEntries() {
 		Set<LogEntry> entries = new HashSet<>();
 		ObjectSet<LogEntry> resultSet = db.query(LogEntry.class);
@@ -65,8 +70,4 @@ class Db4oStorageDao implements StorageDao {
 		db.close();
 	}
 
-	@Override
-	public void open() {
-		db = Db4oEmbedded.openFile(dbPath);
-	}
 }
