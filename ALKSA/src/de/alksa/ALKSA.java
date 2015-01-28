@@ -16,7 +16,7 @@ import de.alksa.persistence.StorageDao;
 import de.alksa.persistence.impl.PersistenceModule;
 import de.alksa.querystorage.impl.QueryStorageModule;
 
-public class ALKSA {
+public final class ALKSA {
 
 	private Classifier classifier;
 	private StorageDao storage;
