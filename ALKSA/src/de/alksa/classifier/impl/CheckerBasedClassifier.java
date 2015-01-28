@@ -7,6 +7,7 @@ import java.util.Set;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.checker.QueryChecker;
 import de.alksa.classifier.Classifier;
 import de.alksa.log.LogEntry;
@@ -63,23 +64,19 @@ class CheckerBasedClassifier implements Classifier {
 	}
 
 	@Override
-	public boolean accept(String sql, String database, String databaseUser) {
+	public boolean accept(String sql, String database, String databaseUser)
+			throws ALKSAInvalidQueryException {
 		if (sql == null || database == null || databaseUser == null) {
-			return false;
+			throw new ALKSAInvalidQueryException("parameters are null");
 		}
 
-		try {
-			Set<Query> queries = createQueries(sql, database, databaseUser);
-			return state.accept(queries);
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			return false;
-		}
+		Set<Query> queries = createQueries(sql, database, databaseUser);
+		return state.accept(queries);
 
 	}
 
 	private Set<Query> createQueries(String sql, String database,
-			String databaseUser) {
+			String databaseUser) throws ALKSAInvalidQueryException {
 		Set<Query> queries = new HashSet<>();
 
 		Set<Token> tokens = parser.parse(sql);

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import de.alksa.token.ColumnNameToken;
@@ -15,14 +14,7 @@ import de.alksa.token.Token;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ParserUnionTest {
-
-	private VisitorBasedParser parser;
-
-	@Before
-	public void setUp() throws Exception {
-		parser = new VisitorBasedParser();
-	}
+public class ParserUnionTest extends ParserTest {
 
 	@Test
 	public void testUnion() {
@@ -44,7 +36,7 @@ public class ParserUnionTest {
 		expected.add(firstSelect);
 		expected.add(secondSelect);
 
-		Set<Token> actual = parser.parse(sql);
+		Set<Token> actual = exceptionSafeParse(sql);
 
 		assertEquals(2, actual.size());
 		assertTrue(actual.containsAll(expected));

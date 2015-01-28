@@ -3,9 +3,9 @@ package de.alksa.parser.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
+import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
 import de.alksa.token.FunctionToken;
@@ -15,17 +15,10 @@ import de.alksa.token.Token;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ParserSelectColumnListTest {
+public class ParserSelectColumnListTest extends ParserTest {
 
-	private VisitorBasedParser parser;
-
-	@Before
-	public void setUp() throws Exception {
-		parser = new VisitorBasedParser();
-	}
-
-	@Test(expected = RuntimeException.class)
-	public void testParseException() {
+	@Test(expected = ALKSAInvalidQueryException.class)
+	public void testParseException() throws ALKSAInvalidQueryException {
 		parser.parse(";Not Valid SQL;");
 	}
 
@@ -38,7 +31,7 @@ public class ParserSelectColumnListTest {
 		expected.add(new ColumnNameToken("users.col1"));
 		expected.add(new ColumnNameToken("col2"));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getColumnList();
@@ -55,7 +48,7 @@ public class ParserSelectColumnListTest {
 
 		expected.add(new ColumnNameToken("*"));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getColumnList();
@@ -79,7 +72,7 @@ public class ParserSelectColumnListTest {
 		expected.add(new FunctionToken("ABS", functionParametersABS));
 		expected.add(new FunctionToken("AVG", functionParametersAVG));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> columnList = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getColumnList();
@@ -108,7 +101,7 @@ public class ParserSelectColumnListTest {
 		expected.add(new CalculationToken("col1*12"));
 		expected.add(new CalculationToken("25+3"));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getColumnList();
@@ -125,7 +118,7 @@ public class ParserSelectColumnListTest {
 		expected.add(new CalculationToken("ABS(col1)*12"));
 		expected.add(new CalculationToken("25+3"));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getColumnList();

@@ -7,6 +7,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
 import de.alksa.log.impl.AttackLogEntry;
@@ -45,28 +46,31 @@ public class CheckerBasedClassifierTest {
 				queryStorageMock, loggerMock);
 	}
 
+	@Test(expected = ALKSAInvalidQueryException.class)
+	public void testAcceptWithNull() throws ALKSAInvalidQueryException {
+		classifier.accept(null, null, null);
+	}
+
+	@Test(expected = ALKSAInvalidQueryException.class)
+	public void testAcceptWithParserException()
+			throws ALKSAInvalidQueryException {
+		when(parserMock.parse(any())).thenThrow(
+				new ALKSAInvalidQueryException());
+		classifier.accept(query, database, databaseUser);
+	}
+
 	@Test
-	public void testConstructor() {
+	public void testLearning() {
 		classifier.setLearning(false);
 		assertFalse(classifier.isLearning());
 		classifier.setLearning(true);
 		assertTrue(classifier.isLearning());
-
-		assertFalse(classifier.accept(null, null, null));
-		assertFalse(classifier.accept("", null, null));
-		assertFalse(classifier.accept(null, "", null));
-		assertFalse(classifier.accept("", "", null));
-		assertFalse(classifier.accept(null, null, ""));
-		assertFalse(classifier.accept(null, "", ""));
 	}
 
 	@Test
-	public void testAcception() {
+	public void testAcceptInLearningMode() throws ALKSAInvalidQueryException {
 		classifier.setLearning(true);
 		assertTrue(classifier.accept(query, database, databaseUser));
-
-		when(parserMock.parse(any())).thenThrow(new RuntimeException());
-		assertFalse(classifier.accept(query, database, databaseUser));
 	}
 
 	@Test

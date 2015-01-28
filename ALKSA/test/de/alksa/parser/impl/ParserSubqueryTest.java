@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import de.alksa.token.ColumnNameToken;
@@ -15,14 +14,7 @@ import de.alksa.token.Token;
 
 import static org.junit.Assert.assertEquals;
 
-public class ParserSubqueryTest {
-
-	private VisitorBasedParser parser;
-
-	@Before
-	public void setUp() throws Exception {
-		parser = new VisitorBasedParser();
-	}
+public class ParserSubqueryTest extends ParserTest {
 
 	@Test
 	public void testSubqueryInSelectList() {
@@ -45,7 +37,7 @@ public class ParserSubqueryTest {
 		expected.setColumnList(columnListTopLevel);
 		expected.setFromList(fromListTopLevel);
 
-		Token actual = parser.parse(sql).iterator().next();
+		Token actual = exceptionSafeParse(sql).iterator().next();
 
 		assertEquals(expected, actual);
 	}
@@ -71,7 +63,7 @@ public class ParserSubqueryTest {
 		expected.setColumnList(columnListTopLevel);
 		expected.setFromList(fromListTopLevel);
 
-		Token actual = parser.parse(sql).iterator().next();
+		Token actual = exceptionSafeParse(sql).iterator().next();
 
 		assertEquals(expected, actual);
 	}
@@ -104,7 +96,7 @@ public class ParserSubqueryTest {
 		expected.setFromList(fromListTopLevel);
 		expected.setWhereClause(whereClauseTopLevel);
 
-		Token actual = parser.parse(sql).iterator().next();
+		Token actual = exceptionSafeParse(sql).iterator().next();
 
 		assertEquals(expected, actual);
 	}

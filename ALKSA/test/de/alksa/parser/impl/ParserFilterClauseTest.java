@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import de.alksa.token.BinaryLogicalFilterToken;
@@ -21,14 +20,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Checks filters in WHERE Statements
  */
-public class ParserFilterClauseTest {
-
-	private VisitorBasedParser parser;
-
-	@Before
-	public void setUp() throws Exception {
-		parser = new VisitorBasedParser();
-	}
+public class ParserFilterClauseTest extends ParserTest {
 
 	@Test
 	public void testLogicalOperators() {
@@ -44,7 +36,7 @@ public class ParserFilterClauseTest {
 				Arrays.asList(new BinaryLogicalFilterToken(
 						BinaryLogicalFilterToken.Type.OR, andToken, notToken)));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getWhereClause();
@@ -72,7 +64,7 @@ public class ParserFilterClauseTest {
 				Arrays.asList(new BinaryLogicalFilterToken(
 						BinaryLogicalFilterToken.Type.OR, andToken, notToken)));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getWhereClause();
@@ -104,7 +96,7 @@ public class ParserFilterClauseTest {
 						BinaryLogicalFilterToken.Type.OR, aGreaterEqual2,
 						andToken)));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getWhereClause();
@@ -123,7 +115,7 @@ public class ParserFilterClauseTest {
 								"col1")))), ComparisonFilterToken.Type.GREATER,
 								new ConstantValueToken(10))));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getHavingClause();

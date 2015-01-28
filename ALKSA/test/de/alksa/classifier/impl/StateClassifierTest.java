@@ -2,10 +2,12 @@ package de.alksa.classifier.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+import static org.junit.Assert.fail;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.parser.Parser;
 import de.alksa.parser.impl.ParserModule;
 import de.alksa.querystorage.Query;
@@ -27,7 +29,14 @@ public abstract class StateClassifierTest {
 			String databaseUser) {
 		Set<Query> queries = new HashSet<>();
 
-		Set<Token> tokens = parser.parse(sql);
+		Set<Token> tokens;
+		try {
+			tokens = parser.parse(sql);
+		} catch (ALKSAInvalidQueryException e) {
+			e.printStackTrace();
+			fail("exception occured while parsing");
+			return queries;
+		}
 
 		Set<SelectStatementToken> selectStatements = TypeUtil
 				.getAllTokensOfType(tokens, SelectStatementToken.class);

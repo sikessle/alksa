@@ -3,7 +3,6 @@ package de.alksa.parser.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import de.alksa.token.ColumnNameToken;
@@ -17,14 +16,7 @@ import de.alksa.token.Token;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ParserFromListTest {
-
-	private VisitorBasedParser parser;
-
-	@Before
-	public void setUp() throws Exception {
-		parser = new VisitorBasedParser();
-	}
+public class ParserFromListTest extends ParserTest {
 
 	@Test
 	public void testTableName() {
@@ -34,7 +26,7 @@ public class ParserFromListTest {
 		expected.add(new TableNameToken("users"));
 		expected.add(new TableNameToken("depart"));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getFromList();
@@ -50,7 +42,7 @@ public class ParserFromListTest {
 
 		expected.add(new TableNameToken("users"));
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> actual = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getFromList();
@@ -64,7 +56,7 @@ public class ParserFromListTest {
 	public void testSimpleJoin() {
 		FilterToken onClause = new ComparisonFilterToken(new ColumnNameToken(
 				"col1"), ComparisonFilterToken.Type.EQUAL, new ColumnNameToken(
-						"col2"));
+				"col2"));
 		String onString = "on col1 = col2";
 		testJoinType(JoinToken.Type.INNER, onClause, onString);
 		testJoinType(JoinToken.Type.NATURAL, null, "");
@@ -86,7 +78,7 @@ public class ParserFromListTest {
 
 		expected.setOnClause(onClause);
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> fromList = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getFromList();
@@ -118,7 +110,7 @@ public class ParserFromListTest {
 
 		JoinToken expected = rightJoin;
 
-		Set<Token> parsedTokens = parser.parse(sql);
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
 
 		Set<? extends Token> fromList = ((SelectStatementToken) parsedTokens
 				.iterator().next()).getFromList();

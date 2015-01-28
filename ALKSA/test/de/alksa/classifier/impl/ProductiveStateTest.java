@@ -20,6 +20,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
+import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.checker.QueryChecker;
 import de.alksa.checker.impl.CheckerModule;
 import de.alksa.classifier.Classifier;
@@ -126,14 +127,14 @@ public class ProductiveStateTest extends StateClassifierTest {
 	@Test
 	public void testEqualQuery() {
 		assertTrue(errorMsg(learned, "equal queries should be accepted"),
-				classifier.accept(learned.getQueryString(), DB, DB_USER));
+				exceptionSafeAccept(learned.getQueryString(), DB, DB_USER));
 	}
 
 	@Test
 	public void testAllowedQueries() {
 		for (Query query : allowed) {
 			reset(loggerMock);
-			if (classifier.accept(query.getQueryString(), DB, DB_USER)) {
+			if (exceptionSafeAccept(query.getQueryString(), DB, DB_USER)) {
 				verify(loggerMock, never()).write(any());
 			} else {
 				verify(loggerMock).write(logCaptor.capture());
@@ -148,13 +149,23 @@ public class ProductiveStateTest extends StateClassifierTest {
 	public void testDisallowedQueries() {
 		for (Query query : disallowed) {
 			reset(loggerMock);
-			if (classifier.accept(query.getQueryString(), DB, DB_USER)) {
+			if (exceptionSafeAccept(query.getQueryString(), DB, DB_USER)) {
 				verify(loggerMock, never()).write(any());
 				fail(errorMsg(query, "Subject is expected to be REJECTED"));
 			} else {
 				verify(loggerMock).write(
 						argThat(new LogEntryWithQuery(query.getQueryString())));
 			}
+		}
+	}
+
+	private boolean exceptionSafeAccept(String sql, String db, String user) {
+		try {
+			return classifier.accept(sql, db, user);
+		} catch (ALKSAInvalidQueryException e) {
+			fail("exception should not occur");
+			e.printStackTrace();
+			return false;
 		}
 	}
 

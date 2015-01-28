@@ -31,10 +31,13 @@ public class ALKSA {
 	/**
 	 * Checks or learns a query.
 	 *
-	 * @return True if the query was successfully checked. False if an error
-	 *         occurred.
+	 * @return True if the query was accepted/learned. False if not.
+	 * @throws ALKSAInvalidQueryException
+	 *             If the query was not a valid SQL statement or if the parser
+	 *             could not handle the query.
 	 */
-	public boolean accept(String sqlQuery, String database, String databaseUser) {
+	public boolean accept(String sqlQuery, String database, String databaseUser)
+			throws ALKSAInvalidQueryException {
 		return classifier.accept(sqlQuery, database, databaseUser);
 	}
 

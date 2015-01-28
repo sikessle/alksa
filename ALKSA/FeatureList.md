@@ -66,10 +66,6 @@
 * Functions: allowed on explicitly stated columns (displayed in select column list).
 * General: A query may use a new statement in the where clause only if the column is visible in the select column list
 
-### HAVING clause
-
-* Same as WHERE Clause
-
 ### Set operations
 
 * UNION: Checks each SELECT statement. Caveat: The query string with UNION is saved for each separate SELECT statement. The query string of each separate SELECT should be saved for each SELECT.

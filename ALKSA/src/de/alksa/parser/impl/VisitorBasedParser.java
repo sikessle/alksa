@@ -8,6 +8,7 @@ import com.foundationdb.sql.parser.SQLParser;
 import com.foundationdb.sql.parser.StatementNode;
 import com.google.inject.Singleton;
 
+import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.parser.Parser;
 import de.alksa.token.Token;
 
@@ -22,14 +23,14 @@ class VisitorBasedParser implements Parser {
 	}
 
 	@Override
-	public Set<Token> parse(String sql) throws RuntimeException {
+	public Set<Token> parse(String sql) throws ALKSAInvalidQueryException {
 		this.sql = sql;
 		Set<Token> tokenizedQuery = new HashSet<>();
 
 		try {
 			startParsing(tokenizedQuery);
 		} catch (StandardException e) {
-			throw new RuntimeException(e);
+			throw new ALKSAInvalidQueryException(e);
 		}
 
 		return tokenizedQuery;
