@@ -12,12 +12,15 @@ import de.alksa.classifier.impl.ClassifierModule;
 import de.alksa.log.LogEntry;
 import de.alksa.log.impl.LogModule;
 import de.alksa.parser.impl.ParserModule;
+import de.alksa.persistence.StorageDao;
 import de.alksa.persistence.impl.PersistenceModule;
 import de.alksa.querystorage.impl.QueryStorageModule;
 
 public class ALKSA {
 
 	private Classifier classifier;
+	private StorageDao storage;
+	private boolean shutdown;
 
 	public ALKSA(String storagePath) {
 		Objects.requireNonNull(storagePath);
@@ -26,6 +29,7 @@ public class ALKSA {
 				new ClassifierModule(), new ParserModule(), new LogModule(),
 				new PersistenceModule(storagePath), new QueryStorageModule());
 		classifier = injector.getInstance(Classifier.class);
+		storage = injector.getInstance(StorageDao.class);
 	}
 
 	/**
@@ -35,22 +39,61 @@ public class ALKSA {
 	 * @throws ALKSAInvalidQueryException
 	 *             If the query was not a valid SQL statement or if the parser
 	 *             could not handle the query.
+	 * @throws IllegalStateException
+	 *             If shutdown() was called before.
 	 */
 	public boolean accept(String sqlQuery, String database, String databaseUser)
-			throws ALKSAInvalidQueryException {
+			throws ALKSAInvalidQueryException, IllegalStateException {
+		checkForShutdown();
 		return classifier.accept(sqlQuery, database, databaseUser);
 	}
 
-	public void setLearning(boolean learning) {
+	/**
+	 * @throws IllegalStateException
+	 *             If shutdown() was called before.
+	 */
+	public void setLearning(boolean learning) throws IllegalStateException {
+		checkForShutdown();
 		classifier.setLearning(learning);
 	}
 
-	public boolean isLearning() {
+	/**
+	 * @throws IllegalStateException
+	 *             If shutdown() was called before.
+	 */
+	public boolean isLearning() throws IllegalStateException {
+		checkForShutdown();
 		return classifier.isLearning();
 	}
 
-	public Set<LogEntry> getLogEntries() {
+	/**
+	 * @throws IllegalStateException
+	 *             If shutdown() was called before.
+	 */
+	public Set<LogEntry> getLogEntries() throws IllegalStateException {
+		checkForShutdown();
 		return classifier.getLogEntries();
+	}
+
+	/**
+	 * Shuts down ALKSA and disables all further processing.
+	 */
+	public void shutdown() {
+		shutdown = true;
+		storage.close();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		shutdown();
+	}
+
+	private void checkForShutdown() {
+		if (shutdown) {
+			throw new IllegalStateException(
+					"ALKSA already shutdown. Re-instantiate to reuse");
+		}
 	}
 
 }

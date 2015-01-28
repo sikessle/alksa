@@ -7,4 +7,5 @@ public interface QueryStorage {
 	void write(Query query);
 
 	Set<Query> read();
+
 }

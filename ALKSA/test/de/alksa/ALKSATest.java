@@ -26,7 +26,14 @@ public class ALKSATest {
 
 	@After
 	public void tearDown() throws Exception {
+		alksa.shutdown();
 		new File(storagePath).delete();
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testShutdownWithReuse() throws IllegalStateException {
+		alksa.shutdown();
+		alksa.getLogEntries();
 	}
 
 	@Test(expected = ALKSAInvalidQueryException.class)
@@ -40,7 +47,7 @@ public class ALKSATest {
 		alksa.setLearning(true);
 		assertTrue(alksa.isLearning());
 		assertTrue(exceptionSafeAccept(learnedQuery, "local", "test"));
-		// learning triggers no loig
+		// learning triggers no log
 		assertEquals(0, alksa.getLogEntries().size());
 
 		alksa.setLearning(false);
