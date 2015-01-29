@@ -51,7 +51,7 @@ public final class ALKSACommandline {
 					System.out.println("REJECTED: " + line);
 				}
 			} catch (Exception e) {
-				System.out.println("ERROR: " + line);
+				System.out.println("ERROR:    " + line);
 			}
 		});
 
