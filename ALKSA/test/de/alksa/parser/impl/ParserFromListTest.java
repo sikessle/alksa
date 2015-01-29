@@ -1,5 +1,6 @@
 package de.alksa.parser.impl;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +51,37 @@ public class ParserFromListTest extends ParserTest {
 		// minus 1 because of the ignored join
 		assertEquals(expected.size(), actual.size() - 1);
 		assertTrue(actual.containsAll(expected));
+	}
+
+	@Test
+	public void testFromSubquery() {
+		String sql = "SELECT t2.rate FROM x LEFT OUTER JOIN (SELECT rate FROM rates) as t2 ON x.id=t2.id";
+
+		SelectStatementToken rightTableSubquery = new SelectStatementToken();
+		rightTableSubquery.setColumnList(new HashSet<>(Arrays
+				.asList(new ColumnNameToken("rate"))));
+		rightTableSubquery.setFromList(new HashSet<>(Arrays
+				.asList(new TableNameToken("rates"))));
+
+		JoinToken expected = new JoinToken(new TableNameToken("x"),
+				JoinToken.Type.LEFT_OUTER, rightTableSubquery);
+
+		expected.setOnClause(new ComparisonFilterToken(new ColumnNameToken(
+				"x.id"), ComparisonFilterToken.Type.EQUAL, new ColumnNameToken(
+				"t2.id")));
+
+		Set<Token> parsedTokens = exceptionSafeParse(sql);
+
+		Set<? extends Token> fromList = ((SelectStatementToken) parsedTokens
+				.iterator().next()).getFromList();
+
+		Token actual = fromList.iterator().next();
+
+		System.out.println(expected);
+		System.out.println(actual);
+
+		assertEquals(expected, actual);
+
 	}
 
 	@Test

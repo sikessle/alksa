@@ -32,7 +32,8 @@ public class ParserASTPrintTest {
 						{ "SELECT a FROM b UNION SELECT c FROM d" },
 						{ "SELECT a FROM (SELECT x FROM b) subAlias" },
 						{ "SELECT a AS d FROM b WHERE a = (SELECT x FROM b)" },
-						{ "SELECT a FROM tab1, tab2" } });
+						{ "SELECT a FROM tab1, tab2" },
+						{ "SELECT t2.rate FROM x as t1 LEFT OUTER JOIN (SELECT rate FROM rates) as t2 ON t1.id=t2.id" } });
 	}
 
 	@Test

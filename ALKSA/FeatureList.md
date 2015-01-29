@@ -23,6 +23,7 @@
 * Multiple Joins: Inner, Full Outer, Left Outer, Right Outer, Natural
 * CROSS Joins are not detected
 * Implicit Inner Joins are not detected but are implicit detectable if multiple column names occur (i.e. FROM tab1, tab2)
+* Subqueries
 
 ### WHERE clause
 

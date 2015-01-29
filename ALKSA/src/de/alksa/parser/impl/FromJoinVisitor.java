@@ -1,7 +1,8 @@
 package de.alksa.parser.impl;
 
+import java.util.Set;
+
 import com.foundationdb.sql.StandardException;
-import com.foundationdb.sql.parser.FromBaseTable;
 import com.foundationdb.sql.parser.FullOuterJoinNode;
 import com.foundationdb.sql.parser.HalfOuterJoinNode;
 import com.foundationdb.sql.parser.JoinNode;
@@ -48,30 +49,9 @@ class FromJoinVisitor extends AbstractVisitor {
 	private Token getTokenFromJoinPart(ResultSetNode resultSet)
 			throws StandardException {
 
-		if (resultSet instanceof FromBaseTable) {
-			return getFromBaseTableToken(resultSet);
-		} else if (resultSet instanceof JoinNode) {
-			return getJoinToken(resultSet);
-		}
+		Set<Token> tokens = visitWithCombinedVisitor(resultSet);
 
-		throw new IllegalStateException(
-				"Unknown resultSet. Not a JoinNode or FromBaseTable");
-	}
-
-	private Token getFromBaseTableToken(Visitable node)
-			throws StandardException {
-		AbstractVisitor visitor = new FromBaseTableVisitor();
-		node.accept(visitor);
-
-		return visitor.getTokens().iterator().next();
-	}
-
-	private Token getJoinToken(Visitable node) throws StandardException {
-		AbstractVisitor visitor = new FromJoinVisitor();
-
-		node.accept(visitor);
-
-		return visitor.getTokens().iterator().next();
+		return tokens.iterator().next();
 	}
 
 	private FilterToken getOnClause(JoinNode join) throws StandardException {
