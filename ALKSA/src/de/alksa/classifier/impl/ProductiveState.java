@@ -62,11 +62,6 @@ class ProductiveState extends ClassifierState {
 					"no matching query found", Instant.now());
 		}
 
-		// quick check for equal queries
-		if (learnedQueries.contains(subject)) {
-			return null;
-		}
-
 		SelectStatementToken subjectSelect = subject.getSelectStatement();
 		SelectStatementToken learnedSelect;
 
