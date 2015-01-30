@@ -1,5 +1,9 @@
 # General
 
+### Depth of Queries
+
+* The depth is mainly limited by performance and the persistence layer (see activation depth of Db4o)
+
 ### Learning/Productive Phase
 
 * The learning or productive phase must be set manually.

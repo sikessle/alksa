@@ -13,7 +13,11 @@ import de.alksa.log.LogEntry;
 import de.alksa.log.impl.AttackLogEntry;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.impl.SingleSelectQuery;
+import de.alksa.token.BinaryLogicalFilterToken;
+import de.alksa.token.ColumnNameToken;
+import de.alksa.token.ComparisonFilterToken;
 import de.alksa.token.SelectStatementToken;
+import de.alksa.token.Token;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -64,6 +68,40 @@ public class Db4oStorageDaoTest {
 		for (Query expectedEntry : expectedQueries) {
 			assertTrue(actualQueries.contains(expectedEntry));
 		}
+	}
+
+	@Test
+	public void testQueriesDepth() {
+		Set<Query> expectedQueries = new HashSet<>();
+		SelectStatementToken select = new SelectStatementToken();
+		Set<Token> whereClause = new HashSet<>();
+
+		ComparisonFilterToken comparison1 = new ComparisonFilterToken(
+				new ColumnNameToken("a"), ComparisonFilterToken.Type.EQUAL,
+				new ColumnNameToken("b"));
+		ComparisonFilterToken comparison2 = new ComparisonFilterToken(
+				new ColumnNameToken("d"), ComparisonFilterToken.Type.EQUAL,
+				new ColumnNameToken("e"));
+		whereClause.add(new BinaryLogicalFilterToken(
+				BinaryLogicalFilterToken.Type.AND, comparison1, comparison2));
+
+		select.setWhereClause(whereClause);
+
+		Query expectedQuery = new SingleSelectQuery(select, "", "", "");
+		expectedQueries.add(expectedQuery);
+
+		storage.saveQueries(expectedQueries);
+		storage.close();
+		storage = new Db4oStorageDao(testPath);
+
+		Set<Query> actualQueries = storage.getQueries();
+		assertEquals(1, actualQueries.size());
+		Query actualQuery = actualQueries.iterator().next();
+
+		System.out.println(expectedQuery.getSelectStatement());
+		System.out.println(actualQuery.getSelectStatement());
+
+		assertEquals(actualQuery, expectedQuery);
 	}
 
 }

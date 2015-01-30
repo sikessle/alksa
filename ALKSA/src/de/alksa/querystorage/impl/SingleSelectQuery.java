@@ -45,4 +45,61 @@ public class SingleSelectQuery implements Query {
 		return databaseUser;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((database == null) ? 0 : database.hashCode());
+		result = prime * result
+				+ ((databaseUser == null) ? 0 : databaseUser.hashCode());
+		result = prime * result
+				+ ((queryString == null) ? 0 : queryString.hashCode());
+		result = prime * result + ((select == null) ? 0 : select.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		SingleSelectQuery other = (SingleSelectQuery) obj;
+		if (database == null) {
+			if (other.database != null) {
+				return false;
+			}
+		} else if (!database.equals(other.database)) {
+			return false;
+		}
+		if (databaseUser == null) {
+			if (other.databaseUser != null) {
+				return false;
+			}
+		} else if (!databaseUser.equals(other.databaseUser)) {
+			return false;
+		}
+		if (queryString == null) {
+			if (other.queryString != null) {
+				return false;
+			}
+		} else if (!queryString.equals(other.queryString)) {
+			return false;
+		}
+		if (select == null) {
+			if (other.select != null) {
+				return false;
+			}
+		} else if (!select.equals(other.select)) {
+			return false;
+		}
+		return true;
+	}
+
 }

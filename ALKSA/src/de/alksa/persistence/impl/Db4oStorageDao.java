@@ -6,6 +6,7 @@ import java.util.Set;
 import com.db4o.Db4oEmbedded;
 import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
+import com.db4o.config.EmbeddedConfiguration;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -17,6 +18,7 @@ import de.alksa.querystorage.Query;
 @Singleton
 class Db4oStorageDao implements StorageDao {
 
+	private static final int DEPTH = 15;
 	private EmbeddedObjectContainer db;
 	private final String dbPath;
 
@@ -27,7 +29,10 @@ class Db4oStorageDao implements StorageDao {
 	}
 
 	private final void open() {
-		db = Db4oEmbedded.openFile(dbPath);
+		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
+		configuration.common().activationDepth(DEPTH);
+		configuration.common().updateDepth(DEPTH);
+		db = Db4oEmbedded.openFile(configuration, dbPath);
 	}
 
 	@Override
