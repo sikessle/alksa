@@ -22,23 +22,17 @@ public class WhereClauseComparisonChecker extends WhereClauseChecker {
 
 		Set<ComparisonFilterToken> subjectComps = copyRecursiveTokensOfType(
 				subject, ComparisonFilterToken.class);
-		Set<ComparisonFilterToken> learnedComps = copyRecursiveTokensOfType(
-				learned, ComparisonFilterToken.class);
+		subjectComps.removeAll(copyRecursiveTokensOfType(learned,
+				ComparisonFilterToken.class));
 
-		Set<Token> subjectColumns = getColumnsFromComparisons(subjectComps);
-		Set<Token> learnedColumns = getColumnsFromComparisons(learnedComps);
-
-		subjectColumns.removeAll(learnedColumns);
-
-		if (!isSubset(legalColumnsForNewFilters, subjectColumns)) {
+		if (!usesOnlyLegalColumns(subjectComps)) {
 			return createLogEntry("illegal comparison added");
 		}
 
 		return null;
 	}
 
-	private Set<Token> getColumnsFromComparisons(
-			Set<ComparisonFilterToken> comparisons) {
+	private boolean usesOnlyLegalColumns(Set<ComparisonFilterToken> comparisons) {
 		Set<Token> comparisonParts = new HashSet<>();
 
 		for (ComparisonFilterToken comp : comparisons) {
@@ -48,6 +42,7 @@ public class WhereClauseComparisonChecker extends WhereClauseChecker {
 					SelectStatementToken.class));
 		}
 
-		return comparisonParts;
+		return legalColumnsForNewFilters.containsAll(comparisonParts);
 	}
+
 }
