@@ -17,6 +17,4 @@ public interface StorageDao {
 
 	void close();
 
-	void open();
-
 }

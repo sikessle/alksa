@@ -7,12 +7,11 @@ public abstract class ElementalToken<T> extends Token {
 	public T getValue() {
 		return value;
 	}
-	
+
 	protected void setValue(T value) {
 		this.value = value;
 	}
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -23,18 +22,23 @@ public abstract class ElementalToken<T> extends Token {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		ElementalToken<?> other = (ElementalToken<?>) obj;
 		if (value == null) {
-			if (other.value != null)
+			if (other.value != null) {
 				return false;
-		} else if (!value.equals(other.value))
+			}
+		} else if (!value.equals(other.value)) {
 			return false;
+		}
 		return true;
 	}
 

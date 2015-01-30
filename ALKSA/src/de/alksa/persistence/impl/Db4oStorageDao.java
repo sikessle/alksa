@@ -26,8 +26,7 @@ class Db4oStorageDao implements StorageDao {
 		open();
 	}
 
-	@Override
-	public final void open() {
+	private final void open() {
 		db = Db4oEmbedded.openFile(dbPath);
 	}
 
