@@ -1,13 +1,10 @@
 package controllers;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import play.Logger;
 import de.alksa.ALKSA;
 import de.alksa.ALKSAInvalidQueryException;
-import de.alksa.querystorage.Query;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.BodyParser;
@@ -24,16 +21,26 @@ public class Application extends Controller {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
-	private final static String PATH = "/tmp/eawa";
-
 	private static ALKSA alksa;
 	private static boolean enableALKSA;
 
 	private static Set<String> learnedQueries;
 	private static Set<String> productiveQueries;
 
-	{
-		reset();
+	static {
+		init();
+	}
+
+	private static void init() {
+		alksa = ALKSASingleton.getInstance();
+		enableALKSA = false;
+		learnedQueries = new HashSet<>();
+		productiveQueries = new HashSet<>();
+	}
+
+	public static Result reset() {
+		init();
+		return ok();
 	}
 
 	public static Result index() {
@@ -62,7 +69,10 @@ public class Application extends Controller {
 		query += " FROM City";
 		query += " LEFT OUTER JOIN Country ON City.CountryCode = Country.Code";
 		query += " LEFT OUTER JOIN CountryLanguage ON CountryLanguage.CountryCode = Country.Code";
-		query += " WHERE " + where;
+
+		if (!"".equals(where)) {
+			query += " WHERE " + where;
+		}
 
 		return query;
 	}
@@ -88,6 +98,8 @@ public class Application extends Controller {
 			return processALKSA(query);
 		}
 
+		// TODO process in database
+
 		return true;
 	}
 
@@ -106,7 +118,6 @@ public class Application extends Controller {
 
 		if (alksa.isLearning()) {
 			learnedQueries.add(prefix + query);
-
 		} else {
 			productiveQueries.add(prefix + query);
 		}
@@ -122,18 +133,6 @@ public class Application extends Controller {
 		}
 
 		return result;
-	}
-
-	public static Result reset() {
-		if (alksa != null) {
-			alksa.shutdown();
-		}
-		new File(PATH).delete();
-		alksa = new ALKSA(PATH);
-		enableALKSA = false;
-		learnedQueries = new HashSet<>();
-		productiveQueries = new HashSet<>();
-		return ok();
 	}
 
 	public static Result setLearning(boolean learning) {
