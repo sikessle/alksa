@@ -1,9 +1,15 @@
 package controllers;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import play.Logger;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -27,15 +33,19 @@ public class Application extends Controller {
 	private static List<String> learnedQueries;
 	private static List<String> productiveQueries;
 
+	private static List<String> columns;
+	private static ArrayNode resultFromQuery;
+
 	static {
 		init();
 	}
 
 	private static void init() {
-		alksa = ALKSASingleton.getInstance();
+		alksa = ALKSASingleton.getInstance().getALKSA();
 		enableALKSA = false;
 		learnedQueries = new LinkedList<>();
 		productiveQueries = new LinkedList<>();
+		columns = new LinkedList<>();
 	}
 
 	public static Result reset() {
@@ -74,23 +84,24 @@ public class Application extends Controller {
 			query += " WHERE " + where;
 		}
 
+		query += " LIMIT 500";
+
 		return query;
 	}
 
 	private static ObjectNode createResultFromQuery(String query) {
-		ObjectNode result = mapper.createObjectNode();
-		ArrayNode resultHead = mapper.createArrayNode();
-		ArrayNode resultBody = mapper.createArrayNode();
+		ObjectNode resultNode = mapper.createObjectNode();
 
-		// TODO
 		boolean accepted = processQuery(query);
 
-		result.put("learnedQueries", getQueriesAsJSON(learnedQueries));
-		result.put("productiveQueries", getQueriesAsJSON(productiveQueries));
-		result.put("accepted", accepted);
-		result.put("resultHead", resultHead);
-		result.put("resultBody", resultBody);
-		return result;
+		resultNode.put("learnedQueries", getListAsJSONArray(learnedQueries));
+		resultNode.put("productiveQueries",
+				getListAsJSONArray(productiveQueries));
+		resultNode.put("accepted", accepted);
+		resultNode.put("resultHead", getListAsJSONArray(columns));
+		resultNode.put("resultBody", resultFromQuery);
+
+		return resultNode;
 	}
 
 	private static boolean processQuery(String query) {
@@ -101,14 +112,37 @@ public class Application extends Controller {
 		}
 
 		if (accepted) {
-			setResultFromDatabase(query);
+			try {
+				setResultFromDatabase(query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return accepted;
 	}
 
-	private static void setResultFromDatabase(String query) {
+	private static void setResultFromDatabase(String query) throws SQLException {
+		columns.clear();
+		resultFromQuery = mapper.createArrayNode();
 
+		Connection conn = ALKSASingleton.getInstance().getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+
+		ResultSetMetaData meta = rs.getMetaData();
+
+		for (int i = 1; i <= meta.getColumnCount(); i++) {
+			columns.add(meta.getColumnLabel(i));
+		}
+
+		while (rs.next()) {
+			ArrayNode row = mapper.createArrayNode();
+			for (int i = 1; i <= meta.getColumnCount(); i++) {
+				row.add(rs.getString(i));
+			}
+			resultFromQuery.add(row);
+		}
 	}
 
 	private static boolean processALKSA(String query) {
@@ -133,7 +167,7 @@ public class Application extends Controller {
 		return !queryError && queryAccepted;
 	}
 
-	private static ArrayNode getQueriesAsJSON(List<String> queries) {
+	private static ArrayNode getListAsJSONArray(List<String> queries) {
 		ArrayNode result = mapper.createArrayNode();
 
 		ListIterator<String> iterator = queries.listIterator(queries.size());

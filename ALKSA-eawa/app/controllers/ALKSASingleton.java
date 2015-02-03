@@ -12,11 +12,14 @@ import de.alksa.ALKSA;
 public final class ALKSASingleton {
 
 	private final static String PATH = "/tmp/eawa";
-	private static ALKSA instance;
-	private static Connection connection;
+	private static ALKSASingleton instance;
+	private Connection connection;
+	private ALKSA alksa;
 
 	private ALKSASingleton() {
 		new File(PATH).delete();
+
+		alksa = new ALKSA(PATH);
 
 		DataSource ds = DB.getDataSource();
 		try {
@@ -27,18 +30,22 @@ public final class ALKSASingleton {
 		}
 	}
 
-	public static ALKSA getInstance() {
+	public static ALKSASingleton getInstance() {
 		if (instance == null) {
-			instance = new ALKSA(PATH);
+			instance = new ALKSASingleton();
 		}
 		return instance;
 	}
 
-	public static Connection getConnection() {
+	public ALKSA getALKSA() {
+		return alksa;
+	}
+
+	public Connection getConnection() {
 		return connection;
 	}
 
-	public static void closeDatabase() {
+	public void closeDatabase() {
 		try {
 			connection.close();
 		} catch (SQLException e) {
