@@ -18,7 +18,6 @@ public final class ALKSASingleton {
 
 	private ALKSASingleton() {
 		new File(PATH).delete();
-
 		alksa = new ALKSA(PATH);
 
 		DataSource ds = DB.getDataSource();
@@ -28,6 +27,26 @@ public final class ALKSASingleton {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void shutdownAll() {
+		if (alksa != null) {
+			alksa.shutdown();
+		}
+
+		alksa = null;
+
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+		}
+	}
+
+	public void reset() {
+		shutdownAll();
+		instance = null;
 	}
 
 	public static ALKSASingleton getInstance() {
@@ -44,13 +63,4 @@ public final class ALKSASingleton {
 	public Connection getConnection() {
 		return connection;
 	}
-
-	public void closeDatabase() {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

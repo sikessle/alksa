@@ -48,12 +48,14 @@ public class Application extends Controller {
 	}
 
 	public static Result reset() {
+		ALKSASingleton.getInstance().reset();
 		init();
 		return ok();
 	}
 
 	public static Result index() {
-		return ok(index.render(alksa.isLearning(), enableALKSA));
+		boolean isLearning = alksa == null ? false : alksa.isLearning();
+		return ok(index.render(isLearning, enableALKSA));
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)
