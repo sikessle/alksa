@@ -1,3 +1,4 @@
+@(isLearning: Boolean, enableALKSA: Boolean)
 <!doctype html>
 <html>
 <head>
@@ -44,11 +45,11 @@
                     <button id="reset" type="button" class="btn btn-default navbar-btn">Reset</button>
 
                     <label class="checkbox-inline" title="ALKSA Lernphase ein-/ausschalten">
-                        <input type="checkbox" id="toggle-learn">Lernphase
+                        <input type="checkbox" id="toggle-learn" @if(isLearning) {checked}>Lernphase
                     </label>
 
                     <label class="checkbox-inline" title="Prüfung durch ALKSA ein-/ausschalten">
-                        <input type="checkbox" id="toggle-alksa" >ALKSA benutzen
+                        <input type="checkbox" id="toggle-alksa" @if(enableALKSA) {checked}>ALKSA benutzen
                     </label>
                 
                 </div><!-- .navbar-collapse -->

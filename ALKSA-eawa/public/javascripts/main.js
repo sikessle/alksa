@@ -171,7 +171,7 @@ var EAWA = (function () {
 		payload.columns = this.attributes.join(", ");
 		payload.where = this.filterAttrs.concat(this.filterFreetext).join(" AND ");
 
-        this.requestTarget.html(JSON.stringify(payload, null, "\t"));
+        this.requestTarget.val(JSON.stringify(payload, null, "\t"));
     };
 
     return EAWA;

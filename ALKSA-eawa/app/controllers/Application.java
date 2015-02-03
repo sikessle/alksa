@@ -54,7 +54,7 @@ public class Application extends Controller {
 	}
 
 	public static Result index() {
-		return ok(index.render());
+		return ok(index.render(alksa.isLearning(), enableALKSA));
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)
