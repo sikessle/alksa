@@ -74,7 +74,7 @@ public class Application extends Controller {
 	}
 
 	private static String buildQuery(String columns, String where) {
-		String query = "SELECT " + ("".equals(columns) ? "*" : columns);
+		String query = "SELECT " + ("".equals(columns) ? "City.Name" : columns);
 		query += " FROM City";
 		query += " LEFT OUTER JOIN Country ON City.CountryCode = Country.Code";
 		query += " LEFT OUTER JOIN CountryLanguage ON CountryLanguage.CountryCode = Country.Code";
