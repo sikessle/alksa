@@ -63,6 +63,9 @@ var EAWA = (function () {
     };
 
     EAWA.prototype.send = function () {
+    	this.sendButton.prop('disable', true);
+    	this.statusBox.html('>> sending <<');
+    	
     	$.ajax({
     		url: this.dataUrl, 
     		method: 'post',
@@ -74,7 +77,6 @@ var EAWA = (function () {
     };
 
     EAWA.prototype.handleResponse = function (data) {
-
         this.fillQueryLogBox(this.queriesLearnedTarget, data.learnedQueries);
         this.fillQueryLogBox(this.queriesProductiveTarget, data.productiveQueries);
 
@@ -84,6 +86,8 @@ var EAWA = (function () {
         } else {
             this.statusBox.html("ALKSA: QUERY NOT ACCEPTED");
         }
+        
+        this.sendButton.prop('disable', false);
     };
 
     EAWA.prototype.fillResultTable = function (resultHead, resultBody) {
