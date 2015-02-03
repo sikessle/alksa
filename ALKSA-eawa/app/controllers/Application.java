@@ -20,7 +20,6 @@ public class Application extends Controller {
 
 	@BodyParser.Of(play.mvc.BodyParser.Json.class)
 	public static Result runQuery() {
-
 		/**
 		 *
 		 { accepted: true|false, learnedQueries: [], productiveQueries: [],
