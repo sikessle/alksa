@@ -10,6 +10,7 @@ public class Global extends GlobalSettings {
 	public void onStop(Application app) {
 		ALKSA alksa = ALKSASingleton.getInstance();
 		alksa.shutdown();
+		ALKSASingleton.closeDatabase();
 	}
 
 }

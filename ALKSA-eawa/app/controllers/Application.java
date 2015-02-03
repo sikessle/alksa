@@ -94,13 +94,21 @@ public class Application extends Controller {
 	}
 
 	private static boolean processQuery(String query) {
+		boolean accepted = true;
+
 		if (enableALKSA) {
-			return processALKSA(query);
+			accepted = processALKSA(query);
 		}
 
-		// TODO process in database
+		if (accepted) {
+			setResultFromDatabase(query);
+		}
 
-		return true;
+		return accepted;
+	}
+
+	private static void setResultFromDatabase(String query) {
+
 	}
 
 	private static boolean processALKSA(String query) {
