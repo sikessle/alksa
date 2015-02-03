@@ -62,26 +62,17 @@ var EAWA = (function () {
     };
 
     EAWA.prototype.send = function () {
-        this.handleResponse();
         $.post(this.dataUrl, this.payload, this.handleResponse.bind(this));
     };
 
     EAWA.prototype.handleResponse = function (data) {
-        // TODO extract these variables
-        // dummy
-        var accepted = false;
-        var learnedQueries = ["ACCEPTED:     SELECT * FROM table"];
-        var productiveQueries = ["REJECTED:     SELECT x FROM t", "ERROR: SELECT JOIN t"];
-        var resultHead = [ "Country", "GNP" ];
-        var resultBody = [ ["C234", "G9992"], ["Cbla", "Gblub"] ];
-        // END dummy
 
-        this.fillQueryLogBox(this.queriesLearnedTarget, learnedQueries);
-        this.fillQueryLogBox(this.queriesProductiveTarget, productiveQueries);
+        this.fillQueryLogBox(this.queriesLearnedTarget, data.learnedQueries);
+        this.fillQueryLogBox(this.queriesProductiveTarget, data.productiveQueries);
 
-        if (accepted) {
+        if (data.accepted) {
             this.statusBox.html("ALKSA: QUERY ACCEPTED");
-            this.fillResultTable(resultHead, resultBody);
+            this.fillResultTable(data.resultHead, data.resultBody);
         } else {
             this.statusBox.html("ALKSA: QUERY NOT ACCEPTED");
         }
