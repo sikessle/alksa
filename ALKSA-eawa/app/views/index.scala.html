@@ -1,7 +1,209 @@
-@(message: String)
+@(title: String)
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
 
-@main("Welcome to Play") {
+    <title>ALKSA with Easily Attackable Web Application</title>
 
-    @play20.welcome(message, style = "Java")
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-}
+    <!-- CSS -->
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+    <!-- End CSS -->
+
+    <!--[if lt IE 9]>
+        <script src="@routes.Assets.at("libs/html5shiv/dist/html5shiv.js")"></script>
+        <script src="@routes.Assets.at("libs/respond/dest/respond.min.js")"></script>
+    <![endif]-->
+
+    <!--
+        Simon Kessler
+    -->
+</head>
+
+<body>
+
+    <div id="page">
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                        <span class="sr-only">Navigation ein-/ausblenden</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">EAWA</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="main-nav">
+               
+                    <button id="reset" type="button" class="btn btn-default navbar-btn">Reset</button>
+
+                    <label class="checkbox-inline" title="ALKSA Lernphase ein-/ausschalten">
+                        <input type="checkbox" id="toggle-learn">Lernphase
+                    </label>
+
+                    <label class="checkbox-inline" title="Prüfung durch ALKSA ein-/ausschalten">
+                        <input type="checkbox" id="toggle-alksa" >ALKSA benutzen
+                    </label>
+                
+                </div><!-- .navbar-collapse -->
+
+            </div><!-- .container-fluid -->
+        </nav>
+
+        <div class="container">
+
+            <div class="row">
+                
+                <section id="queries-learned" class="col-lg-6">
+                    <div class="box-header">Gelernte SQL-Abfragen</div>
+                    <p><small>Abfragen die im Abfragespeicher hinterlegt sind.<br>Legende: <span class="accepted">Gelernte Abfrage</span>, <span class="error">Abfrage nicht verarbeitet</span></small></p>
+                    <div class="form-control log"></div>
+                </section> <!-- #request -->
+
+                <section id="queries-productive" class="col-lg-6">
+                    <div class="box-header">Status von SQL-Abfragen in Produktivphase</div>
+                    <p><small>Wenn die Lernphase beendet ist, werden hier alle neuen SQL-Abfragen aufgezeichnet und markiert. Legende: <span class="accepted">Akzeptierte Abfrage</span>, <span class="rejected">Abfrage abgewiesen (Angriff)</span>, <span class="error">Abfrage nicht verarbeitet</span></small></p>
+                    <div class="form-control log"></div>
+                </section> <!-- #request -->
+
+            </div> <!-- .row -->
+
+            <div class="row">
+                
+                <section id="columns" class="col-lg-6">
+                    <div class="box-header">Attributauswahl</div>
+                    <p><small>Eine vordefinierte Auswahl von Attributen, die der Anwender frei bestimmten kann. Dabei sind nicht alle Attribute des Datenbank-Schemas öffentlich.</small></p>
+               
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="*">* (Alle)</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="COUNT(*)">COUNT(*)</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="City.Name">City.Name</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="City.District">City.District</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.Name">Country.Name</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.Population">Country.Population</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.Continent">Country.Continent</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.GovernmentForm">Country.GovernmentForm</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.Region">Country.Region</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.HeadOfState">Country.HeadOfState</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="CountryLanguage.Language">CountryLanguage.Language</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="CountryLanguage.Percentage">CountryLanguage.Percentage</label>
+
+                </section> <!-- #columns -->
+
+                <section id="filter" class="col-lg-6">
+                    <div class="box-header">Filter</div>
+                    <p><small>Filter, mit denen der Anwender einige Einschränkungen treffen kann.</small></p>
+
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="City.Population > 3000000">Großstädte</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="City.Population < 100000">Kleinstädte</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.SurfaceArea > 9000000">Länder mit großer Fläche</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.GNP > 1500000">Wohlhabende Länder</label><br>
+                    <label class="checkbox-inline"><input type="checkbox" 
+                        value="Country.LifeExpectancy > 70">Sichere Länder</label><br>
+
+                    <div class="input-group">
+                        <div class="input-group-addon">Country.Name = </div>
+                        <input type="text" class="form-control">
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-addon">Country.GovernmentForm = </div>
+                        <input type="text" class="form-control">
+                    </div>
+
+
+                </section> <!-- #filter -->
+
+            </div> <!-- .row -->
+
+            <div class="row">
+                
+                <section id="request" class="col-lg-6">
+                    <div class="box-header">HTTP Request</div>
+                    <p><small>Dieser Request wird im Hintergrund per AJAX an den Server (Pfad /countries) gesendet. Die Antwort erfolgt im JSON Format. Diese Abfrage könnte in einer realen Anwendung mittels geläufigen Debugging-Tools aufgezeichnet und modifiziert abgesendet werden.</small></p>
+                    <textarea class="form-control" rows="7"></textarea>
+                </section> <!-- #request -->
+
+                <section id="scheme" class="col-lg-6">
+                    <div class="box-header">Datenbank-Schema</div>
+                    <p><small>Das vollständige Datenbank-Schema. Dieses ist eigentlich nicht ersichtlich und ist hier lediglich zur Vereinfachung aufgeführt. Rote Attribute sind nicht auswählbar. Orange Attribute sind nicht ersichtlich, aber über Filter verfügbar.</small></p>
+                    <strong>City</strong>: <span class="secret">ID</span>, <span class="public">Name</span>, <span class="secret">CountryCode</span>, <span class="public">District</span>, <span class="filter">Population</span><br>
+                    <strong>Country</strong>: <span class="secret">Code</span>, <span class="public">Name</span>, <span class="public">Continent</span>, <span class="public">Region</span>, <span class="filter">SurfaceArea</span>, <span class="secret">IndepYear</span>, <span class="public">Population</span>, <span class="filter">LifeExpectancy</span>, <span class="filter">GNP</span>, <span class="secret">GNPOld</span>, <span class="secret">LocalName</span>, <span class="public">GovernmentForm</span>, <span class="secret">HeadOfState</span>, <span class="secret">Capital</span>, <span class="secret">Code2</span><br>
+                    <strong>CountryLanguage</strong>: <span class="secret">CountryCode</span>, <span class="public">Language</span>, <span class="secret">IsOfficial</span>, <span class="public">Percentage</span>
+                </section> <!-- #scheme -->
+
+            </div> <!-- .row -->
+
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="center">
+                        <button id="send" type="button" class="btn btn-primary navbar-btn">ABFRAGE ABSENDEN</button>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div id="status" class="center">
+                    </div>
+                </div>
+
+            </div> <!-- .row -->
+
+
+            <div class="row">
+                
+                <section id="result" class="col-sm-12" overflow="auto">
+                    <div class="box-header">Ergebnis</div>
+                    <table class="table table-striped table-hover table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Spalte 1</th>
+                                <th>Spalte 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Inhalt..</td>
+                                <td>Inhalt..</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section> <!-- #result -->
+
+            </div> <!-- .row -->
+            
+        </div> <!-- .container -->
+
+    </div> <!-- #page -->
+
+
+    <!-- Javascript at the end for fast page loading -->
+    <script src="@routes.Assets.at("libs/jquery/dist/jquery.min.js")"></script>
+    <script src="@routes.Assets.at("libs/bootstrap/dist/js/bootstrap.min.js")"></script>
+    <script src="@routes.Assets.at("javascripts/main.js")"></script>
+
+</body>
+</html>

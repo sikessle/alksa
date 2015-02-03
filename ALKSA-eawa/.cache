@@ -1,0 +1,79 @@
+format version: 5
+output mode:
+1 items
+0 -> multiple
+output directories:
+2 items
+/Users/sikessle/Documents/Software/git-repositories/alksa/ALKSA-eawa/app -> /Users/sikessle/Documents/Software/git-repositories/alksa/ALKSA-eawa/target/scala-2.11/classes
+/Users/sikessle/Documents/Software/git-repositories/alksa/ALKSA-eawa/test -> /Users/sikessle/Documents/Software/git-repositories/alksa/ALKSA-eawa/target/scala-2.11/test-classes
+compile options:
+12 items
+00 -> -javabootclasspath
+01 -> /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/cldrdata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/dnsns.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/jfxrt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/localedata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/nashorn.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/sunec.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/ext/zipfs.jar:/System/Library/Java/Extensions/MRJToolkit.jar
+02 -> -javaextdirs
+03 ->  
+04 -> -bootclasspath
+05 -> /Applications/eclipse/plugins/org.scala-lang.scala-library_2.11.5.v20150101-184742-3fafbc204f.jar
+06 -> -deprecation
+07 -> -unchecked
+08 -> -encoding
+09 -> UTF-8
+10 -> -encoding
+11 -> utf8
+javac options:
+0 items
+compiler version:
+1 items
+0 -> 2.11.5
+compile order:
+1 items
+0 -> Mixed
+name hashing:
+1 items
+0 -> false
+products:
+0 items
+binary dependencies:
+0 items
+direct source dependencies:
+0 items
+direct external dependencies:
+0 items
+public inherited source dependencies:
+0 items
+public inherited external dependencies:
+0 items
+member reference internal dependencies:
+0 items
+member reference external dependencies:
+0 items
+inheritance internal dependencies:
+0 items
+inheritance external dependencies:
+0 items
+class names:
+0 items
+used names:
+0 items
+product stamps:
+0 items
+source stamps:
+1 items
+/Users/sikessle/Documents/Software/git-repositories/alksa/ALKSA-eawa/app/controllers/Application.java -> hash(46832cdced2ad64712716642edcf33dd82d36c73)
+binary stamps:
+0 items
+class names:
+0 items
+internal apis:
+1 items
+/Users/sikessle/Documents/Software/git-repositories/alksa/ALKSA-eawa/app/controllers/Application.java -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlFlpwRASfbtoCAAZJAAdhcGlIYXNoWgAIaGFzTWFjcm9MABhfaW50ZXJuYWxPbmx5X25hbWVIYXNoZXN0ACRMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2hlcztMAANhcGl0ABVMeHNidGkvYXBpL1NvdXJjZUFQSTtMAAtjb21waWxhdGlvbnQAF0x4c2J0aS9hcGkvQ29tcGlsYXRpb247WwAEaGFzaHQAAltCeHC4IVHqAHNyACJ4c2J0aS5hcGkuX2ludGVybmFsT25seV9OYW1lSGFzaGVzVNq+mfrU7EwCAAJbAA9pbXBsaWNpdE1lbWJlcnN0ACNbTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoO1sADnJlZ3VsYXJNZW1iZXJzcQB+AAd4cHVyACNbTHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoO0lagLbdlov0AgAAeHAAAAAAdXEAfgAJAAAAAHNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAB1cgAUW0x4c2J0aS5hcGkuUGFja2FnZTtbExk3cKcnoQIAAHhwAAAAAHNyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABS07WgbB1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAnNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5dAASTGphdmEvbGFuZy9TdHJpbmc7TAAPc291cmNlRGlyZWN0b3J5cQB+ABp4cHQAXi9Vc2Vycy9zaWtlc3NsZS9Eb2N1bWVudHMvU29mdHdhcmUvZ2l0LXJlcG9zaXRvcmllcy9hbGtzYS9BTEtTQS1lYXdhL3RhcmdldC9zY2FsYS0yLjExL2NsYXNzZXN0AEgvVXNlcnMvc2lrZXNzbGUvRG9jdW1lbnRzL1NvZnR3YXJlL2dpdC1yZXBvc2l0b3JpZXMvYWxrc2EvQUxLU0EtZWF3YS9hcHBzcQB+ABl0AGMvVXNlcnMvc2lrZXNzbGUvRG9jdW1lbnRzL1NvZnR3YXJlL2dpdC1yZXBvc2l0b3JpZXMvYWxrc2EvQUxLU0EtZWF3YS90YXJnZXQvc2NhbGEtMi4xMS90ZXN0LWNsYXNzZXN0AEkvVXNlcnMvc2lrZXNzbGUvRG9jdW1lbnRzL1NvZnR3YXJlL2dpdC1yZXBvc2l0b3JpZXMvYWxrc2EvQUxLU0EtZWF3YS90ZXN0dXIAAltCrPMX+AYIVOACAAB4cAAAABRGgyzc7SrWRxJxZkLtzzPdgtNscw==
+external apis:
+0 items
+source infos:
+1 items
+/Users/sikessle/Documents/Software/git-repositories/alksa/ALKSA-eawa/app/controllers/Application.java -> 
+AAAAAAAAAAA=
+compilations:
+1 items
+0 -> rO0ABXNyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABS07WgbB1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAnNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5dAASTGphdmEvbGFuZy9TdHJpbmc7TAAPc291cmNlRGlyZWN0b3J5cQB+AAZ4cHQAXi9Vc2Vycy9zaWtlc3NsZS9Eb2N1bWVudHMvU29mdHdhcmUvZ2l0LXJlcG9zaXRvcmllcy9hbGtzYS9BTEtTQS1lYXdhL3RhcmdldC9zY2FsYS0yLjExL2NsYXNzZXN0AEgvVXNlcnMvc2lrZXNzbGUvRG9jdW1lbnRzL1NvZnR3YXJlL2dpdC1yZXBvc2l0b3JpZXMvYWxrc2EvQUxLU0EtZWF3YS9hcHBzcQB+AAV0AGMvVXNlcnMvc2lrZXNzbGUvRG9jdW1lbnRzL1NvZnR3YXJlL2dpdC1yZXBvc2l0b3JpZXMvYWxrc2EvQUxLU0EtZWF3YS90YXJnZXQvc2NhbGEtMi4xMS90ZXN0LWNsYXNzZXN0AEkvVXNlcnMvc2lrZXNzbGUvRG9jdW1lbnRzL1NvZnR3YXJlL2dpdC1yZXBvc2l0b3JpZXMvYWxrc2EvQUxLU0EtZWF3YS90ZXN0

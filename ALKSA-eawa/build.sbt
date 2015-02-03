@@ -12,3 +12,6 @@ libraryDependencies ++= Seq(
   cache,
   javaWs
 )
+
+LessKeys.compress := true
+
