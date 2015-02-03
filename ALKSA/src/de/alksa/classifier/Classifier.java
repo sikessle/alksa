@@ -4,6 +4,7 @@ import java.util.Set;
 
 import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.log.LogEntry;
+import de.alksa.querystorage.Query;
 
 public interface Classifier {
 
@@ -21,5 +22,7 @@ public interface Classifier {
 	boolean isLearning();
 
 	Set<LogEntry> getLogEntries();
+
+	Set<Query> getLearnedQueries();
 
 }

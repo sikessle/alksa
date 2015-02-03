@@ -14,6 +14,7 @@ import de.alksa.log.impl.LogModule;
 import de.alksa.parser.impl.ParserModule;
 import de.alksa.persistence.StorageDao;
 import de.alksa.persistence.impl.PersistenceModule;
+import de.alksa.querystorage.Query;
 import de.alksa.querystorage.impl.QueryStorageModule;
 
 public final class ALKSA {
@@ -73,6 +74,15 @@ public final class ALKSA {
 	public Set<LogEntry> getLogEntries() throws IllegalStateException {
 		checkForShutdown();
 		return classifier.getLogEntries();
+	}
+
+	/**
+	 * @throws IllegalStateException
+	 *             If shutdown() was called before.
+	 */
+	public Set<Query> getLearnedQueries() throws IllegalStateException {
+		checkForShutdown();
+		return classifier.getLearnedQueries();
 	}
 
 	/**

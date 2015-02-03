@@ -113,4 +113,9 @@ class CheckerBasedClassifier implements Classifier {
 		return logger.read();
 	}
 
+	@Override
+	public Set<Query> getLearnedQueries() {
+		return queryStorage.read();
+	}
+
 }
