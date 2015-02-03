@@ -32,7 +32,7 @@ public class Application extends Controller {
 	private static List<String> learnedQueries;
 	private static List<String> productiveQueries;
 
-	private static List<String> columns;
+	private static ArrayNode columnsFromQuery;
 	private static ArrayNode resultFromQuery;
 
 	static {
@@ -44,7 +44,6 @@ public class Application extends Controller {
 		enableALKSA = false;
 		learnedQueries = new LinkedList<>();
 		productiveQueries = new LinkedList<>();
-		columns = new LinkedList<>();
 	}
 
 	public static Result reset() {
@@ -60,7 +59,6 @@ public class Application extends Controller {
 
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result runQuery() {
-
 		JsonNode request = request().body().asJson();
 
 		if (request == null) {
@@ -99,7 +97,7 @@ public class Application extends Controller {
 		resultNode.put("productiveQueries",
 				getListAsJSONArray(productiveQueries));
 		resultNode.put("accepted", accepted);
-		resultNode.put("resultHead", getListAsJSONArray(columns));
+		resultNode.put("resultHead", columnsFromQuery);
 		resultNode.put("resultBody", resultFromQuery);
 
 		return resultNode;
@@ -124,7 +122,7 @@ public class Application extends Controller {
 	}
 
 	private static void setResultFromDatabase(String query) throws SQLException {
-		columns.clear();
+		columnsFromQuery = mapper.createArrayNode();
 		resultFromQuery = mapper.createArrayNode();
 
 		Connection conn = ALKSASingleton.getInstance().getConnection();
@@ -134,7 +132,7 @@ public class Application extends Controller {
 		ResultSetMetaData meta = rs.getMetaData();
 
 		for (int i = 1; i <= meta.getColumnCount(); i++) {
-			columns.add(meta.getColumnLabel(i));
+			columnsFromQuery.add(meta.getColumnLabel(i));
 		}
 
 		while (rs.next()) {
