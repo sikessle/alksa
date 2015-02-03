@@ -80,11 +80,18 @@ var EAWA = (function () {
         this.fillQueryLogBox(this.queriesLearnedTarget, data.learnedQueries);
         this.fillQueryLogBox(this.queriesProductiveTarget, data.productiveQueries);
 
-        if (data.accepted) {
-            this.statusBox.html("ALKSA: QUERY ACCEPTED");
-            this.fillResultTable(data.resultHead, data.resultBody);
+        if (this.alksaCheckbox.checked) {
+	        if (data.accepted) {
+	            this.statusBox.html("ALKSA: QUERY ACCEPTED");
+	        } else {
+	            this.statusBox.html("ALKSA: QUERY NOT ACCEPTED");
+	        }
         } else {
-            this.statusBox.html("ALKSA: QUERY NOT ACCEPTED");
+        	this.statusBox.html("");
+        }
+        
+        if (data.accepted) {
+            this.fillResultTable(data.resultHead, data.resultBody);
         }
         
         this.sendButton.prop('disable', false);
