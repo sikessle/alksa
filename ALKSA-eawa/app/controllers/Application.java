@@ -1,6 +1,13 @@
 package controllers;
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
 import play.Logger;
+import de.alksa.ALKSA;
+import de.alksa.ALKSAInvalidQueryException;
+import de.alksa.querystorage.Query;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.BodyParser;
@@ -16,13 +23,18 @@ import views.html.index;
 public class Application extends Controller {
 
 	private static ObjectMapper mapper = new ObjectMapper();
+
+	private final static String PATH = "/tmp/eawa";
+
 	private static ALKSA alksa;
+	private static boolean enableALKSA;
+
+	private static Set<String> learnedQueries;
+	private static Set<String> productiveQueries;
 
 	{
-
+		reset();
 	}
-
-	private static boolean enableALKSA = false;
 
 	public static Result index() {
 		return ok(index.render());
@@ -57,28 +69,75 @@ public class Application extends Controller {
 
 	private static ObjectNode createResultFromQuery(String query) {
 		ObjectNode result = mapper.createObjectNode();
-		ArrayNode learnedQueries = mapper.createArrayNode();
-		ArrayNode productiveQueries = mapper.createArrayNode();
 		ArrayNode resultHead = mapper.createArrayNode();
 		ArrayNode resultBody = mapper.createArrayNode();
 
 		// TODO
+		boolean accepted = processQuery(query);
 
-		result.put("accepted", false);
-		result.put("learnedQueries", learnedQueries);
-		result.put("productiveQueries", productiveQueries);
+		result.put("learnedQueries", getQueriesAsJSON(learnedQueries));
+		result.put("productiveQueries", getQueriesAsJSON(productiveQueries));
+		result.put("accepted", accepted);
 		result.put("resultHead", resultHead);
 		result.put("resultBody", resultBody);
 		return result;
 	}
 
+	private static boolean processQuery(String query) {
+		if (enableALKSA) {
+			return processALKSA(query);
+		}
+
+		return true;
+	}
+
+	private static boolean processALKSA(String query) {
+		boolean queryError = false;
+		boolean queryAccepted = false;
+
+		try {
+			queryAccepted = alksa.accept(query, "eawa", "tester");
+		} catch (ALKSAInvalidQueryException e) {
+			queryError = true;
+		}
+
+		String prefix = queryError ? "ERROR: " : (queryAccepted ? "ACCEPTED: "
+				: "REJECTED: ");
+
+		if (alksa.isLearning()) {
+			learnedQueries.add(prefix + query);
+
+		} else {
+			productiveQueries.add(prefix + query);
+		}
+
+		return !queryError && queryAccepted;
+	}
+
+	private static ArrayNode getQueriesAsJSON(Set<String> queries) {
+		ArrayNode result = mapper.createArrayNode();
+
+		for (String query : queries) {
+			result.add(query);
+		}
+
+		return result;
+	}
+
 	public static Result reset() {
-		// TODO
+		if (alksa != null) {
+			alksa.shutdown();
+		}
+		new File(PATH).delete();
+		alksa = new ALKSA(PATH);
+		enableALKSA = false;
+		learnedQueries = new HashSet<>();
+		productiveQueries = new HashSet<>();
 		return ok();
 	}
 
 	public static Result setLearning(boolean learning) {
-		// TODO
+		alksa.setLearning(learning);
 		return ok();
 	}
 
