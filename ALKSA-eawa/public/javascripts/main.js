@@ -54,6 +54,8 @@ var EAWA = (function () {
                 document.location.reload();
             });
         });
+        
+        this.updatePayload();
     };
 
     EAWA.prototype.putOrDeleteByCheckbox = function (path, checkbox) {
