@@ -4,6 +4,16 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+POST    /countries			        controllers.Application.runQuery()
+GET 	/settings/reset				controllers.Application.reset()
+
+PUT		/settings/learning			controllers.Application.setLearning(true)
+DELETE	/settings/learning			controllers.Application.setLearning(false)
+
+PUT		/settings/alksa				controllers.Application.enableALKSA(true)
+DELETE  /settings/alksa				controllers.Application.enableALKSA(false)
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

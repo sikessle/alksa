@@ -11,4 +11,20 @@ public class Application extends Controller {
 		return ok(index.render());
 	}
 
+	public static Result runQuery() {
+		return ok(index.render());
+	}
+
+	public static Result reset() {
+		return ok();
+	}
+
+	public static Result setLearning(boolean learning) {
+		return ok();
+	}
+
+	public static Result enableALKSA(boolean enable) {
+		return ok();
+	}
+
 }
