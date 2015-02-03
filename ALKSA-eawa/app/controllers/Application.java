@@ -1,13 +1,16 @@
 package controllers;
 
-import play.mvc.BodyParser;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.BodyParser;
+import play.mvc.Http.RequestBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import views.html.index;
 
 public class Application extends Controller {
@@ -18,21 +21,34 @@ public class Application extends Controller {
 		return ok(index.render());
 	}
 
-	@BodyParser.Of(play.mvc.BodyParser.Json.class)
+	@BodyParser.Of(BodyParser.Json.class)
 	public static Result runQuery() {
-		/**
-		 *
-		 { accepted: true|false, learnedQueries: [], productiveQueries: [],
-		 * resultHead: [], resultBody: [] }
-		 */
 
 		JsonNode request = request().body().asJson();
-		ObjectNode result = createResultFromQuery();
+
+		if (request == null) {
+			return badRequest("expecting application/json");
+		}
+
+		String columns = request.get("columns").asText();
+		String where = request.get("where").asText();
+
+		ObjectNode result = createResultFromQuery(buildQuery(columns, where));
 
 		return ok(result);
 	}
 
-	private static ObjectNode createResultFromQuery() {
+	private static String buildQuery(String columns, String where) {
+		String query = "SELECT " + columns;
+		query += " FROM City";
+		query += " LEFT OUTER JOIN Country ON City.CountryCode = Country.Code";
+		query += " LEFT OUTER JOIN CountryLanguage ON CountryLanguage.CountryCode = Country.Code";
+		query += " WHERE " + where;
+
+		return query;
+	}
+
+	private static ObjectNode createResultFromQuery(String query) {
 		ObjectNode result = mapper.createObjectNode();
 		ArrayNode learnedQueries = mapper.createArrayNode();
 		ArrayNode productiveQueries = mapper.createArrayNode();

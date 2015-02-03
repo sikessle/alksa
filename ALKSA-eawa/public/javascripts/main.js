@@ -17,7 +17,10 @@ var EAWA = (function () {
         this.learningCheckbox = $('#toggle-learn');
         this.alksaCheckbox = $('#toggle-alksa');
 
-		this.payload = {};
+		this.payload = {
+				columns: "",
+				where: ""
+		};
 		this.attributes = [];
 		this.filterAttrs = [];
 		this.filterFreetext = [];
@@ -62,7 +65,14 @@ var EAWA = (function () {
     };
 
     EAWA.prototype.send = function () {
-        $.post(this.dataUrl, this.payload, this.handleResponse.bind(this));
+    	$.ajax({
+    		url: this.dataUrl, 
+    		method: 'post',
+    		data: JSON.stringify(this.payload), 
+    		success: this.handleResponse.bind(this), 
+    		dataType: 'json',
+    		contentType: 'application/json'
+    	});
     };
 
     EAWA.prototype.handleResponse = function (data) {
