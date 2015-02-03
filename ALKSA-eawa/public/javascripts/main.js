@@ -17,10 +17,6 @@ var EAWA = (function () {
         this.learningCheckbox = $('#toggle-learn');
         this.alksaCheckbox = $('#toggle-alksa');
 
-		this.payload = {
-				columns: "",
-				where: ""
-		};
 		this.attributes = [];
 		this.filterAttrs = [];
 		this.filterFreetext = [];
@@ -70,7 +66,7 @@ var EAWA = (function () {
     	$.ajax({
     		url: this.dataUrl, 
     		method: 'post',
-    		data: JSON.stringify(this.payload), 
+    		data: this.requestTarget.val(), 
     		success: this.handleResponse.bind(this), 
     		dataType: 'json',
     		contentType: 'application/json'
@@ -172,7 +168,6 @@ var EAWA = (function () {
 		payload.where = this.filterAttrs.concat(this.filterFreetext).join(" AND ");
 
         this.requestTarget.html(JSON.stringify(payload, null, "\t"));
-        this.payload = payload;
     };
 
     return EAWA;
