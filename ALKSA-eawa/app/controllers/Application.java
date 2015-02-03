@@ -16,6 +16,11 @@ import views.html.index;
 public class Application extends Controller {
 
 	private static ObjectMapper mapper = new ObjectMapper();
+	private static ALKSA alksa;
+
+	{
+
+	}
 
 	private static boolean enableALKSA = false;
 
