@@ -80,7 +80,7 @@ var EAWA = (function () {
         this.fillQueryLogBox(this.queriesLearnedTarget, data.learnedQueries);
         this.fillQueryLogBox(this.queriesProductiveTarget, data.productiveQueries);
 
-        if (this.alksaCheckbox.checked) {
+        if (this.alksaCheckbox.attr('checked')) {
 	        if (data.accepted) {
 	            this.statusBox.html("ALKSA: QUERY ACCEPTED");
 	        } else {
