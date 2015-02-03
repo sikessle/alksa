@@ -17,6 +17,8 @@ public class Application extends Controller {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
+	private static boolean enableALKSA = false;
+
 	public static Result index() {
 		return ok(index.render());
 	}
@@ -55,6 +57,8 @@ public class Application extends Controller {
 		ArrayNode resultHead = mapper.createArrayNode();
 		ArrayNode resultBody = mapper.createArrayNode();
 
+		// TODO
+
 		result.put("accepted", false);
 		result.put("learnedQueries", learnedQueries);
 		result.put("productiveQueries", productiveQueries);
@@ -64,14 +68,17 @@ public class Application extends Controller {
 	}
 
 	public static Result reset() {
+		// TODO
 		return ok();
 	}
 
 	public static Result setLearning(boolean learning) {
+		// TODO
 		return ok();
 	}
 
 	public static Result enableALKSA(boolean enable) {
+		enableALKSA = enable;
 		return ok();
 	}
 }
