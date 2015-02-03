@@ -1,21 +1,21 @@
 package controllers;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
-import de.alksa.ALKSA;
-import de.alksa.ALKSAInvalidQueryException;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.BodyParser;
-import play.mvc.Http.RequestBody;
+import views.html.index;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import views.html.index;
+import de.alksa.ALKSA;
+import de.alksa.ALKSAInvalidQueryException;
 
 public class Application extends Controller {
 
@@ -24,8 +24,8 @@ public class Application extends Controller {
 	private static ALKSA alksa;
 	private static boolean enableALKSA;
 
-	private static Set<String> learnedQueries;
-	private static Set<String> productiveQueries;
+	private static List<String> learnedQueries;
+	private static List<String> productiveQueries;
 
 	static {
 		init();
@@ -34,8 +34,8 @@ public class Application extends Controller {
 	private static void init() {
 		alksa = ALKSASingleton.getInstance();
 		enableALKSA = false;
-		learnedQueries = new HashSet<>();
-		productiveQueries = new HashSet<>();
+		learnedQueries = new LinkedList<>();
+		productiveQueries = new LinkedList<>();
 	}
 
 	public static Result reset() {
@@ -65,7 +65,7 @@ public class Application extends Controller {
 	}
 
 	private static String buildQuery(String columns, String where) {
-		String query = "SELECT " + columns;
+		String query = "SELECT " + ("".equals(columns) ? "*" : columns);
 		query += " FROM City";
 		query += " LEFT OUTER JOIN Country ON City.CountryCode = Country.Code";
 		query += " LEFT OUTER JOIN CountryLanguage ON CountryLanguage.CountryCode = Country.Code";
@@ -125,11 +125,13 @@ public class Application extends Controller {
 		return !queryError && queryAccepted;
 	}
 
-	private static ArrayNode getQueriesAsJSON(Set<String> queries) {
+	private static ArrayNode getQueriesAsJSON(List<String> queries) {
 		ArrayNode result = mapper.createArrayNode();
 
-		for (String query : queries) {
-			result.add(query);
+		ListIterator<String> iterator = queries.listIterator(queries.size());
+
+		while (iterator.hasPrevious()) {
+			result.add(iterator.previous());
 		}
 
 		return result;

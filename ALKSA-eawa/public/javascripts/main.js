@@ -112,7 +112,7 @@ var EAWA = (function () {
             if (q.startsWith("ERROR"))
                 return '<span class="error">' + q.replace(/ERROR:\s*/g, "") + '</span>';
             return "unknown query: " + q;
-        }).join("<br>"));
+        }).join('<div class="query-separator"></div>'));
     };
 
     EAWA.prototype.filterFreetextWrapperChanged = function () {
