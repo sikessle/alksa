@@ -26,5 +26,4 @@ public class Application extends Controller {
 	public static Result enableALKSA(boolean enable) {
 		return ok();
 	}
-
 }
