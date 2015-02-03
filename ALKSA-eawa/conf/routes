@@ -4,14 +4,16 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+
 POST    /countries			        controllers.Application.runQuery()
+
 GET 	/settings/reset				controllers.Application.reset()
 
-PUT		/settings/learning			controllers.Application.setLearning(true)
-DELETE	/settings/learning			controllers.Application.setLearning(false)
+PUT		/settings/learning			controllers.Application.setLearning(learning: Boolean = true)
+DELETE	/settings/learning			controllers.Application.setLearning(learning: Boolean = false)
 
-PUT		/settings/alksa				controllers.Application.enableALKSA(true)
-DELETE  /settings/alksa				controllers.Application.enableALKSA(false)
+PUT		/settings/alksa				controllers.Application.enableALKSA(enable: Boolean = true)
+DELETE  /settings/alksa				controllers.Application.enableALKSA(enable: Boolean = false)
 
 
 
