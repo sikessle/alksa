@@ -1,0 +1,88 @@
+SET NAMES utf8
+SELECT @@SESSION.sql_mode
+SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes'
+SHOW TABLES LIKE 'wp_bwg_option'
+SELECT images_directory FROM wp_bwg_option WHERE id="1"
+SELECT option_value FROM wp_options WHERE option_name = 'theme_mods_twentyfifteen' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'current_theme' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'mods_Twenty Fifteen' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_pages' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_calendar' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_tag_cloud' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_nav_menu' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_bwp_gallery' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_bwp_gallery_slideshow' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'theme_switched' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'rewrite_rules' LIMIT 1
+SELECT SQL_CALC_FOUND_ROWS  wp_posts.ID FROM wp_posts  WHERE 1=1  AND wp_posts.post_type = 'post' AND (wp_posts.post_status = 'publish')  ORDER BY wp_posts.post_date DESC LIMIT 0, 10
+SELECT FOUND_ROWS()
+SELECT wp_posts.* FROM wp_posts WHERE ID IN (1)
+SELECT t.*, tt.*, tr.object_id FROM wp_terms AS t INNER JOIN wp_term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN wp_term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN ('category', 'post_tag', 'post_format', 'bwg_tag') AND tr.object_id IN (1) ORDER BY t.name ASC
+SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE post_id IN (1) ORDER BY meta_id ASC
+SELECT option_value FROM wp_options WHERE option_name = 'wd_bwg_version' LIMIT 1
+SELECT   wp_posts.ID FROM wp_posts  WHERE 1=1  AND wp_posts.post_type = 'post' AND ((wp_posts.post_status = 'publish'))  ORDER BY wp_posts.post_date DESC LIMIT 0, 5
+SELECT * FROM wp_users WHERE ID = '1'
+SELECT user_id, meta_key, meta_value FROM wp_usermeta WHERE user_id IN (1) ORDER BY umeta_id ASC
+SELECT * FROM wp_comments JOIN wp_posts ON wp_posts.ID = wp_comments.comment_post_ID WHERE ( comment_approved = '1' ) AND  wp_posts.post_status = 'publish'  ORDER BY comment_date_gmt DESC LIMIT 5
+SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM wp_posts  WHERE post_type = 'post' AND post_status = 'publish' GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date DESC
+SELECT t.*, tt.* FROM wp_terms AS t INNER JOIN wp_term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('category') AND tt.count > 0 ORDER BY t.name ASC
+SELECT tagtext FROM wp_bwg_shortcode WHERE id='1'
+SELECT * FROM wp_bwg_option WHERE id="1"
+SELECT * FROM wp_bwg_theme WHERE id="1"
+SELECT * FROM wp_bwg_gallery WHERE published=1 AND id="0"	
+SET NAMES utf8
+SELECT @@SESSION.sql_mode
+SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes'
+SHOW TABLES LIKE 'wp_bwg_option'
+SELECT images_directory FROM wp_bwg_option WHERE id="1"
+SELECT option_value FROM wp_options WHERE option_name = 'theme_mods_twentyfifteen' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'current_theme' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'mods_Twenty Fifteen' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_pages' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_calendar' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_tag_cloud' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_nav_menu' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_bwp_gallery' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_bwp_gallery_slideshow' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'theme_switched' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'rewrite_rules' LIMIT 1
+SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.ID = 2 AND wp_posts.post_type = 'page'  ORDER BY wp_posts.post_date DESC
+SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE post_id IN (2) ORDER BY meta_id ASC
+SELECT option_value FROM wp_options WHERE option_name = 'wd_bwg_version' LIMIT 1
+SELECT * FROM wp_posts  WHERE (post_type = 'page' AND post_status = 'publish')    AND post_parent = 2   ORDER BY wp_posts.post_title ASC LIMIT 0,1
+SELECT   wp_posts.ID FROM wp_posts  WHERE 1=1  AND wp_posts.post_type = 'post' AND ((wp_posts.post_status = 'publish'))  ORDER BY wp_posts.post_date DESC LIMIT 0, 5
+SELECT wp_posts.* FROM wp_posts WHERE ID IN (1)
+SELECT t.*, tt.*, tr.object_id FROM wp_terms AS t INNER JOIN wp_term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN wp_term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN ('category', 'post_tag', 'post_format', 'bwg_tag') AND tr.object_id IN (1) ORDER BY t.name ASC
+SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE post_id IN (1) ORDER BY meta_id ASC
+SELECT * FROM wp_users WHERE ID = '1'
+SELECT user_id, meta_key, meta_value FROM wp_usermeta WHERE user_id IN (1) ORDER BY umeta_id ASC
+SELECT * FROM wp_comments JOIN wp_posts ON wp_posts.ID = wp_comments.comment_post_ID WHERE ( comment_approved = '1' ) AND  wp_posts.post_status = 'publish'  ORDER BY comment_date_gmt DESC LIMIT 5
+SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM wp_posts  WHERE post_type = 'post' AND post_status = 'publish' GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date DESC
+SELECT t.*, tt.* FROM wp_terms AS t INNER JOIN wp_term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('category') AND tt.count > 0 ORDER BY t.name ASC
+SELECT tagtext FROM wp_bwg_shortcode WHERE id='2'
+SELECT * FROM wp_bwg_option WHERE id="1"
+SELECT * FROM wp_bwg_theme WHERE id="1"
+SELECT * FROM wp_bwg_gallery WHERE published=1 AND id="1"
+SELECT * FROM wp_bwg_image WHERE published=1  AND gallery_id="1" ORDER BY `order`  asc  LIMIT 0,30
+SELECT COUNT(*) FROM wp_bwg_image WHERE published=1  AND gallery_id="1"
+SELECT * FROM wp_comments  WHERE ( comment_approved = '1' ) AND comment_post_ID = 2  ORDER BY comment_date_gmt ASC	
+SET NAMES utf8
+SELECT @@SESSION.sql_mode
+SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes'
+SHOW TABLES LIKE 'wp_bwg_option'
+SELECT images_directory FROM wp_bwg_option WHERE id="1"
+SELECT option_value FROM wp_options WHERE option_name = 'theme_mods_twentyfifteen' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'current_theme' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'mods_Twenty Fifteen' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_pages' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_calendar' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_tag_cloud' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_nav_menu' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_bwp_gallery' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'widget_bwp_gallery_slideshow' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'theme_switched' LIMIT 1
+SELECT option_value FROM wp_options WHERE option_name = 'wd_bwg_version' LIMIT 1
+SELECT * FROM wp_bwg_theme WHERE id="1"
+SELECT * FROM wp_bwg_option WHERE id="1"
+SELECT t1.*,t2.rate FROM wp_bwg_image as t1 LEFT JOIN (SELECT rate, image_id FROM wp_bwg_image_rate WHERE ip='::1') as t2 ON t1.id=t2.image_id WHERE t1.published=1 AND t1.gallery_id="1" ORDER BY t1.`order`  asc
+SELECT * FROM wp_bwg_image_comment WHERE image_id="13" AND published=1 ORDER BY `id` DESC	
