@@ -1,4 +1,3 @@
-# ALKSA-tests
+# Results of tests with Wordpress and EAWA
 
-In diesem Ordner sind die Ergebnisse der durchgeführten Tests hinterlegt.
-
+Contains the results or temporary files of these tests. Additionally some binary files may be contained like the vulnerable wordpress plugin etc.
