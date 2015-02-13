@@ -23,6 +23,13 @@ public final class ALKSA {
 	private StorageDao storage;
 	private boolean shutdown;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param storagePath
+	 *            The path where ALKSA may store its database file for its
+	 *            permanent storage (like for queries and log files).
+	 */
 	public ALKSA(String storagePath) {
 		Objects.requireNonNull(storagePath);
 

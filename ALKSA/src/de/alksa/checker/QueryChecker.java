@@ -43,23 +43,40 @@ public abstract class QueryChecker {
 		}
 	}
 
-	public void appendMatcher(QueryChecker next) {
+	/**
+	 * Allows to chain checkers like a list.
+	 */
+	public void appendChecker(QueryChecker next) {
 		Objects.requireNonNull(next);
 
 		if (this.next == null) {
 			this.next = next;
 		} else {
-			this.next.appendMatcher(next);
+			this.next.appendChecker(next);
 		}
 	}
 
 	/**
 	 * It is expected that no implementations changes the parameters or its
 	 * members.
+	 *
+	 * @param subject
+	 *            The subject to check
+	 * @param learned
+	 *            The learned query to compare against
+	 * @return Returns a LogEntry if an the query is not allowed, otherwise null
+	 *         is returned.
 	 */
 	protected abstract LogEntry check(SelectStatementToken subject,
 			SelectStatementToken learned);
 
+	/**
+	 * Creates a LogEntry with the current subject-query, database and
+	 * database-user.
+	 * 
+	 * @param violation
+	 *            The cause, why the query is not allowed.
+	 */
 	protected LogEntry createLogEntry(String violation) {
 		String detailedViolation = this.getClass().getSimpleName() + ": "
 				+ violation;

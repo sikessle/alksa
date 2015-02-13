@@ -11,8 +11,9 @@ public interface Classifier {
 	/**
 	 * Checks or learns a query.
 	 *
-	 * @return True if the query was successfully checked. False if an error
-	 *         occured.
+	 * @return True if the query was successfully checked (legal or sucessfully
+	 *         learned). False if an error occurred or the query is not accepted
+	 *         (illegal).
 	 */
 	boolean accept(String sqlQuery, String database, String databaseUser)
 			throws ALKSAInvalidQueryException;

@@ -46,7 +46,7 @@ class CheckerBasedClassifier implements Classifier {
 		masterChecker = createDummyChecker();
 
 		for (QueryChecker checker : queryCheckers) {
-			masterChecker.appendMatcher(checker);
+			masterChecker.appendChecker(checker);
 		}
 
 		setLearning(false);
