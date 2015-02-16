@@ -13,7 +13,7 @@ import de.alksa.token.Token;
 import de.alksa.token.UnaryLogicalFilterToken;
 import de.alksa.util.TypeUtil;
 
-public class WhereClauseLogicChecker extends WhereClauseChecker {
+class WhereClauseLogicChecker extends WhereClauseChecker {
 
 	@Override
 	protected LogEntry checkWhereClause(Set<FilterToken> subject,

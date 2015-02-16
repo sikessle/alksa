@@ -16,7 +16,7 @@ import de.alksa.util.TypeUtil;
  * Functions: functions of subject must either have only unbound column names or
  * must be the same function as learned with the same column
  */
-public class SelectColumnListFunctionChecker extends QueryChecker {
+class SelectColumnListFunctionChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,

@@ -5,7 +5,7 @@ import java.util.Set;
 import de.alksa.log.LogEntry;
 import de.alksa.token.FilterToken;
 
-public class WhereClauseExistsChecker extends WhereClauseChecker {
+class WhereClauseExistsChecker extends WhereClauseChecker {
 
 	@Override
 	protected LogEntry checkWhereClause(Set<FilterToken> subject,

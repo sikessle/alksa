@@ -10,7 +10,7 @@ import de.alksa.token.FilterToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 
-public class WhereClauseComparisonChecker extends WhereClauseChecker {
+class WhereClauseComparisonChecker extends WhereClauseChecker {
 
 	@Override
 	protected LogEntry checkWhereClause(Set<FilterToken> subject,

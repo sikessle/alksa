@@ -6,7 +6,7 @@ import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.token.SelectStatementToken;
 
-public class SelectColumnListSubqueryChecker extends QueryChecker {
+class SelectColumnListSubqueryChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,

@@ -10,7 +10,7 @@ import de.alksa.token.FilterToken;
 import de.alksa.token.SelectStatementToken;
 import de.alksa.token.Token;
 
-public abstract class WhereClauseChecker extends QueryChecker {
+abstract class WhereClauseChecker extends QueryChecker {
 
 	protected Set<? extends Token> subjectColumnList;
 	protected Set<? extends Token> learnedColumnList;

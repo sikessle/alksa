@@ -4,7 +4,7 @@ import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.token.SelectStatementToken;
 
-public class FromListChecker extends QueryChecker {
+class FromListChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,

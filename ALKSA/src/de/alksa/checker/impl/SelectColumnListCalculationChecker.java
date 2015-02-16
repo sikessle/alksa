@@ -10,7 +10,7 @@ import de.alksa.token.SelectStatementToken;
 /**
  * Checks calculations which involve a column or function
  */
-public class SelectColumnListCalculationChecker extends QueryChecker {
+class SelectColumnListCalculationChecker extends QueryChecker {
 
 	@Override
 	protected LogEntry check(SelectStatementToken subject,
