@@ -28,7 +28,7 @@ public class SimpleLoggerTest {
 	@Before
 	public void setUp() throws Exception {
 		expectedEntries = new HashSet<>();
-		expectedEntries.add(new AttackLogEntry("", "", "", "", Instant.now()));
+		expectedEntries.add(new LogEntryImpl("", "", "", "", Instant.now()));
 
 		storageMock = mock(StorageDao.class);
 		when(storageMock.getLogEntries()).thenReturn(expectedEntries);

@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import de.alksa.log.LogEntry;
-import de.alksa.log.impl.AttackLogEntry;
+import de.alksa.log.impl.LogEntryImpl;
 import de.alksa.querystorage.Query;
 import de.alksa.token.CalculationToken;
 import de.alksa.token.ColumnNameToken;
@@ -81,7 +81,7 @@ public abstract class QueryChecker {
 		String detailedViolation = this.getClass().getSimpleName() + ": "
 				+ violation;
 
-		return new AttackLogEntry(subjectQueryData.getQueryString(),
+		return new LogEntryImpl(subjectQueryData.getQueryString(),
 				subjectQueryData.getDatabase(),
 				subjectQueryData.getDatabaseUser(), detailedViolation,
 				Instant.now());

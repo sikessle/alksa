@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import de.alksa.log.LogEntry;
 
-public class AttackLogEntry implements LogEntry {
+public class LogEntryImpl implements LogEntry {
 
 	private String query;
 	private String database;
@@ -13,7 +13,7 @@ public class AttackLogEntry implements LogEntry {
 	private String violation;
 	private Instant timestamp;
 
-	public AttackLogEntry(String query, String database, String databaseUser,
+	public LogEntryImpl(String query, String database, String databaseUser,
 			String violation, Instant timestamp) {
 
 		Objects.requireNonNull(query);
@@ -81,7 +81,7 @@ public class AttackLogEntry implements LogEntry {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		AttackLogEntry other = (AttackLogEntry) obj;
+		LogEntryImpl other = (LogEntryImpl) obj;
 
 		if (database == null) {
 			if (other.database != null) {

@@ -10,7 +10,7 @@ import org.junit.Test;
 import de.alksa.ALKSAInvalidQueryException;
 import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
-import de.alksa.log.impl.AttackLogEntry;
+import de.alksa.log.impl.LogEntryImpl;
 import de.alksa.parser.Parser;
 import de.alksa.querystorage.QueryStorage;
 
@@ -76,7 +76,7 @@ public class CheckerBasedClassifierTest {
 	@Test
 	public void testGetLogEntries() {
 		Set<LogEntry> logEntries = new HashSet<>();
-		logEntries.add(new AttackLogEntry(query, database, databaseUser,
+		logEntries.add(new LogEntryImpl(query, database, databaseUser,
 				"whatever", Instant.now()));
 
 		when(loggerMock.read()).thenReturn(logEntries);

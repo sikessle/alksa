@@ -6,7 +6,7 @@ import java.time.Instant;
 
 import org.junit.Test;
 
-public class AttackLogEntryTest {
+public class LogEntryImplTest {
 
 	@Test
 	public void testGettersNonNull() {
@@ -15,7 +15,7 @@ public class AttackLogEntryTest {
 		String databaseUser = "root";
 		String violation = "Columnlist violated";
 		Instant timestamp = Instant.now();
-		AttackLogEntry attack = new AttackLogEntry(query, database,
+		LogEntryImpl attack = new LogEntryImpl(query, database,
 				databaseUser, violation, timestamp);
 
 		assertEquals(query, attack.getQuery());
@@ -27,7 +27,7 @@ public class AttackLogEntryTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testGettersNull() {
-		new AttackLogEntry(null, null, null, null, null);
+		new LogEntryImpl(null, null, null, null, null);
 	}
 
 }

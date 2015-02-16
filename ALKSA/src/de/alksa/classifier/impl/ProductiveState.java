@@ -7,7 +7,7 @@ import java.util.Set;
 import de.alksa.checker.QueryChecker;
 import de.alksa.log.LogEntry;
 import de.alksa.log.Logger;
-import de.alksa.log.impl.AttackLogEntry;
+import de.alksa.log.impl.LogEntryImpl;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.QueryStorage;
 import de.alksa.token.SelectStatementToken;
@@ -57,7 +57,7 @@ class ProductiveState extends ClassifierState {
 
 		// can't compare to non-existing queries
 		if (learnedQueries.isEmpty()) {
-			return new AttackLogEntry(subject.getQueryString(),
+			return new LogEntryImpl(subject.getQueryString(),
 					subject.getDatabase(), subject.getDatabaseUser(),
 					"no matching query found", Instant.now());
 		}

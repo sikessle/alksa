@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.alksa.log.LogEntry;
-import de.alksa.log.impl.AttackLogEntry;
+import de.alksa.log.impl.LogEntryImpl;
 import de.alksa.querystorage.Query;
 import de.alksa.querystorage.impl.SingleSelectQuery;
 import de.alksa.token.BinaryLogicalFilterToken;
@@ -42,7 +42,7 @@ public class Db4oStorageDaoTest {
 	@Test
 	public void testLogEntries() {
 		Set<LogEntry> expectedEntries = new HashSet<>();
-		expectedEntries.add(new AttackLogEntry("", "", "", "", Instant.now()));
+		expectedEntries.add(new LogEntryImpl("", "", "", "", Instant.now()));
 
 		storage.saveLogEntries(expectedEntries);
 		Set<LogEntry> actualEntries = storage.getLogEntries();
