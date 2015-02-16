@@ -3,7 +3,6 @@
 	<name>ALKSA-cmdline</name>
 	<comment></comment>
 	<projects>
-		<project>ALKSA</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
