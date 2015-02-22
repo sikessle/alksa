@@ -1,4 +1,4 @@
-# Szenario 0
+# Szenario 1
 
 ## Gelernte Abfragen
 
@@ -13,7 +13,7 @@ Filter: Country.Name = 'Germany' OR 1=1  umgeht den Filter.
 Zugriff auf andere Tabelle (Basis für weitere Angriffe) mittels Unterabfrage in Spaltenliste: (SELECT table_name FROM information_schema.tables Limit 1, 1) AS table
 
 
-# Szenario 1
+# Szenario 2
 
 ## Gelernte Abfragen
 
@@ -30,7 +30,7 @@ City.Name + Country.GovernmentForm = Republic
 
 ## Angriff
 
-Angriffe aus Szenario 0 werden abgewehrt.
+Angriffe aus Szenario 1 werden abgewehrt.
 
 Jedoch machen einige Abfragen Probleme:
 
@@ -42,16 +42,9 @@ Die Filter wurden mit der Spalte City.Name gelernt. Wenn nun eine andere Spalte 
 
 Die Kombination City.Name + Country.GovernmentForm = Republic kann nicht variiert werden. Wird anstelle Republic z.B. "Federal Republic" benutzt, wird dies als Angriff gedeutet. Dies liegt daran, dass die Spalte nicht in der Spaltenliste gelernt wurde. Sonst könnte diese beliebig benutzt werden. 
 
-Abhilfe: Ausreichend langes lernen. Prototyp verbessern: 
-- Spalte=Wert. Wenn Wert oft variiert -> als Freiheitsgrad bestimmen
-- Kombination von mehreren Konjunktionen erlauben, bei erlaubter Spalten/Tabellenliste (Prototyp Einschränkung).
+Generell ergibt sich das Problem, sobald sehr viele Kombinationsmöglichkeiten gegeben sind. Deshalb ist die Lernphase als kritisch einzustufen. Einerseits lange genug -> andererseits keine Angriffe mit lernen!
 
-Generell ergibt sich das Problem, sobald sehr viele Kombinationsmöglichkeiten gegeben sind. Deshalb ist die Lernphase als kritisch einzustufen. Einerseits lange genug -> andererseits keine Angriffe mitlernen!
-
-
-
-
-# Szenario 2
+# Szenario 3
 
 ## Gelernte Abfragen
 
